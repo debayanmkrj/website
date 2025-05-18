@@ -56,18 +56,6 @@
             align-items: center;
         }
         
-        .home-icon {
-            font-size: 1.5rem;
-            color: var(--white);
-            text-decoration: none;
-            margin-right: 1rem;
-            transition: color 0.3s ease;
-        }
-        
-        .home-icon:hover {
-            color: var(--accent-red);
-        }
-        
         .nav-links {
             display: flex;
             gap: 1.5rem;
@@ -91,91 +79,83 @@
         .landing-content {
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
+            left: 5%;
+            transform: translate(0, -50%);
+            text-align: left;
             z-index: 10;
             width: 80%;
-            max-width: 900px;
+            max-width: 1200px;
         }
         
         .name-title {
             font-size: 5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 10px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5);
-            letter-spacing: 2px;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            position: relative;
+            font-family: 'Syncopate', 'Orbitron', 'Rajdhani', sans-serif;
+            line-height: 1.1;
+            color: white;
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+            mix-blend-mode: difference;
         }
         
         .red-text {
+            font-weight: 400;
+            letter-spacing: 2px;
+            position: relative;
+            display: block; /* Changed from inline-block to block for linebreak */
             color: var(--accent-red);
-            text-shadow: 0 0 10px rgba(255,51,51,0.3), 0 0 20px rgba(255,51,51,0.2);
+            text-shadow: 0 0 15px rgba(255, 51, 51, 0.6);
+            font-size: 0.9em; /* Slightly smaller than the first name */
+            margin-top: 0.2em; /* Add a small spacing between lines */
         }
         
-        .profession {
-            font-size: 1.5rem;
+        .download-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 1.5rem;
+            background-color: rgba(24, 24, 24, 0.8);
+            color: white;
+            text-decoration: none;
             font-weight: 300;
-            margin-bottom: 2rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            color: var(--light-grey);
-            text-shadow: 0 0 10px rgba(0,0,0,0.8);
-        }
-        
-        .tagline {
-            font-size: 1.8rem;
-            font-weight: 300;
-            font-style: italic;
-            margin-bottom: 2rem;
-            color: var(--light-grey);
-            text-shadow: 0 0 10px rgba(0,0,0,0.8);
-        }
-        
-        /* Audio controls */
-        #audio-controls {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .audio-btn {
-            background-color: rgba(48, 48, 48, 0.7);
-            color: var(--white);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            border: 1px solid var(--accent-red);
             transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+            position: relative;
         }
         
-        .audio-btn:hover {
+        .download-btn:hover {
             background-color: var(--accent-red);
         }
+        
+        /* Add font imports */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500&family=Syncopate:wght@400;700&display=swap');
         
         /* Responsive styles */
         @media (max-width: 1024px) {
             .name-title {
                 font-size: 4rem;
             }
+            
+            .landing-content {
+                left: 10%;
+                transform: translate(0, -50%);
+            }
         }
         
         @media (max-width: 768px) {
             .name-title {
                 font-size: 3rem;
+                transform: perspective(1000px) rotateX(5deg) rotateY(-5deg);
             }
             
-            .profession {
-                font-size: 1.2rem;
+            .landing-content {
+                left: 5%;
+                width: 90%;
             }
             
             header {
@@ -195,12 +175,18 @@
                 font-size: 2.5rem;
             }
             
-            .tagline {
-                font-size: 1.2rem;
+            .landing-content {
+                left: 5%;
+                width: 90%;
             }
             
             .nav-links {
                 gap: 1rem;
+            }
+            
+            .download-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -222,56 +208,20 @@
     </header>
     
     <div class="landing-content">
-        <h1 class="name-title">Debayan <span class="red-text">Mukherjee</span></h1>
-        <p class="tagline">Space to be updated based on next professional journey</p>
+        <h1 class="name-title">Debayan<br><span class="red-text">Mukherjee</span></h1>
+        <div>
+            <a href="resume/Debayan_resume_2025.pdf" class="download-btn" download>Download Resume</a>
+        </div>
     </div>
     
-    <div id="audio-controls">
-        <button id="toggle-audio" class="audio-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-            </svg>
-        </button>
-    </div>
-    
-    <audio id="background-audio" preload="auto" loop muted autoplay>
-        <source src="./audio/landing_page.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
+    <audio id="background-audio" autoplay loop>
+        <source src="audio/landing_page.mp3" type="audio/mp3">
     </audio>
     
     <script>
-        // Add a console message to confirm the script is running
         console.log("3D particle system initializing...");
         
-        // This simple workaround should bypass autoplay restrictions
-        window.onload = function() {
-            // Wait a very short time before playing audio
-            setTimeout(function() {
-                // Create a user interaction event programmatically
-                document.body.click();
-                
-                // Get the audio element and try to play
-                var audio = document.getElementById('background-audio');
-                
-                // Unmute the audio (muted autoplay is allowed by browsers)
-                audio.muted = false;
-                
-                // Play the audio
-                var playPromise = audio.play();
-                
-                // Handle any potential issues
-                if (playPromise !== undefined) {
-                    playPromise.catch(function(error) {
-                        // Auto-play was prevented
-                        console.log("Audio couldn't play automatically. Please interact with the page to enable audio.");
-                    });
-                }
-            }, 100);
-        };
-        
-        // Three.js setup
+        // Three.js variables
         let scene, camera, renderer, pointCloud;
         let mouseX = 0, mouseY = 0;
         let windowHalfX = window.innerWidth / 2;
@@ -279,9 +229,33 @@
         let disintegrationFactor = 0;
         let rotationSpeed = 0.001;
         
-        // Audio variables
-        let audioElement;
-        let audioPlaying = false;
+        // Audio element
+        let audioElement = document.getElementById('background-audio');
+        let audioStarted = false;
+        
+        // Force audio to play on page load
+        window.addEventListener('load', function() {
+            audioElement.play().catch(function(e) {
+                console.log("Audio couldn't autoplay on load, waiting for mouse movement");
+            });
+        });
+        
+        // Try to play on first mouse movement
+        document.addEventListener('mousemove', function playAudioOnMove() {
+            if (!audioStarted) {
+                audioElement.play().then(function() {
+                    audioStarted = true;
+                    console.log("Audio started on mouse movement");
+                }).catch(function(e) {
+                    console.log("Audio still couldn't play on mouse movement");
+                });
+                
+                // Remove the event listener after first attempt
+                if (audioStarted) {
+                    document.removeEventListener('mousemove', playAudioOnMove);
+                }
+            }
+        });
         
         // Higher particle count for better detail
         const pointCount = 250000;
@@ -289,15 +263,18 @@
         // Arrays to store original and target positions for disintegration
         let originalPositions = [];
         let targetPositions = [];
-        let originalColors = [];  // Store original colors
+        let originalColors = [];
         
-        // Define our color palette
+        // Define color palette
         const colorPalette = {
-            red: { r: 1.0, g: 0.2, b: 0.2 },        // Accent red
+            red: { r: 1.0, g: 0.2, b: 0.2 },         // Accent red
             metalGray: { r: 0.19, g: 0.19, b: 0.19 }, // Metal gray #303030
-            white: { r: 0.88, g: 0.88, b: 0.88 },   // White/light gray
-            black: { r: 0.05, g: 0.05, b: 0.05 }    // Black
+            white: { r: 0.88, g: 0.88, b: 0.88 },    // White/light gray
+            black: { r: 0.05, g: 0.05, b: 0.05 }     // Black
         };
+        
+        // Initialize everything
+        init();
         
         function init() {
             // Create scene
@@ -319,15 +296,12 @@
             // Create a particle texture
             const particleTexture = createParticleTexture();
             
-            // Create fashion tech point cloud directly
+            // Create fashion tech point cloud
             createFashionTechPointCloud(particleTexture);
             
             // Add event listeners
             document.addEventListener('mousemove', onDocumentMouseMove);
             window.addEventListener('resize', onWindowResize);
-            
-            // Initialize audio
-            initAudio();
             
             // Start animation loop
             animate();
@@ -429,17 +403,13 @@
                 return startIndex + count;
             }
             
-            // Create fashion elements with our color palette
-            
-            // Create a dress/fashion silhouette (use red for main form)
+            // Create a dress/fashion silhouette (red)
             index = createCluster(0, 0, 0, 150, 350, 50, 20000, fashionColors[0], index);
             
-            // Create a flowing fabric effect (use white)
+            // Create a flowing fabric effect (white)
             index = createCluster(-100, -150, 30, 300, 100, 80, 15000, fashionColors[1], index);
             
-            // Create tech elements (use metal gray)
-            
-            // Circuit board pattern
+            // Create tech elements (metal gray)
             for (let x = -200; x <= 200; x += 20) {
                 for (let y = -200; y <= 200; y += 20) {
                     if (index < pointCount - 100) {
@@ -449,9 +419,7 @@
                 }
             }
             
-            // Creative elements
-            
-            // Create a spiral pattern for creativity (use mix of colors)
+            // Create a spiral pattern (mix of colors)
             const spiralPoints = 20000;
             
             for (let i = 0; i < spiralPoints && index < pointCount; i++) {
@@ -531,7 +499,7 @@
                     z: targetDistance * Math.cos(targetPhi)
                 });
                 
-                // Random color from our palette
+                // Random color
                 const color = fashionColors[Math.floor(Math.random() * fashionColors.length)];
                 colors[i3] = color.r;
                 colors[i3 + 1] = color.g;
@@ -574,53 +542,17 @@
             scene.add(pointCloud);
         }
         
-        function initAudio() {
-            // Get audio element
-            audioElement = document.getElementById('background-audio');
-            audioPlaying = true;
-            
-            // Set up audio toggle button
-            const toggleAudioBtn = document.getElementById('toggle-audio');
-            toggleAudioBtn.addEventListener('click', toggleAudio);
-            updateAudioButtonIcon();
-        }
-        
-        function toggleAudio() {
-            if (audioElement) {
-                if (audioPlaying) {
-                    audioElement.pause();
-                    audioPlaying = false;
-                } else {
-                    audioElement.play();
-                    audioPlaying = true;
-                }
-                
-                updateAudioButtonIcon();
-            }
-        }
-        
-        function updateAudioButtonIcon() {
-            const toggleAudioBtn = document.getElementById('toggle-audio');
-            if (audioPlaying) {
-                toggleAudioBtn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                        <line x1="23" y1="9" x2="17" y2="15"></line>
-                        <line x1="17" y1="9" x2="23" y2="15"></line>
-                    </svg>
-                `;
-            } else {
-                toggleAudioBtn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                    </svg>
-                `;
-            }
-        }
-        
         function onDocumentMouseMove(event) {
+            // Try to start audio on mouse movement if not already started
+            if (audioElement && !audioStarted) {
+                audioElement.play().then(function() {
+                    audioStarted = true;
+                    console.log("Audio started on mouse movement");
+                }).catch(function(e) {
+                    console.log("Audio still couldn't play on mouse movement");
+                });
+            }
+            
             // Calculate mouse position normalized across the whole screen width
             const normalizedX = event.clientX / window.innerWidth;
             
@@ -635,7 +567,7 @@
             updateParticles();
             
             // Update audio volume based on mouse position
-            if (audioElement && audioPlaying) {
+            if (audioElement && audioStarted) {
                 // When particles are more disintegrated (right side), volume is lower
                 // When particles are more cohesive (left side), volume is higher
                 audioElement.volume = 1.0 - (normalizedX * 0.7); // Volume range from 1.0 to 0.3
@@ -660,17 +592,13 @@
                 positions[i3 + 1] = orig.y * (1 - disintegrationFactor) + target.y * disintegrationFactor;
                 positions[i3 + 2] = orig.z * (1 - disintegrationFactor) + target.z * disintegrationFactor;
                 
-                // FIXED COLOR TRANSITION LOGIC
-                // This is the key change to maintain the color palette during transition
+                // Color transition logic
                 const origColor = originalColors[i];
                 
                 if (disintegrationFactor < 0.5) {
                     // Original colors to metal gray transition (0-0.5)
-                    // For the first half of the mouse movement, keep original colors
-                    // Only slowly start to introduce metal gray as we approach 0.5
                     const t = Math.max(0, (disintegrationFactor - 0.3) / 0.2);
                     
-                    // Maintain the original color but slightly transition toward metal gray
                     colors[i3] = origColor.r * (1 - t) + colorPalette.metalGray.r * t;
                     colors[i3 + 1] = origColor.g * (1 - t) + colorPalette.metalGray.g * t;
                     colors[i3 + 2] = origColor.b * (1 - t) + colorPalette.metalGray.b * t;
@@ -678,7 +606,6 @@
                     // Metal gray to black transition (0.5-1.0)
                     const t = (disintegrationFactor - 0.5) / 0.5;
                     
-                    // Transition from metal gray to black
                     colors[i3] = colorPalette.metalGray.r * (1 - t) + colorPalette.black.r * t;
                     colors[i3 + 1] = colorPalette.metalGray.g * (1 - t) + colorPalette.black.g * t;
                     colors[i3 + 2] = colorPalette.metalGray.b * (1 - t) + colorPalette.black.b * t;
@@ -718,9 +645,6 @@
             
             renderer.render(scene, camera);
         }
-        
-        // Initialize the 3D scene
-        init();
     </script>
 </body>
 </html>
