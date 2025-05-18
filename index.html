@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>debsweb | Creative Technologist</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <title>Debayan Mukherjee | Creative Technologist</title>
     <style>
         :root {
             --metal-grey: #303030;
             --light-grey: #e0e0e0;
             --accent-red: #ff3333;
             --silver: #c0c0c0;
+            --black: #000000;
+            --white: #ffffff;
         }
         
         * {
@@ -27,10 +28,12 @@
         }
         
         #canvas-container {
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100vh;
-            overflow: hidden;
+            z-index: -1;
         }
         
         canvas {
@@ -49,55 +52,159 @@
             padding: 2rem;
             z-index: 10;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
         }
         
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: white;
+        .home-icon {
+            font-size: 1.5rem;
+            color: var(--white);
             text-decoration: none;
-            text-transform: lowercase;
+            margin-right: 1rem;
+            transition: color 0.3s ease;
         }
         
-        .logo span {
+        .home-icon:hover {
             color: var(--accent-red);
         }
         
-        .contact {
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-red);
+        }
+        
+        /* Landing Content */
+        .landing-content {
             position: absolute;
-            bottom: 2rem;
-            left: 0;
-            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
             z-index: 10;
+            width: 80%;
+            max-width: 900px;
         }
         
-        .contact p {
-            font-size: 1rem;
+        .name-title {
+            font-size: 5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+        }
+        
+        .red-text {
+            color: var(--accent-red);
+            text-shadow: 0 0 10px rgba(255,51,51,0.3), 0 0 20px rgba(255,51,51,0.2);
+        }
+        
+        .profession {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
             color: var(--light-grey);
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
         }
         
-        #download-btn {
-            position: absolute;
-            bottom: 4rem;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 8px 16px;
-            background-color: var(--accent-red);
-            color: white;
+        .tagline {
+            font-size: 1.8rem;
+            font-weight: 300;
+            font-style: italic;
+            margin-bottom: 2rem;
+            color: var(--light-grey);
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+        }
+        
+        /* Audio controls */
+        #audio-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .audio-btn {
+            background-color: rgba(48, 48, 48, 0.7);
+            color: var(--white);
             border: none;
-            border-radius: 4px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            font-size: 1rem;
-            z-index: 10;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
         
-        #download-btn:hover {
-            background-color: #ff5555;
+        .audio-btn:hover {
+            background-color: var(--accent-red);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 1024px) {
+            .name-title {
+                font-size: 4rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .name-title {
+                font-size: 3rem;
+            }
+            
+            .profession {
+                font-size: 1.2rem;
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .name-title {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <div id="canvas-container">
@@ -105,16 +212,65 @@
     </div>
     
     <header>
-        <a href="#" class="logo">debs<span>web</span></a>
+        <div class="nav-links">
+            <a href="pages/creative-design.html" class="nav-link">Creative Design</a>
+            <a href="pages/visual-experience.html" class="nav-link">Visual Experience</a>
+            <a href="pages/creative-tech.html" class="nav-link">Technology</a>
+            <a href="pages/photography.html" class="nav-link">Photography</a>
+            <a href="pages/about.html" class="nav-link">About</a>
+        </div>
     </header>
     
-    <div class="contact">
-        <p>Reach out to Debayan</p>
+    <div class="landing-content">
+        <h1 class="name-title">Debayan <span class="red-text">Mukherjee</span></h1>
+        <p class="tagline">Space to be updated based on next professional journey</p>
     </div>
     
-    <button id="download-btn">Download Code</button>
+    <div id="audio-controls">
+        <button id="toggle-audio" class="audio-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <audio id="background-audio" preload="auto" loop muted autoplay>
+        <source src="./audio/landing_page.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
     
     <script>
+        // Add a console message to confirm the script is running
+        console.log("3D particle system initializing...");
+        
+        // This simple workaround should bypass autoplay restrictions
+        window.onload = function() {
+            // Wait a very short time before playing audio
+            setTimeout(function() {
+                // Create a user interaction event programmatically
+                document.body.click();
+                
+                // Get the audio element and try to play
+                var audio = document.getElementById('background-audio');
+                
+                // Unmute the audio (muted autoplay is allowed by browsers)
+                audio.muted = false;
+                
+                // Play the audio
+                var playPromise = audio.play();
+                
+                // Handle any potential issues
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(error) {
+                        // Auto-play was prevented
+                        console.log("Audio couldn't play automatically. Please interact with the page to enable audio.");
+                    });
+                }
+            }, 100);
+        };
+        
         // Three.js setup
         let scene, camera, renderer, pointCloud;
         let mouseX = 0, mouseY = 0;
@@ -122,6 +278,11 @@
         let windowHalfY = window.innerHeight / 2;
         let disintegrationFactor = 0;
         let rotationSpeed = 0.001;
+        
+        // Audio variables
+        let audioElement;
+        let audioPlaying = false;
+        
         // Higher particle count for better detail
         const pointCount = 250000;
         
@@ -158,15 +319,15 @@
             // Create a particle texture
             const particleTexture = createParticleTexture();
             
-            // Try to load the portrait image
-            loadPortraitImage(particleTexture);
+            // Create fashion tech point cloud directly
+            createFashionTechPointCloud(particleTexture);
             
             // Add event listeners
             document.addEventListener('mousemove', onDocumentMouseMove);
             window.addEventListener('resize', onWindowResize);
             
-            // Add download functionality
-            document.getElementById('download-btn').addEventListener('click', downloadCode);
+            // Initialize audio
+            initAudio();
             
             // Start animation loop
             animate();
@@ -198,276 +359,6 @@
             texture.needsUpdate = true;
             
             return texture;
-        }
-        
-        function loadPortraitImage(texture) {
-            const img = new Image();
-            
-            img.onload = function() {
-                createParticlesFromImage(img, texture);
-            };
-            
-            img.onerror = function() {
-                console.error("Failed to load image. Creating fashion tech point cloud...");
-                createFashionTechPointCloud(texture);
-            };
-            
-            // Set the local path to the image
-            img.src = "C:\\Users\\dbmkr\\Downloads\\website_potrait.png";
-            
-            // Set a timeout in case the image takes too long to load
-            setTimeout(() => {
-                if (!pointCloud) {
-                    console.log("Image load timeout. Creating fashion tech point cloud...");
-                    createFashionTechPointCloud(texture);
-                }
-            }, 3000);
-        }
-        
-        function createParticlesFromImage(image, texture) {
-            // Create a canvas to analyze the image
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            
-            // Set canvas dimensions to match image
-            canvas.width = image.width;
-            canvas.height = image.height;
-            
-            // Draw image onto canvas for pixel manipulation
-            context.drawImage(image, 0, 0);
-            
-            // Get image data
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-            
-            // Create arrays for the particle system
-            const positions = new Float32Array(pointCount * 3);
-            const colors = new Float32Array(pointCount * 3);
-            const sizes = new Float32Array(pointCount);
-            
-            // Collect points with varying density based on image features
-            const potentialPoints = [];
-            
-            // Sample the image
-            const samplingStep = 1; // Adjust for more or fewer points
-            
-            for (let y = 0; y < canvas.height; y += samplingStep) {
-                for (let x = 0; x < canvas.width; x += samplingStep) {
-                    const i = (y * canvas.width + x) * 4;
-                    
-                    // Get RGBA values
-                    const r = data[i] / 255;
-                    const g = data[i + 1] / 255;
-                    const b = data[i + 2] / 255;
-                    const a = data[i + 3] / 255;
-                    
-                    // Skip transparent or very light/white pixels (background)
-                    if (a < 0.5 || (r > 0.95 && g > 0.95 && b > 0.95)) {
-                        continue;
-                    }
-                    
-                    // Calculate brightness
-                    const brightness = (r + g + b) / 3;
-                    
-                    // Determine sampling probability based on features
-                    let probability = 0.1; // Base probability
-                    
-                    // Increase probability for skin tones
-                    if (r > 0.5 && g > 0.3 && b > 0.2 && r > g && g > b) {
-                        probability = 0.6;
-                    }
-                    
-                    // Increase probability for hair
-                    if (brightness < 0.3) {
-                        probability = 0.7;
-                    }
-                    
-                    // Increase probability for the brown flower
-                    if (r > 0.4 && r < 0.7 && g > 0.2 && g < 0.4 && b > 0.1 && b < 0.3) {
-                        probability = 0.8;
-                    }
-                    
-                    // Increase probability for lips
-                    if (r > 0.6 && g > 0.3 && g < 0.5 && b > 0.3 && b < 0.5) {
-                        probability = 0.7;
-                    }
-                    
-                    // Increase probability for eyes
-                    if (brightness < 0.3 && x > canvas.width * 0.3 && x < canvas.width * 0.7 && y > canvas.height * 0.3 && y < canvas.height * 0.5) {
-                        probability = 0.9;
-                    }
-                    
-                    if (Math.random() < probability) {
-                        potentialPoints.push({
-                            x: x,
-                            y: y,
-                            r: r,
-                            g: g,
-                            b: b,
-                            brightness: brightness
-                        });
-                    }
-                }
-            }
-            
-            // Shuffle points and select subset if we have too many
-            const shuffledPoints = potentialPoints.sort(() => 0.5 - Math.random());
-            const selectedPoints = shuffledPoints.slice(0, pointCount);
-            
-            // Create particles from the selected points
-            for (let i = 0; i < selectedPoints.length && i < pointCount; i++) {
-                const point = selectedPoints[i];
-                const i3 = i * 3;
-                
-                // Calculate normalized position (-0.5 to 0.5)
-                const normalizedX = (point.x / canvas.width - 0.5);
-                const normalizedY = -(point.y / canvas.height - 0.5); // Flip Y axis
-                
-                // Scale to scene size
-                const xPos = normalizedX * 800;
-                const yPos = normalizedY * 800;
-                
-                // Use brightness for z-position to create depth
-                // Darker pixels are pushed forward
-                const zPos = (1 - point.brightness) * 150;
-                
-                // Set position
-                positions[i3] = xPos;
-                positions[i3 + 1] = yPos;
-                positions[i3 + 2] = zPos;
-                
-                // Store original position for animation
-                originalPositions.push({
-                    x: xPos,
-                    y: yPos,
-                    z: zPos
-                });
-                
-                // Create target position for disintegration
-                const distance = 800 + Math.random() * 1000;
-                const phi = Math.random() * Math.PI * 2;
-                const theta = Math.random() * Math.PI;
-                
-                targetPositions.push({
-                    x: distance * Math.sin(theta) * Math.cos(phi),
-                    y: distance * Math.sin(theta) * Math.sin(phi),
-                    z: distance * Math.cos(theta)
-                });
-                
-                // Map the colors to our palette
-                let mappedColor;
-                const brightness = point.brightness;
-                
-                // Choose color based on brightness and RGB values
-                if (point.r > 0.5 && point.r > point.g * 1.2 && point.r > point.b * 1.2) {
-                    // Reddish tones from the image become accent red
-                    mappedColor = colorPalette.red;
-                } else if (brightness < 0.3) {
-                    // Dark areas become metal gray
-                    mappedColor = colorPalette.metalGray;
-                } else if (brightness > 0.7) {
-                    // Bright areas become white
-                    mappedColor = colorPalette.white;
-                } else {
-                    // Medium brightness becomes a gradient between metal gray and white
-                    const t = (brightness - 0.3) / 0.4; // Normalize between 0.3-0.7
-                    mappedColor = {
-                        r: colorPalette.metalGray.r * (1 - t) + colorPalette.white.r * t,
-                        g: colorPalette.metalGray.g * (1 - t) + colorPalette.white.g * t,
-                        b: colorPalette.metalGray.b * (1 - t) + colorPalette.white.b * t
-                    };
-                }
-                
-                // Set color based on original image pixel mapped to our palette
-                colors[i3] = mappedColor.r;
-                colors[i3 + 1] = mappedColor.g;
-                colors[i3 + 2] = mappedColor.b;
-                
-                // Store original color for animation
-                originalColors.push({
-                    r: mappedColor.r,
-                    g: mappedColor.g,
-                    b: mappedColor.b
-                });
-                
-                // Vary particle size based on brightness
-                // Darker pixels get slightly larger particles
-                sizes[i] = 2.0 + (1.0 - point.brightness) * 3.0;
-            }
-            
-            // Fill remaining particles if needed
-            for (let i = selectedPoints.length; i < pointCount; i++) {
-                const i3 = i * 3;
-                
-                // Random position in 3D space, but keep it within frame boundary
-                const xPos = (Math.random() - 0.5) * 1000;
-                const yPos = (Math.random() - 0.5) * 1000;
-                const zPos = Math.random() * 500 - 600; // Behind the portrait
-                
-                positions[i3] = xPos;
-                positions[i3 + 1] = yPos;
-                positions[i3 + 2] = zPos;
-                
-                originalPositions.push({
-                    x: xPos,
-                    y: yPos,
-                    z: zPos
-                });
-                
-                // Target position for disintegration
-                const distance = 1200 + Math.random() * 1000;
-                const phi = Math.random() * Math.PI * 2;
-                const theta = Math.random() * Math.PI;
-                
-                targetPositions.push({
-                    x: distance * Math.sin(theta) * Math.cos(phi),
-                    y: distance * Math.sin(theta) * Math.sin(phi),
-                    z: distance * Math.cos(theta)
-                });
-                
-                // Dark background color - metal gray or black
-                const useMetalGray = Math.random() > 0.5;
-                const mappedColor = useMetalGray ? colorPalette.metalGray : colorPalette.black;
-                
-                // Store original color
-                originalColors.push({
-                    r: mappedColor.r,
-                    g: mappedColor.g,
-                    b: mappedColor.b
-                });
-                
-                // Set color
-                colors[i3] = mappedColor.r;
-                colors[i3 + 1] = mappedColor.g;
-                colors[i3 + 2] = mappedColor.b;
-                
-                // Smaller size for background particles
-                sizes[i] = 0.8 + Math.random() * 1.2;
-            }
-            
-            // Create geometry
-            const geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-            
-            // Create material with our custom texture
-            const material = new THREE.PointsMaterial({
-                size: 3,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.9,
-                map: texture,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false,
-                sizeAttenuation: true
-            });
-            
-            // Create point cloud
-            pointCloud = new THREE.Points(geometry, material);
-            
-            // Add to scene
-            scene.add(pointCloud);
         }
         
         function createFashionTechPointCloud(texture) {
@@ -683,6 +574,52 @@
             scene.add(pointCloud);
         }
         
+        function initAudio() {
+            // Get audio element
+            audioElement = document.getElementById('background-audio');
+            audioPlaying = true;
+            
+            // Set up audio toggle button
+            const toggleAudioBtn = document.getElementById('toggle-audio');
+            toggleAudioBtn.addEventListener('click', toggleAudio);
+            updateAudioButtonIcon();
+        }
+        
+        function toggleAudio() {
+            if (audioElement) {
+                if (audioPlaying) {
+                    audioElement.pause();
+                    audioPlaying = false;
+                } else {
+                    audioElement.play();
+                    audioPlaying = true;
+                }
+                
+                updateAudioButtonIcon();
+            }
+        }
+        
+        function updateAudioButtonIcon() {
+            const toggleAudioBtn = document.getElementById('toggle-audio');
+            if (audioPlaying) {
+                toggleAudioBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                `;
+            } else {
+                toggleAudioBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                `;
+            }
+        }
+        
         function onDocumentMouseMove(event) {
             // Calculate mouse position normalized across the whole screen width
             const normalizedX = event.clientX / window.innerWidth;
@@ -696,6 +633,13 @@
             
             // Update particles
             updateParticles();
+            
+            // Update audio volume based on mouse position
+            if (audioElement && audioPlaying) {
+                // When particles are more disintegrated (right side), volume is lower
+                // When particles are more cohesive (left side), volume is higher
+                audioElement.volume = 1.0 - (normalizedX * 0.7); // Volume range from 1.0 to 0.3
+            }
         }
         
         function updateParticles() {
@@ -744,6 +688,9 @@
             // Mark attributes as needing update
             pointCloud.geometry.attributes.position.needsUpdate = true;
             pointCloud.geometry.attributes.color.needsUpdate = true;
+            
+            // Update rotation speed based on disintegration factor
+            rotationSpeed = 0.001 + (1 - disintegrationFactor) * 0.002;
         }
         
         function onWindowResize() {
@@ -770,30 +717,6 @@
             camera.lookAt(scene.position);
             
             renderer.render(scene, camera);
-        }
-        
-        function downloadCode() {
-            // Get the HTML content
-            const htmlContent = document.documentElement.outerHTML;
-            
-            // Create a blob with the content
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            
-            // Create a download link
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'debsweb-creative-tech.html';
-            
-            // Trigger the download
-            document.body.appendChild(a);
-            a.click();
-            
-            // Clean up
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
         }
         
         // Initialize the 3D scene
