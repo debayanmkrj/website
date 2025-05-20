@@ -49,7 +49,7 @@
             top: 2rem;
             left: 2rem;
             padding: 0.5rem 1rem;
-            background-color: rgba(48, 48, 48, 0.7); /* 70% opacity */
+            background-color: rgba(48, 48, 48, 0.7);
             color: var(--white);
             text-decoration: none;
             border-radius: 4px;
@@ -61,7 +61,7 @@
             margin-bottom: 2rem;
             display: inline-block;
             position: relative;
-            margin-top: 0; /* Reset top margin */
+            margin-top: 0;
         }
         
         .section-title::after {
@@ -99,13 +99,12 @@
             width: 100%;
             height: 100%;
             position: relative;
-            background: rgba(173, 172, 172, 0.4); /* 70% opacity */
+            background: rgba(173, 172, 172, 0.4);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             mix-blend-mode: difference;
-            
         }
         
         .carousel {
@@ -120,11 +119,14 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: rgb(34, 34, 34); /* 70% opacity */
+            background: rgb(34, 34, 34);
+            opacity: 0.95;
+            display: flex;
             border-radius: 20px;
             overflow: hidden;
             transform-style: preserve-3d;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
         }
         
         .carousel-item:before {
@@ -134,7 +136,7 @@
             left: -30px;
             width: 30px;
             height: 100%;
-            background: rgba(17, 17, 17, 0.7); /* 70% opacity */
+            background: rgba(17, 17, 17, 0.7);
             transform: rotateY(-90deg);
             transform-origin: right;
         }
@@ -146,7 +148,7 @@
             right: -30px;
             width: 30px;
             height: 100%;
-            background: rgba(17, 17, 17, 0.7); /* 70% opacity */
+            background: rgba(17, 17, 17, 0.7);
             transform: rotateY(90deg);
             transform-origin: left;
         }
@@ -156,7 +158,7 @@
             bottom: 0;
             width: 100%;
             padding: 1.5rem;
-            background: rgba(0, 0, 0, 0.7); /* Already at 70% opacity */
+            background: rgba(0, 0, 0, 0.7);
         }
         
         .project-title {
@@ -172,15 +174,19 @@
             margin-bottom: 1rem;
         }
         
-        .explore-btn {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            background: var(--accent-red);
-            color: white;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            border-radius: 4px;
+        .expand-icon {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 15px;
+            height: 15px;
+            color: var(--accent-red);
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        
+        .carousel-item:hover .expand-icon {
+            opacity: 1;
         }
         
         .carousel-controls {
@@ -208,28 +214,27 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
             justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s;
+            align-items: flex-start;
+            z-index: 9999;
+            overflow-y: auto;
+            padding: 2rem 0;
         }
         
         .project-overlay.active {
-            opacity: 1;
-            visibility: visible;
+            display: flex;
         }
         
         .project-detail {
             width: 90%;
-            max-width: 600px;
-            background: rgba(48, 48, 48, 0.7); /* 70% opacity */
+            max-width: 800px;
+            background: rgba(48, 48, 48, 0.8);
             border-radius: 10px;
             padding: 2rem;
             position: relative;
+            margin: 2rem auto;
         }
         
         .close-btn {
@@ -242,6 +247,65 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
+        
+        /* Principle content styles */
+        .principle-content {
+            max-height: 70vh;
+            overflow-y: auto;
+            margin: 1.5rem 0;
+            padding-right: 1rem;
+        }
+        
+        .principle-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .principle-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+        
+        .principle-section h4 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.5rem;
+            color: var(--accent-red);
+        }
+        
+        .principle-section p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--light-grey);
+            margin-bottom: 1rem;
+        }
+        
+        /* Image gallery styles */
+        .image-gallery {
+            margin-top: 2rem;
+        }
+        
+        .image-gallery h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -250,12 +314,67 @@
     <div class="page-content">
         <a href="../index.html" class="back-btn">← Back</a>
         <h2 class="section-title">Creative Design <span class="red-text">Strategies</span></h2>
-        <p class="section-subtitle">Crafting innovative design strategies that bridge aesthetics with functionality, elevating brands through thoughtful design solutions and strategic thinking.</p>
+        <p class="section-subtitle">Crafting innovative design strategies that bridge aesthetics with functionality, elevating creative strategies through thoughtful design solutions and design thinking.</p>
         
         <div class="carousel-container">
             <div class="carousel-circle">
                 <div class="carousel" id="carousel">
-                    <!-- Carousel items added by JavaScript -->
+                    <!-- MULTIPLE ITEMS WITH EXPAND ICONS -->
+                    <!-- Item 1 -->
+                    <div class="carousel-item" style="transform: rotateY(0deg) translateZ(150px)" onclick="document.getElementById('overlay-1').classList.add('active')">
+                        <div class="carousel-content">
+                            <h3 class="project-title">The core principle</h3>
+                            <p class="project-description">A comprehensive creative strategy keeping customers at the center of the loop. The framework explores all avenues that impacts an user's visual experience.</p>
+                            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <polyline points="9 21 3 21 3 15"></polyline>
+                                <line x1="21" y1="3" x2="14" y2="10"></line>
+                                <line x1="3" y1="21" x2="10" y2="14"></line>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 2 -->
+                    <div class="carousel-item" style="transform: rotateY(90deg) translateZ(150px)" onclick="document.getElementById('overlay-2').classList.add('active')">
+                        <div class="carousel-content">
+                            <h3 class="project-title">User-Centered Design Research</h3>
+                            <p class="project-description">Deep dive into user behaviors and needs to inform design decisions and strategy development.</p>
+                            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <polyline points="9 21 3 21 3 15"></polyline>
+                                <line x1="21" y1="3" x2="14" y2="10"></line>
+                                <line x1="3" y1="21" x2="10" y2="14"></line>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 3 -->
+                    <div class="carousel-item" style="transform: rotateY(180deg) translateZ(150px)" onclick="document.getElementById('overlay-3').classList.add('active')">
+                        <div class="carousel-content">
+                            <h3 class="project-title">Design System Architecture</h3>
+                            <p class="project-description">Creation of scalable design systems that ensure consistency across digital platforms.</p>
+                            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <polyline points="9 21 3 21 3 15"></polyline>
+                                <line x1="21" y1="3" x2="14" y2="10"></line>
+                                <line x1="3" y1="21" x2="10" y2="14"></line>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 4 -->
+                    <div class="carousel-item" style="transform: rotateY(270deg) translateZ(150px)" onclick="document.getElementById('overlay-4').classList.add('active')">
+                        <div class="carousel-content">
+                            <h3 class="project-title">Strategic Campaign Planning</h3>
+                            <p class="project-description">Comprehensive visual campaign strategy that aligns with business objectives and audience needs.</p>
+                            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <polyline points="9 21 3 21 3 15"></polyline>
+                                <line x1="21" y1="3" x2="14" y2="10"></line>
+                                <line x1="3" y1="21" x2="10" y2="14"></line>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div class="carousel-controls">
                     <button class="carousel-btn prev-btn">←</button>
@@ -268,16 +387,48 @@
     <!-- Project Overlays -->
     <div class="project-overlay" id="overlay-1">
         <div class="project-detail">
-            <button class="close-btn">&times;</button>
-            <h2>Strategic Brand Identity</h2>
-            <div style="height: 200px; background: rgba(34, 34, 34, 0.7); margin: 1rem 0;"></div>
-            <p>A comprehensive brand identity system developed through strategic design thinking and market analysis.</p>
+            <button class="close-btn" onclick="document.getElementById('overlay-1').classList.remove('active')">&times;</button>
+            <h2>The core principle</h2>
+            <div class="principle-content">
+                <div class="principle-section">
+                    <h3>WHAT YOU <span class="red-text">SEE</span> IS WHAT YOU <span class="red-text">CHOOSE</span></h3>
+                    <p>While design psychology cannot be an exact science due to differences in culture, taste, and context, numerous studies have shown that design elements have a significant influence on how we perceive and react to our environment, particularly when making a purchase. Customers often make quick judgments about a product in only 90 seconds, with 90% of them basing their perception on visual relevance. Brands are now catering to this need by providing customers with the ability to customize and visualize products before purchase, such as Nike's customizing platform that allows customers to select shoe design elements like graphics, colors, and shape.</p>
+                </div>
+                
+                <div class="principle-section">
+                    <h3 class="red-text">5</h3>
+                    <h3>W's</h3>
+                    
+                    <h4>WHO?</h4>
+                    <p>Consumers are at the center of the circle of consumerism.</p>
+                    
+                    <h4>WHAT?</h4>
+                    <p>Visual context is a primary driver for consumers, and with the explosion of various means to appeal to customers, content creators must understand what makes a product appealing. Virtual retailers are constantly trying to catch up or adopt trends, which may quickly become fads and raise questions about adaptability.</p>
+                    
+                    <h4>WHEN?</h4>
+                    <p>The early 21st century marked the moment when the virtual space became relevant to us, coinciding with the widespread adoption of the internet. Developing countries like India now have affordable access to fast internet.</p>
+                    
+                    <h4>WHERE?</h4>
+                    <p>The virtual space enabled by the internet has become the platform for the biggest marketplaces, where consumers have unrestricted access to curated, individualistic, and relatable content. This provides a pathway for products to be showcased, influenced, and adopted.</p>
+                    
+                    <h4>WHY?</h4>
+                    <p>With the pivotal change in how humans adopted virtual space post-COVID, questions are being raised about the relevance of visual experiences created in 2019. Does it still have the same impact, and what needs to change? How can we adapt to produce content that resonates with consumers?</p>
+                </div>
+                
+                <div class="image-gallery">
+                    <h3>Framework Development</h3>
+                    <div class="gallery-container" id="gallery-container-1">
+                        <!-- Images will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            <p>A comprehensive creative strategy keeping customers at the center of the loop. The framework explores all avenues that impacts an user's visual experience.</p>
         </div>
     </div>
     
     <div class="project-overlay" id="overlay-2">
         <div class="project-detail">
-            <button class="close-btn">&times;</button>
+            <button class="close-btn" onclick="document.getElementById('overlay-2').classList.remove('active')">&times;</button>
             <h2>User-Centered Design Research</h2>
             <div style="height: 200px; background: rgba(34, 34, 34, 0.7); margin: 1rem 0;"></div>
             <p>Deep dive into user behaviors and needs to inform design decisions and strategy development.</p>
@@ -286,7 +437,7 @@
     
     <div class="project-overlay" id="overlay-3">
         <div class="project-detail">
-            <button class="close-btn">&times;</button>
+            <button class="close-btn" onclick="document.getElementById('overlay-3').classList.remove('active')">&times;</button>
             <h2>Design System Architecture</h2>
             <div style="height: 200px; background: rgba(34, 34, 34, 0.7); margin: 1rem 0;"></div>
             <p>Creation of scalable design systems that ensure consistency across digital platforms.</p>
@@ -295,7 +446,7 @@
     
     <div class="project-overlay" id="overlay-4">
         <div class="project-detail">
-            <button class="close-btn">&times;</button>
+            <button class="close-btn" onclick="document.getElementById('overlay-4').classList.remove('active')">&times;</button>
             <h2>Strategic Campaign Planning</h2>
             <div style="height: 200px; background: rgba(34, 34, 34, 0.7); margin: 1rem 0;"></div>
             <p>Comprehensive visual campaign strategy that aligns with business objectives and audience needs.</p>
@@ -306,93 +457,62 @@
     <script src="../js/particles-monochrome.js"></script>
     
     <script>
+        // Load gallery images - called when overlay is shown
+        function loadGalleryImages() {
+            const container = document.getElementById('gallery-container-1');
+            if (!container) return;
+            
+            // Clear existing content
+            container.innerHTML = '';
+            
+            // Add 11 images
+            for (let i = 1; i <= 11; i++) {
+                const img = document.createElement('img');
+                img.src = `../images/Creative Design/The_core_principle/${i}.jpg`;
+                img.alt = `Framework image ${i}`;
+                img.className = 'gallery-image';
+                container.appendChild(img);
+            }
+        }
+        
+        // Load images when page loads or when overlay becomes visible
         document.addEventListener('DOMContentLoaded', function() {
-            // Project data
-            const projects = [
-                {
-                    title: "Strategic Brand Identity",
-                    description: "A comprehensive brand identity system developed through strategic design thinking and market analysis.",
-                    overlayId: "overlay-1"
-                },
-                {
-                    title: "User-Centered Design Research",
-                    description: "Deep dive into user behaviors and needs to inform design decisions and strategy development.",
-                    overlayId: "overlay-2"
-                },
-                {
-                    title: "Design System Architecture",
-                    description: "Creation of scalable design systems that ensure consistency across digital platforms.",
-                    overlayId: "overlay-3"
-                },
-                {
-                    title: "Strategic Campaign Planning",
-                    description: "Comprehensive visual campaign strategy that aligns with business objectives and audience needs.",
-                    overlayId: "overlay-4"
-                }
-            ];
+            // Preload gallery images
+            loadGalleryImages();
             
-            // Create carousel items
-            const carousel = document.getElementById('carousel');
-            projects.forEach((project, index) => {
-                const angle = index * 90; // 360 / 4 items
-                
-                const item = document.createElement('div');
-                item.className = 'carousel-item';
-                item.style.transform = `rotateY(${angle}deg) translateZ(150px)`;
-                
-                item.innerHTML = `
-                    <div class="carousel-content">
-                        <h3 class="project-title">${project.title}</h3>
-                        <p class="project-description">${project.description}</p>
-                        <a href="#" class="explore-btn" data-overlay="${project.overlayId}">Explore →</a>
-                    </div>
-                `;
-                
-                carousel.appendChild(item);
-            });
-            
-            // Carousel rotation
+            // Set up carousel rotation
             const prevBtn = document.querySelector('.prev-btn');
             const nextBtn = document.querySelector('.next-btn');
             let currentAngle = 0;
             
-            function rotateCarousel(angle) {
-                currentAngle += angle;
-                carousel.style.transform = `rotateY(${currentAngle}deg)`;
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function() {
+                    currentAngle += 90;
+                    document.getElementById('carousel').style.transform = `rotateY(${currentAngle}deg)`;
+                });
             }
             
-            prevBtn.addEventListener('click', () => rotateCarousel(90));
-            nextBtn.addEventListener('click', () => rotateCarousel(-90));
-            
-            // Project overlays
-            const exploreBtns = document.querySelectorAll('.explore-btn');
-            const overlays = document.querySelectorAll('.project-overlay');
-            const closeBtns = document.querySelectorAll('.close-btn');
-            
-            exploreBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const overlayId = this.getAttribute('data-overlay');
-                    document.getElementById(overlayId).classList.add('active');
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function() {
+                    currentAngle -= 90;
+                    document.getElementById('carousel').style.transform = `rotateY(${currentAngle}deg)`;
                 });
-            });
+            }
             
-            closeBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.closest('.project-overlay').classList.remove('active');
+            // Monitor overlay visibility for loading images
+            const overlay1 = document.getElementById('overlay-1');
+            if (overlay1) {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.attributeName === 'class' && 
+                            overlay1.classList.contains('active')) {
+                            loadGalleryImages();
+                        }
+                    });
                 });
-            });
-            
-            overlays.forEach(overlay => {
-                overlay.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        this.classList.remove('active');
-                    }
-                });
-            });
-            
-            // Auto-rotate
-            setInterval(() => rotateCarousel(-90), 5000);
+                
+                observer.observe(overlay1, { attributes: true });
+            }
         });
     </script>
 </body>
