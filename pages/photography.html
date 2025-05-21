@@ -399,9 +399,8 @@
                 const item = document.createElement('div');
                 item.className = `carousel-item ${position}`;
                 
-                // Format the image filename
-                let indexStr = index.toString().padStart(3, '0');
-                const filename = `Portfolio_debayan.${indexStr}`;
+                // Simply use the index as the filename with .jpg extension
+                const filename = index; // No need for padding or special formatting
                 
                 // Add content
                 item.innerHTML = `
@@ -418,7 +417,7 @@
                 item.addEventListener('click', function() {
                     if (position === 'center') {
                         // Open overlay for center item
-                        overlayImage.src = `../images/photography/${filename}.jpg`;
+                        overlayImage.src = `../images/Photography/${filename}.jpg`;
                         imageInfo.textContent = `Image ${index} of ${totalImages}`;
                         imageOverlay.classList.add('active');
                     } else {
