@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photography | Debayan Mukherjee</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --metal-grey: #303030;
             --light-grey: #e0e0e0;
             --accent-red: #ff3333;
-            --silver: #c0c0c0;
             --black: #000000;
             --white: #ffffff;
         }
@@ -18,7 +20,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Noto Sans', Arial, sans-serif;
+        }
+        
+        /* Apply Space Mono to all titles */
+        .section-title,
+        .counter-text,
+        .image-overlay h2 {
+            font-family: 'Space Mono', monospace;
         }
         
         body {
@@ -42,6 +51,7 @@
             z-index: 1;
             max-width: 1200px;
             margin: 0 auto;
+            min-height: 100vh;
         }
         
         .back-btn {
@@ -53,26 +63,25 @@
             color: var(--white);
             text-decoration: none;
             border-radius: 4px;
-            border: 1px solid var(--metal-grey);
             z-index: 100;
-            backdrop-filter: blur(5px);
-        }
-        
-        .back-btn:hover {
-            background-color: var(--accent-red);
-            border-color: var(--accent-red);
         }
         
         .section-title {
-            font-size: 3rem;
+            font-size: 4rem;
             margin-bottom: 2rem;
             display: inline-block;
             position: relative;
+            margin-top: 0;
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
         
         .section-title::after {
             content: '';
             position: absolute;
+            font-family: 'Noto Sans', Arial, sans-serif;
             bottom: -10px;
             left: 0;
             width: 60px;
@@ -85,81 +94,234 @@
         }
         
         .section-subtitle {
-            font-size: 1.2rem;
+            font-size: 1rem;
             max-width: 700px;
-            margin-bottom: 3rem;
-            color: var(--light-grey);
+            color: var(--accent-red);
             line-height: 1.6;
+            margin-bottom: 2rem;
         }
         
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .project-card {
-            background-color: rgba(48, 48, 48, 0.5);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .project-image {
-            width: 100%;
-            height: 200px;
-            background-color: var(--metal-grey);
+        /* Cubical Carousel with Overlap */
+        .carousel-container {
+            width: 90%;
+            max-width: 1200px;
+            height: 400px;
+            margin: 4rem auto;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: visible;
+        }
+        
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .carousel-item {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(34, 34, 34, 0.8);
+            border-radius: 10px;
+            overflow: visible;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-origin: center;
+        }
+        
+        .carousel-item.left {
+            transform: translateX(-350px) scale(0.85);
+            opacity: 0.7;
+            z-index: 1;
+        }
+        
+        .carousel-item.center {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+            z-index: 3;
+        }
+        
+        .carousel-item.right {
+            transform: translateX(350px) scale(0.85);
+            opacity: 0.7;
+            z-index: 1;
+        }
+        
+        /* Animation classes */
+        .carousel-item.transition-left {
+            animation: moveToLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+        
+        .carousel-item.transition-center-from-right {
+            animation: moveToCenterFromRight 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+        
+        .carousel-item.transition-center-from-left {
+            animation: moveToCenterFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+        
+        .carousel-item.transition-right {
+            animation: moveToRight 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+        
+        @keyframes moveToLeft {
+            from {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+                z-index: 3;
+            }
+            to {
+                transform: translateX(-350px) scale(0.85);
+                opacity: 0.7;
+                z-index: 1;
+            }
+        }
+        
+        @keyframes moveToCenterFromRight {
+            from {
+                transform: translateX(350px) scale(0.85);
+                opacity: 0.7;
+                z-index: 1;
+            }
+            to {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+                z-index: 3;
+            }
+        }
+        
+        @keyframes moveToCenterFromLeft {
+            from {
+                transform: translateX(-350px) scale(0.85);
+                opacity: 0.7;
+                z-index: 1;
+            }
+            to {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+                z-index: 3;
+            }
+        }
+        
+        @keyframes moveToRight {
+            from {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+                z-index: 3;
+            }
+            to {
+                transform: translateX(350px) scale(0.85);
+                opacity: 0.7;
+                z-index: 1;
+            }
+        }
+        
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        .expand-icon {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 20px;
+            height: 20px;
+            color: var(--accent-red);
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .carousel-item:hover .expand-icon {
+            opacity: 1;
+        }
+        
+        .carousel-controls {
+            position: absolute;
+            bottom: -80px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .carousel-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0 15px;
+        }
+        
+        .counter-text {
+            color: var(--accent-red);
+            font-size: 1rem;
+            margin: 0 10px;
+            letter-spacing: 1px;
+            font-family: 'Space Mono', monospace;
+        }
+        
+        /* Image Overlay */
+        .image-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .image-overlay.active {
+            display: flex;
+        }
+        
+        .overlay-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+        }
+        
+        .overlay-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        .image-info {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
             color: var(--light-grey);
-            font-size: 0.8rem;
-        }
-        
-        .project-info {
-            padding: 1.5rem;
-        }
-        
-        .project-title {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .project-description {
-            font-size: 0.9rem;
-            color: var(--light-grey);
-            line-height: 1.5;
-        }
-        
-        /* Responsive styles */
-        @media (max-width: 1024px) {
-            .section-title {
-                font-size: 2.5rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 2rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .section-title {
-                font-size: 1.8rem;
-            }
-            
-            .project-grid {
-                grid-template-columns: 1fr;
-            }
+            font-family: 'Space Mono', monospace;
         }
     </style>
 </head>
@@ -168,53 +330,199 @@
     
     <div class="page-content">
         <a href="../index.html" class="back-btn">← Back</a>
-        <h2 class="section-title"><span class="red-text">Photography</span></h2>
+        <h2 class="section-title"><span>Photography</span></h2>
         <p class="section-subtitle">Capturing compelling visual narratives through the lens, specializing in fashion photography that combines artistic vision with technical expertise to create stunning imagery.</p>
         
-        <div class="project-grid">
-            <!-- Project Card 1 -->
-            <div class="project-card">
-                <div class="project-image">Project Image Placeholder</div>
-                <div class="project-info">
-                    <h3 class="project-title">Fashion Editorial Series</h3>
-                    <p class="project-description">Conceptual fashion photography series exploring contemporary themes and aesthetic directions.</p>
-                </div>
+        <div class="carousel-container">
+            <div class="carousel" id="carousel">
+                <!-- Carousel items will be added by JavaScript -->
             </div>
-            
-            <!-- Project Card 2 -->
-            <div class="project-card">
-                <div class="project-image">Project Image Placeholder</div>
-                <div class="project-info">
-                    <h3 class="project-title">Commercial Campaign</h3>
-                    <p class="project-description">Brand campaign photography showcasing products through compelling visual storytelling and art direction.</p>
-                </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn prev-btn">←</button>
+                <span class="counter-text" id="counter">1 of 32</span>
+                <button class="carousel-btn next-btn">→</button>
             </div>
-            
-            <!-- Project Card 3 -->
-            <div class="project-card">
-                <div class="project-image">Project Image Placeholder</div>
-                <div class="project-info">
-                    <h3 class="project-title">Conceptual Portrait Series</h3>
-                    <p class="project-description">Exploration of identity and expression through carefully crafted portraiture and lighting techniques.</p>
-                </div>
-            </div>
-            
-            <!-- Project Card 4 -->
-            <div class="project-card">
-                <div class="project-image">Project Image Placeholder</div>
-                <div class="project-info">
-                    <h3 class="project-title">Experimental Techniques</h3>
-                    <p class="project-description">Pushing the boundaries of traditional photography through experimental processes and digital manipulation.</p>
-                </div>
-            </div>
+        </div>
+    </div>
+    
+    <!-- Image Overlay for full-size view -->
+    <div class="image-overlay" id="image-overlay">
+        <div class="overlay-content">
+            <button class="close-btn" onclick="document.getElementById('image-overlay').classList.remove('active')">&times;</button>
+            <img src="" alt="Full size image" class="overlay-image" id="overlay-image">
+            <div class="image-info" id="image-info"></div>
         </div>
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="../js/particles-monochrome.js"></script>
-</body>
-</html>
-    <script src="../js/particles.js"></script>
-    <script src="../js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const totalImages = 32;
+            const carousel = document.getElementById('carousel');
+            const counterText = document.getElementById('counter');
+            const imageOverlay = document.getElementById('image-overlay');
+            const overlayImage = document.getElementById('overlay-image');
+            const imageInfo = document.getElementById('image-info');
+            
+            // Current central image index
+            let currentIndex = 1;
+            
+            // Function to setup carousel with 3 visible items
+            function setupCarousel() {
+                // Clear existing items
+                carousel.innerHTML = '';
+                
+                // Calculate indices for left, center, right images
+                let leftIndex = currentIndex - 1;
+                if (leftIndex <= 0) leftIndex = totalImages;
+                
+                let rightIndex = currentIndex + 1;
+                if (rightIndex > totalImages) rightIndex = 1;
+                
+                // Create left item
+                createCarouselItem(leftIndex, 'left');
+                
+                // Create center (current) item
+                createCarouselItem(currentIndex, 'center');
+                
+                // Create right item
+                createCarouselItem(rightIndex, 'right');
+                
+                // Update counter
+                counterText.textContent = `${currentIndex} of ${totalImages}`;
+            }
+            
+            // Function to create a carousel item
+            function createCarouselItem(index, position) {
+                const item = document.createElement('div');
+                item.className = `carousel-item ${position}`;
+                
+                // Format the image filename
+                let indexStr = index.toString().padStart(3, '0');
+                const filename = `Portfolio_debayan.${indexStr}`;
+                
+                // Add content
+                item.innerHTML = `
+                    <img src="../images/photography/${filename}.jpeg" alt="Photography ${index}" class="carousel-image">
+                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <polyline points="9 21 3 21 3 15"></polyline>
+                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                    </svg>
+                `;
+                
+                // Add click handler - only fully functional for center item
+                item.addEventListener('click', function() {
+                    if (position === 'center') {
+                        // Open overlay for center item
+                        overlayImage.src = `../images/photography/${filename}.jpeg`;
+                        imageInfo.textContent = `Image ${index} of ${totalImages}`;
+                        imageOverlay.classList.add('active');
+                    } else {
+                        // For side items, navigate to that item
+                        currentIndex = index;
+                        setupCarousel();
+                    }
+                });
+                
+                // Add to carousel
+                carousel.appendChild(item);
+            }
+            
+            // Initialize carousel
+            setupCarousel();
+            
+            // Function to navigate to previous image with animation
+            function navigateToPrevious() {
+                // Disable buttons during transition
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                
+                // Get current items
+                const items = carousel.querySelectorAll('.carousel-item');
+                const leftItem = carousel.querySelector('.carousel-item.left');
+                const centerItem = carousel.querySelector('.carousel-item.center');
+                const rightItem = carousel.querySelector('.carousel-item.right');
+                
+                // Apply transition classes
+                rightItem.classList.remove('right');
+                rightItem.classList.add('transition-right');
+                
+                centerItem.classList.remove('center');
+                centerItem.classList.add('transition-left');
+                
+                leftItem.classList.remove('left');
+                leftItem.classList.add('transition-center-from-left');
+                
+                // Wait for animation to complete
+                setTimeout(() => {
+                    // Update current index
+                    currentIndex--;
+                    if (currentIndex < 1) currentIndex = totalImages;
+                    
+                    // Rebuild carousel
+                    setupCarousel();
+                    
+                    // Re-enable buttons
+                    prevBtn.disabled = false;
+                    nextBtn.disabled = false;
+                }, 600);
+            }
+            
+            // Function to navigate to next image with animation
+            function navigateToNext() {
+                // Disable buttons during transition
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                
+                // Get current items
+                const items = carousel.querySelectorAll('.carousel-item');
+                const leftItem = carousel.querySelector('.carousel-item.left');
+                const centerItem = carousel.querySelector('.carousel-item.center');
+                const rightItem = carousel.querySelector('.carousel-item.right');
+                
+                // Apply transition classes
+                leftItem.classList.remove('left');
+                leftItem.classList.add('transition-left');
+                
+                centerItem.classList.remove('center');
+                centerItem.classList.add('transition-right');
+                
+                rightItem.classList.remove('right');
+                rightItem.classList.add('transition-center-from-right');
+                
+                // Wait for animation to complete
+                setTimeout(() => {
+                    // Update current index
+                    currentIndex++;
+                    if (currentIndex > totalImages) currentIndex = 1;
+                    
+                    // Rebuild carousel
+                    setupCarousel();
+                    
+                    // Re-enable buttons
+                    prevBtn.disabled = false;
+                    nextBtn.disabled = false;
+                }, 600);
+            }
+            
+            // Add navigation handlers
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            
+            prevBtn.addEventListener('click', navigateToPrevious);
+            nextBtn.addEventListener('click', navigateToNext);
+            
+            // Close overlay when clicking outside the image
+            imageOverlay.addEventListener('click', function(e) {
+                if (e.target === imageOverlay) {
+                    imageOverlay.classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
