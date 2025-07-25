@@ -487,7 +487,7 @@
                     <!-- Images will be loaded here -->
                 </div>
             </div>
-            <p>Creation of scalable design systems that ensure consistency across digital platforms.</p>
+            <p>Creation of scalable workflow systems that ensure consistency across digital platforms.</p>
         </div>
     </div>  
 
@@ -566,12 +566,58 @@
             const container2 = document.getElementById('gallery-container-2');
             if (container2) {
                 container2.innerHTML = '';
-                // Reverse_Mirror folder is empty, so no images to load
-                const noImagesMsg = document.createElement('p');
-                noImagesMsg.textContent = 'No images available for this project.';
-                noImagesMsg.style.textAlign = 'center';
-                noImagesMsg.style.color = '#888';
-                container2.appendChild(noImagesMsg);
+                for (let i = 1; i <= 6; i++) {
+                    const img = document.createElement('img');
+                    img.src = `../images/Creative Design/Reverse_Mirror/${i}.JPG`;
+                    img.alt = `Framework image ${i}`;
+                    img.className = 'gallery-image';
+                    container2.appendChild(img);
+
+                    // Insert Step1.mp4 after 4.jpg
+                    if (i === 4) {
+                        const video1 = document.createElement('video');
+                        video1.src = `../images/Creative Design/Reverse_Mirror/Step1.mp4`;
+                        video1.controls = true;
+                        video1.className = 'gallery-image';
+                        container2.appendChild(video1);
+                    }
+                    // Insert Step2.mp4 after 5.jpg
+                    if (i === 5) {
+                        const video2 = document.createElement('video');
+                        video2.src = `../images/Creative Design/Reverse_Mirror/Step2.mp4`;
+                        video2.controls = true;
+                        video2.className = 'gallery-image';
+                        container2.appendChild(video2);
+                    }
+                    // Insert Step3.mp4 after 6.jpg
+                    if (i === 6) {
+                        const headingStable = document.createElement('h3');
+                        headingStable.textContent = 'Stable Diffusion Outputs';
+                        headingStable.style.textAlign = 'center';
+                        headingStable.style.margin = '2rem 0 1rem 0';
+                        container2.appendChild(headingStable);
+
+                        const video3 = document.createElement('video');
+                        video3.src = `../images/Creative Design/Reverse_Mirror/Step3.mp4`;
+                        video3.controls = true;
+                        video3.className = 'gallery-image';
+                        container2.appendChild(video3);
+
+                        // Add heading before Step4.mp4
+                        const headingFinal = document.createElement('h3');
+                        headingFinal.textContent = 'Final output';
+                        headingFinal.style.textAlign = 'center';
+                        headingFinal.style.margin = '2rem 0 1rem 0';
+                        container2.appendChild(headingFinal);
+
+                        // Add Step4.mp4
+                        const video4 = document.createElement('video');
+                        video4.src = `../images/Creative Design/Reverse_Mirror/Step4.mp4`;
+                        video4.controls = true;
+                        video4.className = 'gallery-image';
+                        container2.appendChild(video4);
+                    }
+                }
             }
 
             const container3 = document.getElementById('gallery-container-3');
