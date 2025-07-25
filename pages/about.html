@@ -315,7 +315,100 @@
             </div>
         </div>
     </div>
+    <script>
+    const EMAILJS_CONFIG = {
+        serviceId: 'service_78dk1pw',
+        templateId: 'template_oi9d59d', 
+        publicKey: 'LoSz8zkeU37bBNtag'
+    };
     
+    // Encrypted email (base64 encoded to hide from bots)
+    const ENCRYPTED_EMAIL = 'ZGViYXlhbm1rcmpAaWNsb3VkLmNvbQ=='; // debayanmkrj@icloud.com
+    
+    // Initialize EmailJS
+    (function(){
+        emailjs.init(EMAILJS_CONFIG.publicKey);
+    })();
+    
+    // Form submission handler
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.querySelector('.contact-form');
+        const submitBtn = document.querySelector('.submit-btn');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+                to_email: atob(ENCRYPTED_EMAIL) // Decode the email
+            };
+            
+            // Disable submit button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            
+            // Send email via EmailJS
+            emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, formData)
+                .then(function(response) {
+                    // Success
+                    showNotification('Message sent successfully!', 'success');
+                    contactForm.reset();
+                })
+                .catch(function(error) {
+                    // Error
+                    console.error('EmailJS Error:', error);
+                    showNotification('Failed to send message. Please try again.', 'error');
+                })
+                .finally(function() {
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send Message';
+                });
+        });
+    });
+    
+    // Notification system
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        
+        // Add styles
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            ${type === 'success' ? 'background-color: #4CAF50;' : 'background-color: #f44336;'}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Animate in
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Remove after 5 seconds
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 5000);
+    }
+
+</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="../js/particles-monochrome.js"></script>
 </body>
