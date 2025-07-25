@@ -205,10 +205,10 @@
             </div>
             <!-- Project Card 4 -->
             <div class="project-card" data-overlay="tech-overlay-4">
-                <div class="project-image">Project Image Placeholder</div>
+                <img class="project-image imagebot-cover" src="../images/Technology/Imagebot/cover.jpg" alt="Imagebot Cover">
                 <div class="project-info">
                     <h3 class="project-title">Imagebot</h3>
-                    <p class="project-description">AI-powered image creation and manipulation tool for creative workflows.</p>
+                    <p class="project-description">A natural language image editing and generation tool.</p>
                     <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                 </div>
             </div>
@@ -223,28 +223,28 @@
             </div>
             <!-- Project Card 6 -->
             <div class="project-card" data-overlay="tech-overlay-6">
-                <div class="project-image">Project Image Placeholder</div>
+                <img class="project-image interactive-media-cover" src="../images/Technology/Interactive_Media/cover.jpg" alt="Interactive Media Cover">
                 <div class="project-info">
                     <h3 class="project-title">Interactive Media</h3>
-                    <p class="project-description">Immersive media installations and interactive storytelling platforms.</p>
+                    <p class="project-description">This Max/MSP project transforms traditional keyboard-based racing controls into an intuitive gesture-based interface.</p>
                     <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                 </div>
             </div>
             <!-- Project Card 7 -->
             <div class="project-card" data-overlay="tech-overlay-7">
-                <div class="project-image">Project Image Placeholder</div>
+                <img class="project-image prisma-cover" src="../images/Technology/Prisma/cover.JPG" alt="Prisma Cover">
                 <div class="project-info">
                     <h3 class="project-title">Prisma</h3>
-                    <p class="project-description">Creative color and light manipulation for digital art and design.</p>
+                    <p class="project-description">An interactive webcam based installation that illustrates human in the past, present and future keeping the user as the main subject of vizualization.</p>
                     <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                 </div>
             </div>
             <!-- Project Card 8 -->
             <div class="project-card" data-overlay="tech-overlay-8">
-                <div class="project-image">Project Image Placeholder</div>
+                <img class="project-image interactive-media-gyroscope-cover" src="../images/Technology/Interactive_Media_2/cover.jpg" alt="Prisma Cover">
                 <div class="project-info">
                     <h3 class="project-title">Interactive Media Gyroscope</h3>
-                    <p class="project-description">Creative color and light manipulation for digital art and design.</p>
+                    <p class="project-description">A Max/Msp project that utilizes Gyroscope data from cellphone to create an interactive experience and detect color blindness.</p>
                     <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                 </div>
             </div>
@@ -425,7 +425,56 @@
                     <button class="close-btn" onclick="document.getElementById('tech-overlay-4').classList.remove('active')">&times;</button>
                 </div>
                 <div class="overlay-content">
-                    <p>AI-powered image creation and manipulation tool for creative workflows.</p>
+                    <div class="gallery-container" id="gallery-imagebot"></div>
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const overlay = document.getElementById('tech-overlay-4');
+                        if (overlay) {
+                            const observer = new MutationObserver(function(mutations) {
+                                mutations.forEach(function(mutation) {
+                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
+                                        const container = document.getElementById('gallery-imagebot');
+                                        if (container) {
+                                            container.innerHTML = '';
+                                            // Add description before images
+                                            const desc = document.createElement('p');
+                                            desc.style.marginBottom = '1.5rem';
+                                            desc.textContent = 'Image bot is an Image Editing and Sketch-to-Image AI Bot that combines basic image processing capabilities with advanced AI-based sketch-to-image conversion using the img2img-turbo model using natural language processing.';
+                                            container.appendChild(desc);
+                                            for (let i = 1; i <= 8; i++) {
+                                                const img = document.createElement('img');
+                                                img.src = '../images/Technology/Imagebot/' + i + '.jpg';
+                                                img.alt = 'Imagebot image ' + i;
+                                                img.className = 'gallery-image';
+                                                container.appendChild(img);
+                                            }
+                                            // Add heading before demo video
+                                            const headingdemo = document.createElement('h3');
+                                            headingdemo.textContent = 'Demonstration';
+                                            headingdemo.style.textAlign = 'center';
+                                            headingdemo.style.margin = '2rem 0 1rem 0';
+                                            container.appendChild(headingdemo);
+                                            // Add demo video
+                                            const videodemo = document.createElement('video');
+                                            videodemo.src = '../images/Technology/Imagebot/media1.mp4';
+                                            videodemo.controls = true;
+                                            videodemo.className = 'gallery-image';
+                                            container.appendChild(videodemo);
+                                            
+                                        }
+                                    }
+                                });
+                            });
+                            observer.observe(overlay, { attributes: true });
+                        }
+                    });
+                    </script>
+                    <div style="text-align:center; margin-top:2rem;">
+                        <a href="https://github.com/debayanmkrj/Imagebot" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                            <span style="transition:all 0.3s;">Imagebot</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -447,7 +496,50 @@
                     <button class="close-btn" onclick="document.getElementById('tech-overlay-6').classList.remove('active')">&times;</button>
                 </div>
                 <div class="overlay-content">
-                    <p>Immersive media installations and interactive storytelling platforms.</p>
+                    <div class="gallery-container" id="gallery-interactive-media"></div>
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const overlay = document.getElementById('tech-overlay-6');
+                        if (overlay) {
+                            const observer = new MutationObserver(function(mutations) {
+                                mutations.forEach(function(mutation) {
+                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
+                                        const container = document.getElementById('gallery-interactive-media');
+                                        if (container) {
+                                            container.innerHTML = '';
+                                            // Add description before images
+                                            const desc = document.createElement('p');
+                                            desc.style.marginBottom = '1.5rem';
+                                            desc.textContent = 'The Max/MSP patches demonstrates a hand tracking system that captures finger positions and gestures in real-time. The first patch shows the core hand detection module (jit.fill #0hand) processing skeletal data through matrix operations, converting raw hand coordinates into usable control parameters for the racing game. The project uses a pre-trained hand tracking model using Wekinator. The hand tracking gestures are illustrated in the images below. The intent of using both hands to control the car is to allow the user to use both hands to control the car was to provide an easy and intuitive way to control the car.';
+                                            container.appendChild(desc);
+                                            for (let i = 1; i <= 5; i++) {
+                                                const img = document.createElement('img');
+                                                img.src = '../images/Technology/Interactive_Media/' + i + '.jpg';
+                                                img.alt = 'Interactive Media image ' + i;
+                                                img.className = 'gallery-image';
+                                                container.appendChild(img);
+                                            }
+                                            // Add heading before demo video
+                                            const headinggameplay = document.createElement('h3');
+                                            headinggameplay.textContent = 'Gameplay';
+                                            headinggameplay.style.textAlign = 'center';
+                                            headinggameplay.style.margin = '2rem 0 1rem 0';
+                                            container.appendChild(headinggameplay);
+                                            // Add demo video
+                                            const videodemo = document.createElement('video');
+                                            videodemo.src = '../images/Technology/Interactive_Media/media1.mp4';
+                                            videodemo.controls = true;
+                                            videodemo.className = 'gallery-image';
+                                            container.appendChild(videodemo);
+                                            
+                                        }
+                                    }
+                                });
+                            });
+                            observer.observe(overlay, { attributes: true });
+                        }
+                    });
+                    </script>
                 </div>
             </div>
         </div>
@@ -458,7 +550,56 @@
                     <button class="close-btn" onclick="document.getElementById('tech-overlay-7').classList.remove('active')">&times;</button>
                 </div>
                 <div class="overlay-content">
-                    <p>Creative color and light manipulation for digital art and design.</p>
+                    <div class="gallery-container" id="gallery-prisma"></div>
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const overlay = document.getElementById('tech-overlay-7');
+                        if (overlay) {
+                            const observer = new MutationObserver(function(mutations) {
+                                mutations.forEach(function(mutation) {
+                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
+                                        const container = document.getElementById('gallery-prisma');
+                                        if (container) {
+                                            container.innerHTML = '';
+                                            // Add description before images
+                                            const desc = document.createElement('p');
+                                            desc.style.marginBottom = '1.5rem';
+                                            desc.textContent = 'Prisma is an interactive webcam based installation that provides user a visualization or glimpse of how humans were viewed in the past, how they are in the present and what could be the future. The vizualization incorporates various means to achieve this as explained below, not limited to body tracking for all phases, multiple color and shape deconstruction and reconstruction techniques. For the future Stabe Diffusion model was used to generate an exact replica of the pose from the 30th second of the interaction with the installation.';
+                                            container.appendChild(desc);
+                                            for (let i = 1; i <= 10; i++) {
+                                                const img = document.createElement('img');
+                                                img.src = '../images/Technology/Prisma/' + i + '.jpg';
+                                                img.alt = 'Prisma image ' + i;
+                                                img.className = 'gallery-image';
+                                                container.appendChild(img);
+                                            }
+                                            // Add heading before demo video
+                                            const headingdemo = document.createElement('h3');
+                                            headingdemo.textContent = 'Demonstration';
+                                            headingdemo.style.textAlign = 'center';
+                                            headingdemo.style.margin = '2rem 0 1rem 0';
+                                            container.appendChild(headingdemo);
+                                            // Add demo video
+                                            const videodemo = document.createElement('video');
+                                            videodemo.src = '../images/Technology/Prisma/Media1.mp4';
+                                            videodemo.controls = true;
+                                            videodemo.className = 'gallery-image';
+                                            container.appendChild(videodemo);
+                                            
+                                        }
+                                    }
+                                });
+                            });
+                            observer.observe(overlay, { attributes: true });
+                        }
+                    });
+                    </script>
+                    <div style="text-align:center; margin-top:2rem;">
+                        <a href="https://github.com/debayanmkrj/Imagebot" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                            <span style="transition:all 0.3s;">Imagebot</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -469,7 +610,38 @@
                     <button class="close-btn" onclick="document.getElementById('tech-overlay-8').classList.remove('active')">&times;</button>
                 </div>
                 <div class="overlay-content">
-                    <p>Creative color and light manipulation for digital art and design.</p>
+                    <div class="gallery-container" id="gallery-interactive-media-gyroscope"></div>
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const overlay = document.getElementById('tech-overlay-8');
+                        if (overlay) {
+                            const observer = new MutationObserver(function(mutations) {
+                                mutations.forEach(function(mutation) {
+                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
+                                        const container = document.getElementById('gallery-interactive-media-gyroscope');
+                                        if (container) {
+                                            container.innerHTML = '';
+                                            // Add description before images
+                                            const desc = document.createElement('p');
+                                            desc.style.marginBottom = '1.5rem';
+                                            desc.textContent = 'The Max/MSP patch processes real-time gyroscopic input (pitch, roll, and yaw data) from a smartphone, which users manipulate to control RGB color channels on a monochrome source image. The system employs sophisticated data smoothing algorithms using mathematical modules and ranger objects to filter noise and scale the gyroscopic movements to precise RGB multiplier values (0-8 range) within the MUTIL8R module. The color matching system utilizes Jit matrix objects to extract RGB channel mean values from both the user-controlled image and a randomly generated source image processed through the Kaleidr module. A threshold-based comparison algorithm evaluates color accuracy across all three channels, triggering audio feedback when successful matches occur. This gamified approach makes color vision testing engaging for children, as they use natural phone movements to recreate target colors while receiving immediate auditory confirmation of their progress. This innovative approach transforms traditional color blindness screening into an interactive experience that can identify color perception deficiencies in young patients who might struggle with conventional testing methods.';
+                                            container.appendChild(desc);
+                                            for (let i = 1; i <= 5; i++) {
+                                                const img = document.createElement('img');
+                                                img.src = '../images/Technology/Interactive_Media_2/' + i + '.jpg';
+                                                img.alt = 'Interactive Media image ' + i;
+                                                img.className = 'gallery-image';
+                                                container.appendChild(img);
+                                            }
+                                            
+                                        }
+                                    }
+                                });
+                            });
+                            observer.observe(overlay, { attributes: true });
+                        }
+                    });
+                    </script>
                 </div>
             </div>
         </div>
@@ -584,6 +756,18 @@
             opacity: 0.8;
         }
         .groove-it-cover {
+            opacity: 0.8;
+        }
+        .imagebot-cover {
+            opacity: 0.8;
+        }
+        .interactive-media-cover {
+            opacity: 0.8;
+        }
+        .prisma-cover{
+            opacity: 0.8;
+        }
+        .interactive-media-gyroscope{
             opacity: 0.8;
         }
         .groove-it-video {
