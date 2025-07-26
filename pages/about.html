@@ -93,6 +93,10 @@
         
         .about-text {
             line-height: 1.8;
+            background-color: rgba(48, 48, 48, 0.5);
+            padding: 2rem;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
         }
         
         .about-text p {
@@ -101,21 +105,29 @@
         }
         
         .skills-section {
-            margin-top: 3rem;
+            background-color: rgba(48, 48, 48, 0.5);
+            padding: 2rem;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .skills-section h3 {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
         }
         
         .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 2rem;
-            margin-top: 1.5rem;
         }
         
         .skill-category {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
         
-        .skill-category h3 {
+        .skill-category h4 {
             color: var(--accent-red);
             margin-bottom: 1rem;
             font-size: 1.2rem;
@@ -130,6 +142,7 @@
             position: relative;
             padding-left: 1rem;
             color: var(--light-grey);
+            font-size: 1rem;
         }
         
         .skill-list li::before {
@@ -140,8 +153,17 @@
         }
         
         /* Contact Form */
+        .contact-section {
+            margin-top: 3rem;
+        }
+        
+        .contact-section h3 {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
         .contact-form {
-            margin-top: 2rem;
             background-color: rgba(48, 48, 48, 0.5);
             padding: 2rem;
             border-radius: 8px;
@@ -228,19 +250,11 @@
             .section-title {
                 font-size: 2rem;
             }
-            
-            .skills-container {
-                grid-template-columns: 1fr 1fr;
-            }
         }
         
         @media (max-width: 480px) {
             .section-title {
                 font-size: 1.8rem;
-            }
-            
-            .skills-container {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -254,104 +268,115 @@
         
         <div class="about-container">
             <div class="about-text">
-                <p>I am a multidisciplinary creative professional with over a decade of experience in design, photography, and technology. My work sits at the intersection of visual arts and digital innovation, creating experiences that engage and inspire.</p>
+                <p>Hi, Thank you for visiting my website. I am Debayan Mukherjee, a creative technologist and visual strategist with over a decade of experience bridging the worlds of media, arts and technology. Currently pursuing an MS in Media Arts and Sciences at Arizona State University, I specialize in developing innovative experiences that combine artistic vision with technical expertise.</p>
                 
-                <p>With a background in both traditional design and emerging technologies, I bring a unique perspective to every project. My approach combines aesthetic sensitivity with technical proficiency to create work that is both beautiful and functional.</p>
+                <p>My professional journey spans from hands-on photography and design to leading global creative teams at companies like Amazon, where I managed cross-cultural content production across multiple regions and markets. This unique trajectory has given me deep insights into both the creative process and the scalable systems needed to deliver compelling visual experiences at enterprise scale.</p>
                 
-                <p>I believe in the power of visual storytelling to communicate complex ideas and evoke emotional responses. Whether working on a brand campaign, an interactive installation, or a fashion editorial, my goal is always to create meaningful connections through compelling visual narratives.</p>
+                <p>My work focuses on the intersection of generative AI, computer vision, interactive media, and user-centered design. I believe in the transformative power of technology-enhanced storytelling to create meaningful connections and drive both artistic and commercial impact.</p>
                 
+                <div class="professional-experience">
+                    <h3>Professional Experience</h3>
+                    <p><strong>Creative Leadership & Strategy</strong><br>
+                        With experience managing teams of 20+ creatives across geographic regions, I've led content strategy and production for Amazon's Visual Innovation Services, impacting millions of users across Middle East, Africa, Turkey, and India markets. My approach combines data-driven optimization with creative excellence, achieving significant improvements in production efficiency and content quality.</p>
+                    
+                    <p><strong>Content Production & Innovation</strong><br>
+                        From pioneering video formats in e-commerce search to launching influencer-based content programs, I've consistently pushed the boundaries of digital content creation. My work includes developing bilingual content strategies, establishing remote production workflows, and implementing process automation that improved efficiency.</p>
+                    
+                    <p><strong>Research & Development</strong><br>
+                        I conduct qualitative user research to inform content design decisions and have led prototype testing initiatives. My current academic focus on multi-modal generative art allows me to explore emerging technologies and their applications in creative practice.</p>
+                </div>
+            </div>
+            
+            <div class="right-column">
                 <div class="skills-section">
                     <h3>Skills & Expertise</h3>
                     <div class="skills-container">
                         <div class="skill-category">
-                            <h3>Design</h3>
+                            <h4>Creative Technology</h4>
                             <ul class="skill-list">
-                                <li>User Experience (UX)</li>
-                                <li>Visual Design</li>
-                                <li>Interaction Design</li>
-                                <li>3D Modeling</li>
-                                <li>Typography</li>
+                                <li>Interactive Media: TouchDesigner, Max MSP, Unity</li>
+                                <li>Web Technologies: Three.js, WebGL, React, JavaScript</li>
+                                <li>iOS App Development: Swift, Xcode, RealityKit, Vision framework, AR experiences, computer vision integration</li>
+                                <li>Generative AI: Python workflows, API integrations, model development</li>
+                                <li>Computer Vision: Applications in content creation and user experience</li>
+                                <li>AR/VR Prototyping: Immersive experience development</li>
                             </ul>
                         </div>
                         
                         <div class="skill-category">
-                            <h3>Technical</h3>
+                            <h4>Visual Production</h4>
                             <ul class="skill-list">
-                                <li>Three.js</li>
-                                <li>WebGL</li>
-                                <li>React</li>
-                                <li>Motion Graphics</li>
-                                <li>AR/VR Prototyping</li>
+                                <li>Photography & Videography: Fashion, product, and campaign content</li>
+                                <li>Post-Production: Adobe Creative Suite (Premiere Pro, After Effects, Photoshop)</li>
+                                <li>Studio Management: Lighting design, workflow optimization, equipment procurement</li>
+                                <li>Content Strategy: Multi-platform campaigns, trend analysis, user research</li>
                             </ul>
                         </div>
                         
                         <div class="skill-category">
-                            <h3>Photography</h3>
+                            <h4>Leadership & Operations</h4>
                             <ul class="skill-list">
-                                <li>Fashion Photography</li>
-                                <li>Studio Lighting</li>
-                                <li>Digital Retouching</li>
-                                <li>Art Direction</li>
-                                <li>Color Grading</li>
+                                <li>Team Management: Cross-cultural teams, freelancer coordination, capacity planning</li>
+                                <li>Process Innovation: DMAIC methodology, Kaizen leadership, automation implementation</li>
+                                <li>Strategic Planning: Resource allocation, quality management, cost optimization</li>
+                                <li>User Research: UserZoom platform, qualitative studies, prototype testing</li>
                             </ul>
                         </div>
                         
                         <div class="skill-category">
-                            <h3>Strategy</h3>
+                            <h4>Design & Development</h4>
                             <ul class="skill-list">
-                                <li>Brand Development</li>
-                                <li>Creative Direction</li>
-                                <li>Concept Development</li>
-                                <li>Project Management</li>
-                                <li>Design Thinking</li>
+                                <li>Programming: Python, JavaScript, Swift, HTML/CSS, C#</li>
+                                <li>Design Tools: Capture One, Photoshop, Illustrator, Premier Pro, DaVinci Resolve, design thinking methodologies</li>
+                                <li>3D & Motion: Unity, After Effects and animation</li>
+                                <li>Data Visualization: Creative process analytics and optimization</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Full-width contact section -->
+        <div class="contact-section">
+            <h3>Get In Touch</h3>
+            <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" id="contactForm">
+                <!-- Replace with your Access Key -->
+                <input type="hidden" name="access_key" value="f453a9a9-1e5a-49b9-8042-80e4f8bab03f">
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="_replyto" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="_subject" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                
+                <!-- Hidden field to prevent spam -->
+                <input type="hidden" name="_next" value="https://yourdomain.com/thanks.html">
+                <input type="hidden" name="_captcha" value="false">
+                
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
             
-            <div class="contact-section">
-                <h3>Get In Touch</h3>
-                <!-- Formspree Form - Replace YOUR_FORM_ID with your actual Formspree form ID -->
-                <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" id="contactForm">
-
-                    <!-- Replace with your Access Key -->
-                    <input type="hidden" name="access_key" value="f453a9a9-1e5a-49b9-8042-80e4f8bab03f">
-
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="_replyto" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="_subject" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
-                    </div>
-                    
-                    <!-- Hidden field to prevent spam -->
-                    <input type="hidden" name="_next" value="https://yourdomain.com/thanks.html">
-                    <input type="hidden" name="_captcha" value="false">
-                    
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
-                
-                <div class="success-message" id="successMessage">
-                    Thank you! Your message has been sent successfully.
-                </div>
-                
-                <div class="error-message" id="errorMessage">
-                    Sorry, there was an error sending your message. Please try again.
-                </div>
+            <div class="success-message" id="successMessage">
+                Thank you! Your message has been sent successfully.
+            </div>
+            
+            <div class="error-message" id="errorMessage">
+                Sorry, there was an error sending your message. Please try again.
             </div>
         </div>
     </div>
