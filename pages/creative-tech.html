@@ -214,10 +214,10 @@
             </div>
             <!-- Project Card 5 -->
             <div class="project-card" data-overlay="tech-overlay-5">
-                <div class="project-image">Project Image Placeholder</div>
+                <img class="project-image alt-dj-cover" src="../images/Technology/Alt_dj/cover.jpg" alt="alt-dj-cover">
                 <div class="project-info">
-                    <h3 class="project-title">Ingredient Care</h3>
-                    <p class="project-description">Smart ingredient tracking and health-focused food technology.</p>
+                    <h3 class="project-title">Alt-DJ</h3>
+                    <p class="project-description">ALT-DJ is a comprehensive machine learning system that analyzes DJ hand movements and applies neural audio style transfer to recreate the performance styles of famous DJs.</p>
                     <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                 </div>
             </div>
@@ -241,7 +241,7 @@
             </div>
             <!-- Project Card 8 -->
             <div class="project-card" data-overlay="tech-overlay-8">
-                <img class="project-image interactive-media-gyroscope-cover" src="../images/Technology/Interactive_Media_2/cover.jpg" alt="Prisma Cover">
+                <img class="project-image interactive-media-gyroscope-cover" src="../images/Technology/Interactive_Media_2/cover.jpg" alt="Interactive Media Gyroscope">
                 <div class="project-info">
                     <h3 class="project-title">Interactive Media Gyroscope</h3>
                     <p class="project-description">A Max/Msp project that utilizes Gyroscope data from cellphone to create an interactive experience and detect color blindness.</p>
@@ -479,13 +479,61 @@
             </div>
         </div>
         <div class="project-overlay" id="tech-overlay-5">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>Ingredient Care</h2>
-                    <button class="close-btn" onclick="document.getElementById('tech-overlay-5').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <p>Smart ingredient tracking and health-focused food technology.</p>
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>Alt-DJ</h2>
+                <button class="close-btn" onclick="document.getElementById('tech-overlay-5').classList.remove('active')">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <div class="gallery-container" id="gallery-alt_dj"></div>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const overlay = document.getElementById('tech-overlay-5');
+                    if (overlay) {
+                        const observer = new MutationObserver(function(mutations) {
+                            mutations.forEach(function(mutation) {
+                                if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
+                                    const container = document.getElementById('gallery-alt_dj'); // Fixed: was 'gallery-prisma'
+                                    if (container) {
+                                        container.innerHTML = '';
+                                        // Add description before images
+                                        const desc = document.createElement('p');
+                                        desc.style.marginBottom = '1.5rem';
+                                        desc.textContent = 'ALT-DJ is a comprehensive machine learning system that analyzes DJ hand movements and applies neural audio style transfer to recreate the performance styles of famous DJs. The project combines computer vision with advanced audio processing, using YOLOv8 for real-time detection of DJ equipment interactions (crossfaders, EQ knobs, jog wheels) and a custom neural network architecture for audio style transfer between different DJ styles. The system achieved 67.5% mAP for interaction detection and successfully trained style embeddings for artists like Armin van Buuren, Calvin Harris, and Marshmello. The desktop application provides real-time visualization of predicted DJ movements synchronized with style-transferred audio, creating an immersive experience that demonstrates how AI can understand and replicate the nuanced artistry of professional DJ performances. This project showcases expertise in deep learning, computer vision, audio signal processing, and full-stack application development.';
+                                        container.appendChild(desc);
+                                        for (let i = 1; i <= 8; i++) {
+                                            const img = document.createElement('img');
+                                            img.src = '../images/Technology/Alt_dj/' + i + '.jpg';
+                                            img.alt = 'Alt-DJ image ' + i;
+                                            img.className = 'gallery-image';
+                                            container.appendChild(img);
+                                        }
+                                        // Add heading before demo video
+                                        const headingdemo = document.createElement('h3');
+                                        headingdemo.textContent = 'Demonstration';
+                                        headingdemo.style.textAlign = 'center';
+                                        headingdemo.style.margin = '2rem 0 1rem 0';
+                                        container.appendChild(headingdemo);
+                                        // Add demo video
+                                        const videodemo = document.createElement('video');
+                                        videodemo.src = '../images/Technology/Alt_dj/Media1.mp4';
+                                        videodemo.controls = true;
+                                        videodemo.className = 'gallery-image';
+                                        container.appendChild(videodemo);
+                                    }
+                                }
+                            });
+                        });
+                        observer.observe(overlay, { attributes: true });
+                    }
+                });
+                </script>
+                    <div style="text-align:center; margin-top:2rem;">
+                        <a href="https://github.com/debayanmkrj/Alt-DJ" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                            <span style="transition:all 0.3s;">Alt_dj</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -595,9 +643,9 @@
                     });
                     </script>
                     <div style="text-align:center; margin-top:2rem;">
-                        <a href="https://github.com/debayanmkrj/Imagebot" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
+                        <a href="https://github.com/debayanmkrj/Prisma" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            <span style="transition:all 0.3s;">Imagebot</span>
+                            <span style="transition:all 0.3s;">Prisma</span>
                         </a>
                     </div>
                 </div>
