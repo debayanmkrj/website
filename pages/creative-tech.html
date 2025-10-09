@@ -248,6 +248,15 @@
                     <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                 </div>
             </div>
+            <!-- Project Card 9 -->
+             <div class="project-card" data-overlay="tech-overlay-9">
+                <img class="project-image Morodd" src="../images/Technology/Morodd/cover.jpg" alt="Morodd">
+                <div class="project-info">
+                    <h3 class="project-title">Morodd</h3>
+                    <p class="project-description">Morodd is an interactive art installation that enables users to visualize themselves as a 3D rendering and navigate those spaces.</p>
+                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                </div>
+            </div>
         </div>
 
         <!-- Overlays for each project -->
@@ -283,6 +292,18 @@
                             observer.observe(overlay, { attributes: true });
                         }
                     });
+                    </script>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="../images/Technology/Echo_Halt/echo_halt.pdf" 
+                            class="social-link" 
+                            style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                            </svg>
+                            <span style="transition:all 0.3s;">Echo_halt Documentation</span>
+                        </a>
+                    </div>
+
                     </script>
                     <div style="text-align:center; margin-top:2rem;">
                         <a href="https://github.com/debayanmkrj/Echo-Halt" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
@@ -690,6 +711,92 @@
                         }
                     });
                     </script>
+                </div>
+            </div>
+        </div>
+        <div class="project-overlay" id="tech-overlay-9">
+            <div class="project-detail">
+                <div class="overlay-header">
+                    <h2>Prisma</h2>
+                    <button class="close-btn" onclick="document.getElementById('tech-overlay-9').classList.remove('active')">&times;</button>
+                </div>
+                <div class="overlay-content">
+                    <div class="gallery-container" id="gallery-morodd"></div>
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const overlay = document.getElementById('tech-overlay-9');
+                        if (overlay) {
+                            const observer = new MutationObserver(function(mutations) {
+                                mutations.forEach(function(mutation) {
+                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
+                                        const container = document.getElementById('gallery-morodd');
+                                        if (container) {
+                                            container.innerHTML = '';
+                                            // Add description before images
+                                            const desc = document.createElement('p');
+                                            desc.style.marginBottom = '1.5rem';
+                                            desc.textContent = 'The intersection of surveillance technology and creative expression has historically produced tension between observation and authenticity. Computer vision systems designed for identification and classification paradoxically offer new possibilities for artistic transformation and self-reflection. MD emerges from this philosophical tension, proposing that spaces between people contain impossible music, sonic territories that exist only when witnessed and heard only when sought.This work contributes a framework that transforms human presence into musical paradoxes through three interconnected technologies: human segmentation using Yolo 3D Gaussian splatting via Splatt3r and ML driven splat extension. ';
+                                            container.appendChild(desc);
+                                            for (let i = 1; i <= 9; i++) {
+                                                const img = document.createElement('img');
+                                                img.src = '../images/Technology/Morodd/' + i + '.jpg';
+                                                img.alt = 'Morodd ' + i;
+                                                img.className = 'gallery-image';
+                                                container.appendChild(img);
+                                            }
+                                            // Add heading before 3D view video
+                                            const heading3d = document.createElement('h3');
+                                            heading3d.textContent = 'Splatter 3D view';
+                                            heading3d.style.textAlign = 'center';
+                                            heading3d.style.margin = '2rem 0 1rem 0';
+                                            container.appendChild(heading3d);
+                                            // Add 3D view video
+                                            const video3d = document.createElement('video');
+                                            video3d.src = '../images/Technology/Morodd/media1.mp4';
+                                            video3d.controls = true;
+                                            video3d.className = 'gallery-image';
+                                            container.appendChild(video3d);
+                                            // Add heading before AR view video
+                                            const headingAR = document.createElement('h3');
+                                            headingAR.textContent = 'Splatter view with audio embeddings';
+                                            headingAR.style.textAlign = 'center';
+                                            headingAR.style.margin = '2rem 0 1rem 0';
+                                            container.appendChild(headingAR);
+                                            // Add AR view video
+                                            const videoAR = document.createElement('video');
+                                            videoAR.src = '../images/Technology/Morodd/media2.mp4';
+                                            videoAR.controls = true;
+                                            videoAR.className = 'gallery-image';
+                                            container.appendChild(videoAR);
+                                            
+                                        }
+                                    }
+                                });
+                            });
+                            observer.observe(overlay, { attributes: true });
+                        }
+                    });
+                    </script>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="../images/Technology/Morodd/morodd.pdf" 
+                        class="social-link" 
+                        style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;">
+                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                            </svg>
+                            <span style="transition:all 0.3s;">Morodd Documentation</span>
+                        </a>
+                         
+                    </div> 
+
+                    
+                    </script>
+                    <div style="text-align:center; margin-top:2rem;">
+                        <a href="https://github.com/debayanmkrj/Morodd" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                            <span style="transition:all 0.3s;">Prisma</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
