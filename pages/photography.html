@@ -4,116 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photography | Debayan Mukherjee</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
-            --metal-grey: #303030;
-            --light-grey: #e0e0e0;
-            --accent-red: #ff3333;
-            --black: #000000;
-            --white: #ffffff;
+            --retro-cyan: #5adcff;
+            --retro-yellow: #ffc627;
+            --retro-pink: #ff3366;
+            --dark-bg: #080f19;
+            --screen-glow: rgba(90, 220, 255, 0.3);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Noto Sans', Arial, sans-serif;
         }
-        
-        /* Apply Space Mono to all titles */
-        .section-title,
-        .counter-text,
-        .image-overlay h2 {
-            font-family: 'Space Mono', monospace;
-        }
-        
+
         body {
-            background-color: black;
-            color: white;
+            background-color: #000;
+            color: #e8f8ff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
             overflow-x: hidden;
         }
-        
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
-        }
-        
-        .page-content {
-            position: relative;
-            padding: 6rem 2rem 4rem;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            min-height: 100vh;
-        }
-        
+
         .back-btn {
             position: fixed;
             top: 2rem;
             left: 2rem;
-            padding: 0.5rem 1rem;
-            background-color: rgba(48, 48, 48, 0.7);
-            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            background-color: rgba(8, 15, 25, 0.85);
+            color: var(--retro-cyan);
             text-decoration: none;
+            border: 2px solid var(--retro-cyan);
             border-radius: 4px;
             z-index: 100;
-        }
-        
-        .section-title {
-            font-size: 4rem;
-            margin-bottom: 2rem;
-            display: inline-block;
-            position: relative;
-            margin-top: 0;
-            color: var(--white);
-            font-family: 'Space Mono', monospace;
             font-weight: 700;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
             letter-spacing: 1px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
         }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            font-family: 'Noto Sans', Arial, sans-serif;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background-color: var(--accent-red);
+
+        .back-btn:hover {
+            background-color: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 25px rgba(90, 220, 255, 0.6);
         }
-        
-        .red-text {
-            color: var(--accent-red);
+
+        .page-content {
+            padding: 6rem 2rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
         }
-        
+
+        .section-title {
+            font-family: 'VT323', monospace;
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            color: var(--retro-cyan);
+            text-shadow: 0 0 20px var(--screen-glow), 0 0 40px var(--screen-glow);
+            letter-spacing: 3px;
+            font-weight: 400;
+        }
+
         .section-subtitle {
-            font-size: 1rem;
-            max-width: 700px;
-            color: var(--accent-red);
-            line-height: 1.6;
-            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            max-width: 800px;
+            color: #8ac2ff;
+            line-height: 1.8;
+            margin-bottom: 4rem;
+            font-weight: 300;
         }
-        
-        /* Cubical Carousel with Overlap */
+
+        /* Photo Carousel - Retro TV Style */
+        .photo-carousel {
+            margin: 4rem 0;
+        }
+
         .carousel-container {
-            width: 90%;
-            max-width: 1200px;
-            height: 400px;
-            margin: 4rem auto;
             position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 500px;
+            margin: 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: visible;
+            perspective: 1000px;
         }
-        
+
         .carousel {
             position: relative;
             width: 100%;
@@ -122,131 +105,103 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         .carousel-item {
             position: absolute;
-            width: 400px;
-            height: 400px;
-            background: rgba(34, 34, 34, 0.8);
-            border-radius: 10px;
-            overflow: visible;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+            border: 4px solid var(--retro-cyan);
+            border-radius: 15px;
+            overflow: hidden;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow:
+                0 0 30px rgba(90, 220, 255, 0.4),
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.6);
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             transform-origin: center;
         }
-        
-        .carousel-item.left {
-            transform: translateX(-350px) scale(0.85);
-            opacity: 0.7;
-            z-index: 1;
+
+        /* TV screen effect */
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                transparent 1px,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 3px
+            );
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.3;
         }
-        
+
+        /* CRT curvature effect */
+        .carousel-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.8) 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .carousel-item.left {
+            transform: translateX(-420px) scale(0.75) rotateY(12deg);
+            opacity: 0.6;
+            z-index: 1;
+            filter: brightness(0.7);
+        }
+
         .carousel-item.center {
-            transform: translateX(0) scale(1);
+            transform: translateX(0) scale(1) rotateY(0deg);
             opacity: 1;
             z-index: 3;
+            filter: brightness(1);
         }
-        
+
         .carousel-item.right {
-            transform: translateX(350px) scale(0.85);
-            opacity: 0.7;
+            transform: translateX(420px) scale(0.75) rotateY(-12deg);
+            opacity: 0.6;
             z-index: 1;
+            filter: brightness(0.7);
         }
-        
-        /* Animation classes */
-        .carousel-item.transition-left {
-            animation: moveToLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+
+        .carousel-item.center:hover {
+            border-color: var(--retro-yellow);
+            box-shadow:
+                0 0 40px rgba(255, 198, 39, 0.6),
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.6);
         }
-        
-        .carousel-item.transition-center-from-right {
-            animation: moveToCenterFromRight 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+
+        .carousel-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #000;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(90, 220, 255, 0.03) 2px, rgba(90, 220, 255, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(90, 220, 255, 0.03) 2px, rgba(90, 220, 255, 0.03) 4px);
         }
-        
-        .carousel-item.transition-center-from-left {
-            animation: moveToCenterFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-        }
-        
-        .carousel-item.transition-right {
-            animation: moveToRight 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-        }
-        
-        @keyframes moveToLeft {
-            from {
-                transform: translateX(0) scale(1);
-                opacity: 1;
-                z-index: 3;
-            }
-            to {
-                transform: translateX(-350px) scale(0.85);
-                opacity: 0.7;
-                z-index: 1;
-            }
-        }
-        
-        @keyframes moveToCenterFromRight {
-            from {
-                transform: translateX(350px) scale(0.85);
-                opacity: 0.7;
-                z-index: 1;
-            }
-            to {
-                transform: translateX(0) scale(1);
-                opacity: 1;
-                z-index: 3;
-            }
-        }
-        
-        @keyframes moveToCenterFromLeft {
-            from {
-                transform: translateX(-350px) scale(0.85);
-                opacity: 0.7;
-                z-index: 1;
-            }
-            to {
-                transform: translateX(0) scale(1);
-                opacity: 1;
-                z-index: 3;
-            }
-        }
-        
-        @keyframes moveToRight {
-            from {
-                transform: translateX(0) scale(1);
-                opacity: 1;
-                z-index: 3;
-            }
-            to {
-                transform: translateX(350px) scale(0.85);
-                opacity: 0.7;
-                z-index: 1;
-            }
-        }
-        
+
         .carousel-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            border-radius: 10px;
+            object-fit: contain;
         }
-        
-        .expand-icon {
-            position: absolute;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            width: 20px;
-            height: 20px;
-            color: var(--accent-red);
-            opacity: 0.8;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            z-index: 10;
-        }
-        
-        .carousel-item:hover .expand-icon {
-            opacity: 1;
-        }
-        
+
         .carousel-controls {
             position: absolute;
             bottom: -80px;
@@ -254,27 +209,43 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
             align-items: center;
         }
-        
+
         .carousel-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 28px;
+            background: rgba(8, 15, 25, 0.85);
+            border: 2px solid var(--retro-cyan);
+            color: var(--retro-cyan);
+            font-size: 2rem;
+            font-family: 'VT323', monospace;
             cursor: pointer;
-            padding: 0 15px;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
         }
-        
+
+        .carousel-btn:hover:not(:disabled) {
+            background: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 25px rgba(90, 220, 255, 0.6);
+        }
+
+        .carousel-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
         .counter-text {
-            color: var(--accent-red);
-            font-size: 1rem;
-            margin: 0 10px;
-            letter-spacing: 1px;
-            font-family: 'Space Mono', monospace;
+            color: var(--retro-yellow);
+            font-size: 1.5rem;
+            font-family: 'VT323', monospace;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 198, 39, 0.3);
         }
-        
+
         /* Image Overlay */
         .image-overlay {
             position: fixed;
@@ -282,246 +253,218 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.97);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 9999;
         }
-        
+
         .image-overlay.active {
             display: flex;
         }
-        
+
         .overlay-content {
             position: relative;
             max-width: 90%;
             max-height: 90vh;
+            border: 3px solid var(--retro-cyan);
+            border-radius: 10px;
+            box-shadow: 0 0 40px rgba(90, 220, 255, 0.6);
         }
-        
+
         .overlay-image {
             max-width: 100%;
             max-height: 90vh;
             object-fit: contain;
+            border-radius: 8px;
         }
-        
+
         .close-btn {
             position: absolute;
-            top: -40px;
-            right: -40px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
+            top: -50px;
+            right: -50px;
+            background: rgba(8, 15, 25, 0.95);
+            border: 2px solid var(--retro-pink);
+            color: var(--retro-pink);
+            font-size: 2.5rem;
+            font-family: 'VT323', monospace;
             cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+            transition: all 0.3s ease;
         }
-        
-        .image-info {
-            position: absolute;
-            bottom: -30px;
-            left: 0;
-            color: var(--light-grey);
-            font-family: 'Space Mono', monospace;
+
+        .close-btn:hover {
+            background: var(--retro-pink);
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.8);
+        }
+
+        @media (max-width: 1024px) {
+            .carousel-item {
+                width: 400px;
+                height: 400px;
+            }
+
+            .carousel-item.left,
+            .carousel-item.right {
+                transform: translateX(-350px) scale(0.7);
+            }
+
+            .carousel-item.right {
+                transform: translateX(350px) scale(0.7);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 3rem;
+            }
+
+            .carousel-container {
+                height: 350px;
+            }
+
+            .carousel-item {
+                width: 300px;
+                height: 300px;
+            }
+
+            .carousel-item.left {
+                transform: translateX(-250px) scale(0.6);
+            }
+
+            .carousel-item.right {
+                transform: translateX(250px) scale(0.6);
+            }
         }
     </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    
     <div class="page-content">
-        <a href="../index.html" class="back-btn">← Back</a>
-        <h2 class="section-title"><span>Photography</span></h2>
+        <a href="../index.html" class="back-btn">← BACK</a>
+        <h1 class="section-title">PHOTOGRAPHY</h1>
         <p class="section-subtitle">Capturing compelling visual narratives through the lens, specializing in fashion photography that combines artistic vision with technical expertise to create stunning imagery.</p>
-        
-        <div class="carousel-container">
-            <div class="carousel" id="carousel">
-                <!-- Carousel items will be added by JavaScript -->
-            </div>
-            <div class="carousel-controls">
-                <button class="carousel-btn prev-btn">←</button>
-                <span class="counter-text" id="counter">1 of 32</span>
-                <button class="carousel-btn next-btn">→</button>
+
+        <div class="photo-carousel">
+            <div class="carousel-container">
+                <div class="carousel" id="carousel">
+                    <!-- Carousel items will be added by JavaScript -->
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn">←</button>
+                    <span class="counter-text" id="counter">1 OF 32</span>
+                    <button class="carousel-btn next-btn">→</button>
+                </div>
             </div>
         </div>
     </div>
-    
-    <!-- Image Overlay for full-size view -->
+
+    <!-- Image Overlay -->
     <div class="image-overlay" id="image-overlay">
         <div class="overlay-content">
             <button class="close-btn" onclick="document.getElementById('image-overlay').classList.remove('active')">&times;</button>
             <img src="" alt="Full size image" class="overlay-image" id="overlay-image">
-            <div class="image-info" id="image-info"></div>
         </div>
     </div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="../js/particles-monochrome.js"></script>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const totalImages = 32;
-            const carousel = document.getElementById('carousel');
-            const counterText = document.getElementById('counter');
-            const imageOverlay = document.getElementById('image-overlay');
-            const overlayImage = document.getElementById('overlay-image');
-            const imageInfo = document.getElementById('image-info');
-            
-            // Current central image index
-            let currentIndex = 1;
-            
-            // Function to setup carousel with 3 visible items
-            function setupCarousel() {
-                // Clear existing items
-                carousel.innerHTML = '';
-                
-                // Calculate indices for left, center, right images
-                let leftIndex = currentIndex - 1;
-                if (leftIndex <= 0) leftIndex = totalImages;
-                
-                let rightIndex = currentIndex + 1;
-                if (rightIndex > totalImages) rightIndex = 1;
-                
-                // Create left item
-                createCarouselItem(leftIndex, 'left');
-                
-                // Create center (current) item
-                createCarouselItem(currentIndex, 'center');
-                
-                // Create right item
-                createCarouselItem(rightIndex, 'right');
-                
-                // Update counter
-                counterText.textContent = `${currentIndex} of ${totalImages}`;
-            }
-            
-            // Function to create a carousel item
-            function createCarouselItem(index, position) {
-                const item = document.createElement('div');
-                item.className = `carousel-item ${position}`;
-                
-                // Simply use the index as the filename with .jpg extension
-                const filename = index; // No need for padding or special formatting
-                
-                // Add content
-                item.innerHTML = `
-                    <img src="../images/Photography/${filename}.jpg" alt="Photography ${index}" class="carousel-image">
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 3 21 3 21 9"></polyline>
-                        <polyline points="9 21 3 21 3 15"></polyline>
-                        <line x1="21" y1="3" x2="14" y2="10"></line>
-                        <line x1="3" y1="21" x2="10" y2="14"></line>
-                    </svg>
-                `;
-                
-                // Add click handler - only fully functional for center item
-                item.addEventListener('click', function() {
-                    if (position === 'center') {
-                        // Open overlay for center item
-                        overlayImage.src = `../images/Photography/${filename}.jpg`;
-                        imageInfo.textContent = `Image ${index} of ${totalImages}`;
-                        imageOverlay.classList.add('active');
-                    } else {
-                        // For side items, navigate to that item
-                        currentIndex = index;
-                        setupCarousel();
-                    }
-                });
-                
-                // Add to carousel
-                carousel.appendChild(item);
-            }
-            
-            // Initialize carousel
-            setupCarousel();
-            
-            // Function to navigate to previous image with animation
-            function navigateToPrevious() {
-                // Disable buttons during transition
-                prevBtn.disabled = true;
-                nextBtn.disabled = true;
-                
-                // Get current items
-                const items = carousel.querySelectorAll('.carousel-item');
-                const leftItem = carousel.querySelector('.carousel-item.left');
-                const centerItem = carousel.querySelector('.carousel-item.center');
-                const rightItem = carousel.querySelector('.carousel-item.right');
-                
-                // Apply transition classes
-                rightItem.classList.remove('right');
-                rightItem.classList.add('transition-right');
-                
-                centerItem.classList.remove('center');
-                centerItem.classList.add('transition-left');
-                
-                leftItem.classList.remove('left');
-                leftItem.classList.add('transition-center-from-left');
-                
-                // Wait for animation to complete
-                setTimeout(() => {
-                    // Update current index
-                    currentIndex--;
-                    if (currentIndex < 1) currentIndex = totalImages;
-                    
-                    // Rebuild carousel
+        const totalImages = 32;
+        const carousel = document.getElementById('carousel');
+        const counterText = document.getElementById('counter');
+        const imageOverlay = document.getElementById('image-overlay');
+        const overlayImage = document.getElementById('overlay-image');
+
+        let currentIndex = 1;
+
+        function setupCarousel() {
+            carousel.innerHTML = '';
+
+            const leftIndex = currentIndex === 1 ? totalImages : currentIndex - 1;
+            const rightIndex = currentIndex === totalImages ? 1 : currentIndex + 1;
+
+            createCarouselItem(leftIndex, 'left');
+            createCarouselItem(currentIndex, 'center');
+            createCarouselItem(rightIndex, 'right');
+
+            counterText.textContent = `${currentIndex} OF ${totalImages}`;
+        }
+
+        function createCarouselItem(index, position) {
+            const item = document.createElement('div');
+            item.className = `carousel-item ${position}`;
+
+            const imagePath = `../content/Photography/Portfolio_debayan.${String(index).padStart(3, '0')}.jpeg`;
+
+            item.innerHTML = `
+                <div class="carousel-image-container">
+                    <img src="${imagePath}" alt="Photography ${index}" class="carousel-image">
+                </div>
+            `;
+
+            item.addEventListener('click', function() {
+                if (position === 'center') {
+                    overlayImage.src = imagePath;
+                    imageOverlay.classList.add('active');
+                } else {
+                    currentIndex = index;
                     setupCarousel();
-                    
-                    // Re-enable buttons
-                    prevBtn.disabled = false;
-                    nextBtn.disabled = false;
-                }, 600);
-            }
-            
-            // Function to navigate to next image with animation
-            function navigateToNext() {
-                // Disable buttons during transition
-                prevBtn.disabled = true;
-                nextBtn.disabled = true;
-                
-                // Get current items
-                const items = carousel.querySelectorAll('.carousel-item');
-                const leftItem = carousel.querySelector('.carousel-item.left');
-                const centerItem = carousel.querySelector('.carousel-item.center');
-                const rightItem = carousel.querySelector('.carousel-item.right');
-                
-                // Apply transition classes
-                leftItem.classList.remove('left');
-                leftItem.classList.add('transition-left');
-                
-                centerItem.classList.remove('center');
-                centerItem.classList.add('transition-right');
-                
-                rightItem.classList.remove('right');
-                rightItem.classList.add('transition-center-from-right');
-                
-                // Wait for animation to complete
-                setTimeout(() => {
-                    // Update current index
-                    currentIndex++;
-                    if (currentIndex > totalImages) currentIndex = 1;
-                    
-                    // Rebuild carousel
-                    setupCarousel();
-                    
-                    // Re-enable buttons
-                    prevBtn.disabled = false;
-                    nextBtn.disabled = false;
-                }, 600);
-            }
-            
-            // Add navigation handlers
-            const prevBtn = document.querySelector('.prev-btn');
-            const nextBtn = document.querySelector('.next-btn');
-            
-            prevBtn.addEventListener('click', navigateToPrevious);
-            nextBtn.addEventListener('click', navigateToNext);
-            
-            // Close overlay when clicking outside the image
-            imageOverlay.addEventListener('click', function(e) {
-                if (e.target === imageOverlay) {
-                    imageOverlay.classList.remove('active');
                 }
             });
+
+            carousel.appendChild(item);
+        }
+
+        function navigateToPrevious() {
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+
+            currentIndex = currentIndex === 1 ? totalImages : currentIndex - 1;
+            setupCarousel();
+
+            setTimeout(() => {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }, 600);
+        }
+
+        function navigateToNext() {
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+
+            currentIndex = currentIndex === totalImages ? 1 : currentIndex + 1;
+            setupCarousel();
+
+            setTimeout(() => {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }, 600);
+        }
+
+        document.querySelector('.prev-btn').addEventListener('click', navigateToPrevious);
+        document.querySelector('.next-btn').addEventListener('click', navigateToNext);
+
+        imageOverlay.addEventListener('click', function(e) {
+            if (e.target === imageOverlay) {
+                imageOverlay.classList.remove('active');
+            }
         });
+
+        // Initialize
+        setupCarousel();
     </script>
 </body>
 </html>

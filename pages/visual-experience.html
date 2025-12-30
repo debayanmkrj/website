@@ -4,386 +4,990 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visual Experience Design | Debayan Mukherjee</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
-            --metal-grey: #303030;
-            --light-grey: #e0e0e0;
-            --accent-red: #ff3333;
-            --black: #000000;
-            --white: #ffffff;
+            --retro-cyan: #5adcff;
+            --retro-yellow: #ffc627;
+            --retro-pink: #ff3366;
+            --dark-bg: #080f19;
+            --screen-glow: rgba(90, 220, 255, 0.3);
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Noto Sans', Arial, sans-serif;
         }
-        .section-title,
-        .project-title {
-            font-family: 'Space Mono', monospace;
-        }
+
         body {
-            background-color: black;
-            color: white;
+            background-color: #000;
+            color: #e8f8ff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
             overflow-x: hidden;
         }
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
-        }
-        .page-content {
-            position: relative;
-            padding: 6rem 2rem 4rem;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+
         .back-btn {
             position: fixed;
             top: 2rem;
             left: 2rem;
-            padding: 0.5rem 1rem;
-            background-color: rgba(48, 48, 48, 0.7);
-            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            background-color: rgba(8, 15, 25, 0.85);
+            color: var(--retro-cyan);
             text-decoration: none;
+            border: 2px solid var(--retro-cyan);
             border-radius: 4px;
             z-index: 100;
+            font-weight: 700;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
         }
+
+        .back-btn:hover {
+            background-color: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 25px rgba(90, 220, 255, 0.6);
+        }
+
+        .page-content {
+            padding: 6rem 2rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
         .section-title {
-            font-size: 4rem;
-            margin-bottom: 2rem;
-            display: inline-block;
-            position: relative;
-            margin-top: 0;
+            font-family: 'VT323', monospace;
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            color: var(--retro-cyan);
+            text-shadow: 0 0 20px var(--screen-glow), 0 0 40px var(--screen-glow);
+            letter-spacing: 3px;
+            font-weight: 400;
         }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background-color: var(--accent-red);
-        }
-        .red-text {
-            color: var(--accent-red);
-        }
+
         .section-subtitle {
-            font-size: 1rem;
-            max-width: 700px;
-            color: var(--accent-red);
-            line-height: 1.6;
-            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            max-width: 800px;
+            color: #8ac2ff;
+            line-height: 1.8;
+            margin-bottom: 4rem;
+            font-weight: 300;
         }
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+
+        /* Project Carousel - Retro TV Style */
+        .projects-carousel {
+            margin: 4rem 0;
         }
-        .project-card {
-            background-color: rgba(48, 48, 48, 0.5);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        .project-image {
+
+        .carousel-container {
+            position: relative;
             width: 100%;
-            height: 200px;
-            background-color: var(--metal-grey);
+            max-width: 1200px;
+            height: 500px;
+            margin: 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--light-grey);
-            font-size: 0.8rem;
-            object-fit: cover;
+            perspective: 1000px;
         }
-        .project-info {
+
+        .carousel {
             position: relative;
-            padding: 1.5rem;
-            padding-bottom: 2.5rem;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .project-title {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-        }
-        .project-description {
-            font-size: 0.9rem;
-            color: var(--light-grey);
-            line-height: 1.5;
-        }
-        .expand-icon {
-            color: var(--accent-red);
-            opacity: 0.8;
-            transition: opacity 0.3s;
-            pointer-events: auto;
+
+        .carousel-item {
             position: absolute;
-            right: 1.5rem;
-            bottom: 1.5rem;
-            width: 17px;
-            height: 17px;
-            background: none;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+            border: 4px solid var(--retro-cyan);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow:
+                0 0 30px rgba(90, 220, 255, 0.4),
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.6);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-origin: center;
+        }
+
+        /* TV screen effect */
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                transparent 1px,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 3px
+            );
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.3;
+        }
+
+        /* CRT curvature effect */
+        .carousel-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.8) 100%);
+            pointer-events: none;
             z-index: 2;
         }
-        .project-card:hover .expand-icon {
+
+        .carousel-item.left {
+            transform: translateX(-420px) scale(0.75) rotateY(12deg);
+            opacity: 0.6;
+            z-index: 1;
+            filter: brightness(0.7);
+        }
+
+        .carousel-item.center {
+            transform: translateX(0) scale(1) rotateY(0deg);
             opacity: 1;
+            z-index: 3;
+            filter: brightness(1);
         }
-        @media (max-width: 1024px) {
-            .section-title {
-                font-size: 2.5rem;
-            }
+
+        .carousel-item.right {
+            transform: translateX(420px) scale(0.75) rotateY(-12deg);
+            opacity: 0.6;
+            z-index: 1;
+            filter: brightness(0.7);
         }
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 2rem;
-            }
+
+        .carousel-item.center:hover {
+            border-color: var(--retro-yellow);
+            box-shadow:
+                0 0 40px rgba(255, 198, 39, 0.6),
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.6);
         }
-        @media (max-width: 480px) {
-            .section-title {
-                font-size: 1.8rem;
-            }
-            .project-grid {
-                grid-template-columns: 1fr;
-            }
+
+        .carousel-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #000;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(90, 220, 255, 0.03) 2px, rgba(90, 220, 255, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(90, 220, 255, 0.03) 2px, rgba(90, 220, 255, 0.03) 4px);
         }
+
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+            padding: 2rem 1.5rem 1.5rem;
+            z-index: 3;
+        }
+
+        .project-title {
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            color: var(--retro-yellow);
+            text-shadow: 0 0 10px rgba(255, 198, 39, 0.5);
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .project-description {
+            font-size: 0.9rem;
+            color: #8ac2ff;
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            bottom: -80px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .carousel-btn {
+            background: rgba(8, 15, 25, 0.85);
+            border: 2px solid var(--retro-cyan);
+            color: var(--retro-cyan);
+            font-size: 2rem;
+            font-family: 'VT323', monospace;
+            cursor: pointer;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .carousel-btn:hover:not(:disabled) {
+            background: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 25px rgba(90, 220, 255, 0.6);
+        }
+
+        .carousel-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .counter-text {
+            color: var(--retro-yellow);
+            font-size: 1.5rem;
+            font-family: 'VT323', monospace;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 198, 39, 0.3);
+        }
+
+        /* Project Overlay */
         .project-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.98);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            padding: 0;
+            overflow-y: auto;
         }
+
         .project-overlay.active {
             display: flex;
         }
+
         .project-detail {
-            width: 90%;
-            max-width: 800px;
-            background: rgba(48, 48, 48, 0.8);
-            border-radius: 10px;
-            padding: 0;
             position: relative;
-            margin: 2rem auto;
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 1200px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: linear-gradient(145deg, #0a0a0a 0%, #1a1a1a 100%);
+            border: 3px solid var(--retro-cyan);
+            border-radius: 10px;
+            padding: 3rem;
+            box-shadow: 0 0 50px rgba(90, 220, 255, 0.5);
         }
+
         .overlay-header {
-            position: sticky;
-            top: 0;
-            background: rgba(48, 48, 48, 0.8);
-            z-index: 11;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(90, 220, 255, 0.3);
+            padding-bottom: 1.5rem;
+        }
+
+        .overlay-header h2 {
+            font-family: 'VT323', monospace;
+            font-size: 3rem;
+            color: var(--retro-cyan);
+            text-shadow: 0 0 20px rgba(90, 220, 255, 0.5);
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .close-btn {
+            background: rgba(8, 15, 25, 0.95);
+            border: 2px solid var(--retro-pink);
+            color: var(--retro-pink);
+            font-size: 2.5rem;
+            font-family: 'VT323', monospace;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 2rem 2rem 1rem 2rem;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+            transition: all 0.3s ease;
         }
-        .overlay-header h2 {
-            font-family: 'Space Mono', monospace;
-            font-size: 2rem;
-            margin: 0;
-            color: #fff;
+
+        .close-btn:hover {
+            background: var(--retro-pink);
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.8);
         }
-        .close-btn {
-            position: static;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 12;
-        }
+
         .overlay-content {
-            flex: 1 1 auto;
-            overflow-y: auto;
-            padding: 0 2rem 2rem 2rem;
-            max-height: calc(80vh - 4rem);
+            color: #8ac2ff;
+            line-height: 1.8;
+            font-weight: 300;
         }
+
+        .overlay-content p {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
         .gallery-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
-        .gallery-image {
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--retro-cyan);
+            box-shadow: 0 0 20px rgba(90, 220, 255, 0.4);
+            transform: scale(1.02);
+        }
+
+        .gallery-item img {
             width: 100%;
-            max-width: 100%;
-            height: auto;
-            object-fit: contain;
-            border-radius: 4px;
-            background: #222;
-            margin: 0 auto;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
-        @media (max-width: 600px) {
-            .gallery-image {
-                width: 100%;
-                max-width: 100%;
+
+        .gallery-section-title {
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            color: var(--retro-yellow);
+            margin: 2rem 0 1rem;
+            text-shadow: 0 0 10px rgba(255, 198, 39, 0.3);
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .video-container {
+            margin: 1rem 0;
+            border: 2px solid rgba(90, 220, 255, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        .pdf-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--retro-cyan);
+            text-decoration: none;
+            font-family: 'VT323', monospace;
+            letter-spacing: 2px;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--retro-cyan);
+            border-radius: 4px;
+            background: rgba(8, 15, 25, 0.5);
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .pdf-link:hover {
+            background: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 20px rgba(90, 220, 255, 0.6);
+        }
+
+        .audio-container {
+            margin: 1rem 0;
+        }
+
+        .audio-container audio {
+            width: 100%;
+        }
+
+        /* Full-size image overlay */
+        .fullsize-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.97);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .fullsize-overlay.active {
+            display: flex;
+        }
+
+        .fullsize-content {
+            position: relative;
+            max-width: 95%;
+            max-height: 95vh;
+        }
+
+        .fullsize-image {
+            max-width: 100%;
+            max-height: 95vh;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 3px solid var(--retro-cyan);
+            box-shadow: 0 0 40px rgba(90, 220, 255, 0.6);
+        }
+
+        @media (max-width: 1024px) {
+            .carousel-item {
+                width: 400px;
+                height: 400px;
+            }
+
+            .carousel-item.left,
+            .carousel-item.right {
+                transform: translateX(-350px) scale(0.7);
+            }
+
+            .carousel-item.right {
+                transform: translateX(350px) scale(0.7);
             }
         }
-        .project-image {
-            opacity: 0.8;
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 3rem;
+            }
+
+            .carousel-container {
+                height: 350px;
+            }
+
+            .carousel-item {
+                width: 300px;
+                height: 300px;
+            }
+
+            .carousel-item.left {
+                transform: translateX(-250px) scale(0.6);
+            }
+
+            .carousel-item.right {
+                transform: translateX(250px) scale(0.6);
+            }
+
+            .project-detail {
+                padding: 2rem;
+            }
+
+            .overlay-header h2 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
     <div class="page-content">
-        <a href="../index.html" class="back-btn">← Back</a>
-        <h2 class="section-title">Visual Experience <span class="red-text">Design</span></h2>
-        <p class="section-subtitle">Creating compelling visual narratives and immersive experiences that connect with audiences on an emotional level, driving engagement and leaving lasting impressions.</p>
-        <div class="project-grid">
-            <!-- Project Card 1 -->
-            <div class="project-card" data-overlay="visual-overlay-1">
-                <img class="project-image" src="../images/Visual Experience/Content_Repurpose/cover.jpg" alt="Content Repurpose Cover">
-                <div class="project-info">
-                    <h3 class="project-title">Content Repurpose</h3>
-                    <p class="project-description">Transforming and reimagining content for new platforms and audiences.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+        <a href="../index.html" class="back-btn">← BACK</a>
+        <h1 class="section-title">VISUAL EXPERIENCE DESIGN</h1>
+        <p class="section-subtitle">Curated visual design projects focusing on user experience, interactive media, and immersive digital environments that engage and inspire.</p>
+
+        <div class="projects-carousel">
+            <div class="carousel-container">
+                <div class="carousel" id="carousel">
+                    <!-- Carousel items will be added by JavaScript -->
                 </div>
-            </div>
-            <!-- Project Card 2 -->
-            <div class="project-card" data-overlay="visual-overlay-2">
-                <img class="project-image" src="../images/Visual Experience/Gan/cover.jpg" alt="GAN Experiments Cover">
-                <div class="project-info">
-                    <h3 class="project-title">GAN Experiments</h3>
-                    <p class="project-description">Exploring generative adversarial networks for creative visual outputs.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-            <!-- Project Card 3 -->
-            <div class="project-card" data-overlay="visual-overlay-3">
-                <img class="project-image" src="../images/Visual Experience/Usdz/cover.jpg" alt="Usdz Experiments Cover">
-                <div class="project-info">
-                    <h3 class="project-title">Usdz Experiments</h3>
-                    <p class="project-description">Innovative experiments with USDZ for AR and 3D visual experiences.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-        </div>
-        <!-- Overlays for each project -->
-        <div class="project-overlay" id="visual-overlay-1">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>Content Repurpose</h2>
-                    <button class="close-btn" onclick="document.getElementById('visual-overlay-1').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-content-repurpose"></div>
-                </div>
-            </div>
-        </div>
-        <div class="project-overlay" id="visual-overlay-2">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>GAN Experiments</h2>
-                    <button class="close-btn" onclick="document.getElementById('visual-overlay-2').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-gan"></div>
-                </div>
-            </div>
-        </div>
-        <div class="project-overlay" id="visual-overlay-3">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>Usdz Experiments</h2>
-                    <button class="close-btn" onclick="document.getElementById('visual-overlay-3').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-usdz"></div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn">←</button>
+                    <span class="counter-text" id="counter">1 OF 8</span>
+                    <button class="carousel-btn next-btn">→</button>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="../js/particles-monochrome.js"></script>
+
+    <!-- Project Overlays -->
+    <div class="project-overlay" id="project-overlay-0">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>CONTENT REPURPOSE</h2>
+                <button class="close-btn" onclick="closeOverlay(0)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Strategic content transformation across multiple platforms and formats, adapting visual narratives to maximize engagement and reach across diverse digital channels.</p>
+                <div class="gallery-container" id="gallery-0"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-1">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>GAN EXPLORATIONS</h2>
+                <button class="close-btn" onclick="closeOverlay(1)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Generative Adversarial Network experiments in visual style transfer and creation, exploring the intersection of artificial intelligence and creative expression.</p>
+                <div class="gallery-container" id="gallery-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-2">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>GROOVE IT</h2>
+                <button class="close-btn" onclick="closeOverlay(2)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Interactive rhythm-based visual experience combining music and motion, creating an immersive audiovisual environment that responds to user interaction.</p>
+                <div class="gallery-container" id="gallery-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-3">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>INTERACTIVE MEDIA I</h2>
+                <button class="close-btn" onclick="closeOverlay(3)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Touch-responsive installations exploring human-computer interaction through innovative interface design and real-time feedback mechanisms.</p>
+                <div class="gallery-container" id="gallery-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-4">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>INTERACTIVE MEDIA II</h2>
+                <button class="close-btn" onclick="closeOverlay(4)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Advanced interactive experiences with real-time visual feedback systems, building on foundational concepts to create more sophisticated user interactions.</p>
+                <div class="gallery-container" id="gallery-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-5">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>REVERSE MIRROR</h2>
+                <button class="close-btn" onclick="closeOverlay(5)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Augmented reality mirror installation exploring perception and identity, challenging conventional notions of self-representation in digital spaces.</p>
+                <div class="gallery-container" id="gallery-5"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-6">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>USDZ AR EXPERIENCES</h2>
+                <button class="close-btn" onclick="closeOverlay(6)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>3D augmented reality content creation for mobile platforms, leveraging USDZ format to deliver seamless AR experiences on iOS devices.</p>
+                <div class="gallery-container" id="gallery-6"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-7">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>WARRIOR DUEL</h2>
+                <button class="close-btn" onclick="closeOverlay(7)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Interactive game experience with motion-based gameplay mechanics, combining physical movement with digital interaction for an engaging combat experience.</p>
+                <div class="gallery-container" id="gallery-7"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full-size Image Overlay -->
+    <div class="fullsize-overlay" id="fullsize-overlay">
+        <div class="fullsize-content">
+            <button class="close-btn" onclick="closeFullImage()" style="position: absolute; top: -60px; right: -60px;">&times;</button>
+            <img src="" alt="Full size" class="fullsize-image" id="fullsize-image">
+        </div>
+    </div>
+
     <script>
-    // Overlay open/close logic
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.project-card').forEach(function(card) {
-            card.addEventListener('click', function(e) {
-                if (e.target.classList.contains('expand-icon') || e.currentTarget === e.target || e.target.classList.contains('project-image') || e.target.classList.contains('project-info')) {
-                    const overlayId = card.getAttribute('data-overlay');
-                    if (overlayId) {
-                        document.getElementById(overlayId).classList.add('active');
-                    }
+        // Project data
+        const projects = [
+            {
+                name: 'Content_Repurpose',
+                title: 'CONTENT REPURPOSE',
+                description: 'Strategic content transformation across multiple platforms and formats.',
+                coverImage: '../content/Visual Experience/Content_Repurpose/1.jpg'
+            },
+            {
+                name: 'Gan',
+                title: 'GAN EXPLORATIONS',
+                description: 'Generative Adversarial Network experiments in visual style transfer and creation.',
+                coverImage: '../content/Visual Experience/Gan/cover.jpg'
+            },
+            {
+                name: 'Groove_it',
+                title: 'GROOVE IT',
+                description: 'Interactive rhythm-based visual experience combining music and motion.',
+                coverImage: '../content/Visual Experience/Groove_it/cover.jpg'
+            },
+            {
+                name: 'Interactive_Media',
+                title: 'INTERACTIVE MEDIA I',
+                description: 'Touch-responsive installations exploring human-computer interaction.',
+                coverImage: '../content/Visual Experience/Interactive_Media/cover.jpg'
+            },
+            {
+                name: 'Interactive_Media_2',
+                title: 'INTERACTIVE MEDIA II',
+                description: 'Advanced interactive experiences with real-time visual feedback systems.',
+                coverImage: '../content/Visual Experience/Interactive_Media_2/cover.jpg'
+            },
+            {
+                name: 'Reverse_Mirror',
+                title: 'REVERSE MIRROR',
+                description: 'Augmented reality mirror installation exploring perception and identity.',
+                coverImage: '../content/Visual Experience/Reverse_Mirror/cover.jpg'
+            },
+            {
+                name: 'Usdz',
+                title: 'USDZ AR EXPERIENCES',
+                description: '3D augmented reality content creation for mobile platforms.',
+                coverImage: '../content/Visual Experience/Usdz/cover.jpg'
+            },
+            {
+                name: 'Warrior_Duel',
+                title: 'WARRIOR DUEL',
+                description: 'Interactive game experience with motion-based gameplay mechanics.',
+                coverImage: '../content/Visual Experience/Warrior_Duel/cover.jpg'
+            }
+        ];
+
+        const carousel = document.getElementById('carousel');
+        const counterText = document.getElementById('counter');
+        const fullsizeOverlay = document.getElementById('fullsize-overlay');
+        const fullsizeImage = document.getElementById('fullsize-image');
+
+        let currentIndex = 0;
+        let projectContent = {}; // Cache loaded content
+
+        // Utility function to check if a file exists
+        async function fileExists(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                return response.ok;
+            } catch {
+                return false;
+            }
+        }
+
+        // Dynamically load all content from a project folder
+        async function loadProjectContent(project) {
+            const basePath = `../content/Visual Experience/${project.name}/`;
+            const content = {
+                images: [],
+                videos: [],
+                pdfs: [],
+                audio: []
+            };
+
+            // Probe for numbered images (1.jpg, 2.jpg, etc.)
+            for (let i = 1; i <= 30; i++) {
+                const jpgUrl = `${basePath}${i}.jpg`;
+                const jpegUrl = `${basePath}${i}.jpeg`;
+                const pngUrl = `${basePath}${i}.png`;
+
+                if (await fileExists(jpgUrl)) {
+                    content.images.push(jpgUrl);
+                } else if (await fileExists(jpegUrl)) {
+                    content.images.push(jpegUrl);
+                } else if (await fileExists(pngUrl)) {
+                    content.images.push(pngUrl);
+                } else {
+                    break; // Stop when no more numbered images found
+                }
+            }
+
+            // Probe for videos (media1.mp4, media2.mp4, etc. and video1.mp4, video2.mp4, etc.)
+            for (let i = 1; i <= 10; i++) {
+                const mediaUrl = `${basePath}media${i}.mp4`;
+                const videoUrl = `${basePath}video${i}.mp4`;
+
+                if (await fileExists(mediaUrl)) {
+                    content.videos.push(mediaUrl);
+                }
+                if (await fileExists(videoUrl)) {
+                    content.videos.push(videoUrl);
+                }
+            }
+
+            // Check for PDFs (project_name.pdf, document.pdf, etc.)
+            const pdfPatterns = [
+                `${project.name.toLowerCase()}.pdf`,
+                'document.pdf',
+                'paper.pdf',
+                'presentation.pdf'
+            ];
+
+            for (const pdfName of pdfPatterns) {
+                const pdfUrl = `${basePath}${pdfName}`;
+                if (await fileExists(pdfUrl)) {
+                    content.pdfs.push(pdfUrl);
+                }
+            }
+
+            // Check for audio files (audio1.mp3, sound1.wav, etc.)
+            for (let i = 1; i <= 10; i++) {
+                const mp3Url = `${basePath}audio${i}.mp3`;
+                const wavUrl = `${basePath}sound${i}.wav`;
+
+                if (await fileExists(mp3Url)) {
+                    content.audio.push(mp3Url);
+                }
+                if (await fileExists(wavUrl)) {
+                    content.audio.push(wavUrl);
+                }
+            }
+
+            return content;
+        }
+
+        function setupCarousel() {
+            carousel.innerHTML = '';
+
+            const leftIndex = (currentIndex - 1 + projects.length) % projects.length;
+            const rightIndex = (currentIndex + 1) % projects.length;
+
+            createCarouselItem(leftIndex, 'left');
+            createCarouselItem(currentIndex, 'center');
+            createCarouselItem(rightIndex, 'right');
+
+            counterText.textContent = `${currentIndex + 1} OF ${projects.length}`;
+        }
+
+        function createCarouselItem(index, position) {
+            const project = projects[index];
+            const item = document.createElement('div');
+            item.className = `carousel-item ${position}`;
+
+            item.innerHTML = `
+                <div class="carousel-image-container">
+                    <img src="${project.coverImage}" alt="${project.title}" class="carousel-image">
+                    <div class="project-info">
+                        <div class="project-title">${project.title}</div>
+                        <div class="project-description">${project.description}</div>
+                    </div>
+                </div>
+            `;
+
+            item.addEventListener('click', function() {
+                if (position === 'center') {
+                    openOverlay(index);
+                } else {
+                    currentIndex = index;
+                    setupCarousel();
                 }
             });
-        });
-        document.querySelectorAll('.project-overlay').forEach(function(overlay) {
+
+            carousel.appendChild(item);
+        }
+
+        async function openOverlay(index) {
+            const project = projects[index];
+            const overlay = document.getElementById(`project-overlay-${index}`);
+            const gallery = document.getElementById(`gallery-${index}`);
+
+            // Load content if not cached
+            if (!projectContent[project.name]) {
+                projectContent[project.name] = await loadProjectContent(project);
+            }
+
+            const content = projectContent[project.name];
+
+            // Clear and populate gallery
+            gallery.innerHTML = '';
+
+            // Add images
+            content.images.forEach((imgUrl, i) => {
+                const imgDiv = document.createElement('div');
+                imgDiv.className = 'gallery-item';
+                imgDiv.innerHTML = `<img src="${imgUrl}" alt="${project.title} ${i + 1}">`;
+                imgDiv.onclick = () => openFullImage(imgUrl);
+                gallery.appendChild(imgDiv);
+            });
+
+            // Add videos
+            if (content.videos.length > 0) {
+                const videoTitle = document.createElement('h3');
+                videoTitle.className = 'gallery-section-title';
+                videoTitle.textContent = 'Videos';
+                gallery.appendChild(videoTitle);
+
+                content.videos.forEach(videoUrl => {
+                    const videoDiv = document.createElement('div');
+                    videoDiv.className = 'video-container';
+                    videoDiv.innerHTML = `
+                        <video controls>
+                            <source src="${videoUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    `;
+                    gallery.appendChild(videoDiv);
+                });
+            }
+
+            // Add PDFs
+            if (content.pdfs.length > 0) {
+                const pdfTitle = document.createElement('h3');
+                pdfTitle.className = 'gallery-section-title';
+                pdfTitle.textContent = 'Documents';
+                gallery.appendChild(pdfTitle);
+
+                const pdfContainer = document.createElement('div');
+                content.pdfs.forEach((pdfUrl, i) => {
+                    const link = document.createElement('a');
+                    link.href = pdfUrl;
+                    link.target = '_blank';
+                    link.className = 'pdf-link';
+                    link.textContent = `VIEW PDF ${i + 1}`;
+                    pdfContainer.appendChild(link);
+                });
+                gallery.appendChild(pdfContainer);
+            }
+
+            // Add audio
+            if (content.audio.length > 0) {
+                const audioTitle = document.createElement('h3');
+                audioTitle.className = 'gallery-section-title';
+                audioTitle.textContent = 'Audio';
+                gallery.appendChild(audioTitle);
+
+                content.audio.forEach(audioUrl => {
+                    const audioDiv = document.createElement('div');
+                    audioDiv.className = 'audio-container';
+                    audioDiv.innerHTML = `
+                        <audio controls>
+                            <source src="${audioUrl}">
+                            Your browser does not support the audio element.
+                        </audio>
+                    `;
+                    gallery.appendChild(audioDiv);
+                });
+            }
+
+            overlay.classList.add('active');
+        }
+
+        function closeOverlay(index) {
+            const overlay = document.getElementById(`project-overlay-${index}`);
+            overlay.classList.remove('active');
+        }
+
+        function openFullImage(imageUrl) {
+            fullsizeImage.src = imageUrl;
+            fullsizeOverlay.classList.add('active');
+        }
+
+        function closeFullImage() {
+            fullsizeOverlay.classList.remove('active');
+            fullsizeImage.src = '';
+        }
+
+        function navigateToPrevious() {
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+
+            currentIndex = (currentIndex - 1 + projects.length) % projects.length;
+            setupCarousel();
+
+            setTimeout(() => {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }, 600);
+        }
+
+        function navigateToNext() {
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+
+            currentIndex = (currentIndex + 1) % projects.length;
+            setupCarousel();
+
+            setTimeout(() => {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }, 600);
+        }
+
+        document.querySelector('.prev-btn').addEventListener('click', navigateToPrevious);
+        document.querySelector('.next-btn').addEventListener('click', navigateToNext);
+
+        // Close overlays when clicking outside
+        document.querySelectorAll('.project-overlay').forEach(overlay => {
             overlay.addEventListener('click', function(e) {
                 if (e.target === overlay) {
                     overlay.classList.remove('active');
                 }
             });
         });
-        // Load gallery images when overlay is opened
-        const galleryMap = [
-            {
-                overlay: 'visual-overlay-1',
-                container: 'gallery-content-repurpose',
-                folder: '../images/Visual Experience/Content_Repurpose',
-                count: 6
-            },
-            {
-                overlay: 'visual-overlay-2',
-                container: 'gallery-gan',
-                folder: '../images/Visual Experience/Gan',
-                count: 3
-            },
-            {
-                overlay: 'visual-overlay-3',
-                container: 'gallery-usdz',
-                folder: '../images/Visual Experience/Usdz',
-                count: 3
-            }
-        ];
-        galleryMap.forEach(function(gal) {
-            const overlay = document.getElementById(gal.overlay);
-            if (overlay) {
-                const observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
-                            const container = document.getElementById(gal.container);
-                            if (container) {
-                                container.innerHTML = '';
-                                for (let i = 1; i <= gal.count; i++) {
-                                    const img = document.createElement('img');
-                                    img.src = gal.folder + '/' + i + '.jpg';
-                                    img.alt = gal.overlay + ' image ' + i;
-                                    img.className = 'gallery-image';
-                                    container.appendChild(img);
-                                }
-                            }
-                        }
-                    });
-                });
-                observer.observe(overlay, { attributes: true });
+
+        fullsizeOverlay.addEventListener('click', function(e) {
+            if (e.target === fullsizeOverlay) {
+                closeFullImage();
             }
         });
-    });
+
+        // Initialize
+        setupCarousel();
     </script>
 </body>
 </html>

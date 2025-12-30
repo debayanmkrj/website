@@ -1,0 +1,11 @@
+{
+  "name": "vintage-design-tv",
+  "version": "1.0.0",
+  "description": "Retro TV portfolio website",
+  "scripts": {
+    "dev": "npx http-server . -p 8080 -c-1 --cors"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

@@ -3,964 +3,853 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Technology Projects | Debayan Mukherjee</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Creative Technology | Debayan Mukherjee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
-            --metal-grey: #303030;
-            --light-grey: #e0e0e0;
-            --accent-red: #ff3333;
-            --black: #000000;
-            --white: #ffffff;
+            --retro-cyan: #5adcff;
+            --retro-yellow: #ffc627;
+            --retro-pink: #ff3366;
+            --dark-bg: #080f19;
+            --screen-glow: rgba(90, 220, 255, 0.3);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Noto Sans', Arial, sans-serif;
         }
-        .section-title,
-        .project-title {
-            font-family: 'Space Mono', monospace;
-        }
+
         body {
-            background-color: black;
-            color: white;
+            background-color: #000;
+            color: #e8f8ff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
             overflow-x: hidden;
         }
-        
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
-        }
-        
-        .page-content {
-            position: relative;
-            padding: 6rem 2rem 4rem;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
+
         .back-btn {
             position: fixed;
             top: 2rem;
             left: 2rem;
-            padding: 0.5rem 1rem;
-            background-color: rgba(48, 48, 48, 0.7);
-            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            background-color: rgba(8, 15, 25, 0.85);
+            color: var(--retro-cyan);
             text-decoration: none;
+            border: 2px solid var(--retro-cyan);
             border-radius: 4px;
             z-index: 100;
+            font-weight: 700;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
         }
-        
+
         .back-btn:hover {
-            background-color: var(--accent-red);
-            border-color: var(--accent-red);
+            background-color: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 25px rgba(90, 220, 255, 0.6);
         }
-        
+
+        .page-content {
+            padding: 6rem 2rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
         .section-title {
-            font-size: 4rem;
-            margin-bottom: 2rem;
-            display: inline-block;
-            position: relative;
-            margin-top: 0;
+            font-family: 'VT323', monospace;
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            color: var(--retro-cyan);
+            text-shadow: 0 0 20px var(--screen-glow), 0 0 40px var(--screen-glow);
+            letter-spacing: 3px;
+            font-weight: 400;
         }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background-color: var(--accent-red);
-        }
-        
-        .red-text {
-            color: var(--accent-red);
-        }
-        
+
         .section-subtitle {
-            font-size: 1rem;
-            max-width: 700px;
-            color: var(--accent-red);
-            line-height: 1.6;
-            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            max-width: 800px;
+            color: #8ac2ff;
+            line-height: 1.8;
+            margin-bottom: 4rem;
+            font-weight: 300;
         }
-        
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+
+        .projects-carousel {
+            margin: 4rem 0;
         }
-        
-        .project-card {
-            background-color: rgba(48, 48, 48, 0.5);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .project-image {
+
+        .carousel-container {
+            position: relative;
             width: 100%;
-            height: 200px;
-            background-color: var(--metal-grey);
+            max-width: 1200px;
+            height: 500px;
+            margin: 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--light-grey);
-            font-size: 0.8rem;
+            perspective: 1000px;
         }
-        
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+            border: 4px solid var(--retro-cyan);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow:
+                0 0 30px rgba(90, 220, 255, 0.4),
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.6);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-origin: center;
+        }
+
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                transparent 1px,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 3px
+            );
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.3;
+        }
+
+        .carousel-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.8) 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .carousel-item.left {
+            transform: translateX(-420px) scale(0.75) rotateY(12deg);
+            opacity: 0.6;
+            z-index: 1;
+            filter: brightness(0.7);
+        }
+
+        .carousel-item.center {
+            transform: translateX(0) scale(1) rotateY(0deg);
+            opacity: 1;
+            z-index: 3;
+            filter: brightness(1);
+        }
+
+        .carousel-item.right {
+            transform: translateX(420px) scale(0.75) rotateY(-12deg);
+            opacity: 0.6;
+            z-index: 1;
+            filter: brightness(0.7);
+        }
+
+        .carousel-item.center:hover {
+            border-color: var(--retro-yellow);
+            box-shadow:
+                0 0 40px rgba(255, 198, 39, 0.6),
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .carousel-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #000;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(90, 220, 255, 0.03) 2px, rgba(90, 220, 255, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(90, 220, 255, 0.03) 2px, rgba(90, 220, 255, 0.03) 4px);
+        }
+
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         .project-info {
-            padding: 1.5rem;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+            padding: 2rem 1.5rem 1.5rem;
+            z-index: 3;
         }
-        
+
         .project-title {
-            font-size: 1.2rem;
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            color: var(--retro-yellow);
+            text-shadow: 0 0 10px rgba(255, 198, 39, 0.5);
             margin-bottom: 0.5rem;
-            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 400;
         }
-        
+
         .project-description {
             font-size: 0.9rem;
-            color: var(--light-grey);
+            color: #8ac2ff;
             line-height: 1.5;
+            font-weight: 300;
         }
-        
-        /* Responsive styles */
-        @media (max-width: 1024px) {
-            .section-title {
-                font-size: 2.5rem;
-            }
+
+        .carousel-controls {
+            position: absolute;
+            bottom: -80px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            align-items: center;
         }
-        
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 2rem;
-            }
+
+        .carousel-btn {
+            background: rgba(8, 15, 25, 0.85);
+            border: 2px solid var(--retro-cyan);
+            color: var(--retro-cyan);
+            font-size: 2rem;
+            font-family: 'VT323', monospace;
+            cursor: pointer;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
         }
-        
-        @media (max-width: 480px) {
-            .section-title {
-                font-size: 1.8rem;
-            }
-            
-            .project-grid {
-                grid-template-columns: 1fr;
-            }
+
+        .carousel-btn:hover:not(:disabled) {
+            background: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 25px rgba(90, 220, 255, 0.6);
         }
-    </style>
-</head>
-<body>
-    <div id="canvas-container"></div>
-    
-    <div class="page-content">
-        <a href="../index.html" class="back-btn">← Back</a>
-        <h2 class="section-title">Creative <span class="red-text">Technology</span> Projects</h2>
-        <p class="section-subtitle">Exploring the intersection of design and technology to create innovative solutions and interactive experiences that push the boundaries of digital innovation.</p>
-        
-        <div class="project-grid">
-            <!-- Project Card 1 -->
-            <div class="project-card" data-overlay="tech-overlay-1">
-                <img class="project-image echo-halt-cover" src="../images/Technology/Echo_Halt/cover.jpg" alt="Echo Halt Cover">
-                <div class="project-info">
-                    <h3 class="project-title">Echo Halt</h3>
-                    <p class="project-description">The social media platform that only allows users to post unique content.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-            <!-- Project Card 2 -->
-            <div class="project-card" data-overlay="tech-overlay-2">
-                <img class="project-image warrior-duel-cover" src="../images/Technology/Warrior_Duel/cover.jpg" alt="Warrior Duel Cover">
-                <div class="project-info">
-                    <h3 class="project-title">Warrior Duel</h3>
-                    <p class="project-description">A 1-P iOS game where you choose your warrior and fight against the AI Vampire.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-            <!-- Project Card 3 -->
-            <div class="project-card" data-overlay="tech-overlay-3">
-                <img class="project-image groove-it-cover" src="../images/Technology/Groove_it/cover.jpg" alt="GROO-V-IT Cover">
-                <div class="project-info">
-                    <h3 class="project-title">GROO-V-IT</h3>
-                    <p class="project-description">An iOS music player that enables users to visualize the music with audio reactive 3D models.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-            <!-- Project Card 4 -->
-            <div class="project-card" data-overlay="tech-overlay-4">
-                <img class="project-image imagebot-cover" src="../images/Technology/Imagebot/cover.jpg" alt="Imagebot Cover">
-                <div class="project-info">
-                    <h3 class="project-title">Imagebot</h3>
-                    <p class="project-description">A natural language image editing and generation tool.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-            <!-- Project Card 5 -->
-            <div class="project-card" data-overlay="tech-overlay-5">
-                <img class="project-image alt-dj-cover" src="../images/Technology/Alt_dj/cover.jpg" alt="alt-dj-cover">
-                <div class="project-info">
-                    <h3 class="project-title">Alt-DJ</h3>
-                    <p class="project-description">ALT-DJ is a comprehensive machine learning system that analyzes DJ hand movements and applies neural audio style transfer to recreate the performance styles of famous DJs.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-            <!-- Project Card 6 -->
-            <div class="project-card" data-overlay="tech-overlay-6">
-                <img class="project-image interactive-media-cover" src="../images/Technology/Interactive_Media/cover.jpg" alt="Interactive Media Cover">
-                <div class="project-info">
-                    <h3 class="project-title">Interactive Media</h3>
-                    <p class="project-description">This Max/MSP project transforms traditional keyboard-based racing controls into an intuitive gesture-based interface.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-            <!-- Project Card 7 -->
-            <div class="project-card" data-overlay="tech-overlay-7">
-                <img class="project-image prisma-cover" src="../images/Technology/Prisma/cover.jpg" alt="Prisma Cover">
-                <div class="project-info">
-                    <h3 class="project-title">Prisma</h3>
-                    <p class="project-description">An interactive webcam based installation that illustrates human in the past, present and future keeping the user as the main subject of vizualization.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-            <!-- Project Card 8 -->
-            <div class="project-card" data-overlay="tech-overlay-8">
-                <img class="project-image interactive-media-gyroscope-cover" src="../images/Technology/Interactive_Media_2/cover.jpg" alt="Interactive Media Gyroscope">
-                <div class="project-info">
-                    <h3 class="project-title">Interactive Media Gyroscope</h3>
-                    <p class="project-description">A Max/Msp project that utilizes Gyroscope data from cellphone to create an interactive experience and detect color blindness.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-            <!-- Project Card 9 -->
-             <div class="project-card" data-overlay="tech-overlay-9">
-                <img class="project-image Morodd" src="../images/Technology/Morodd/cover.jpg" alt="Morodd">
-                <div class="project-info">
-                    <h3 class="project-title">Morodd</h3>
-                    <p class="project-description">Morodd is an interactive art installation that enables users to visualize themselves as a 3D rendering and navigate those spaces.</p>
-                    <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                </div>
-            </div>
-        </div>
 
-        <!-- Overlays for each project -->
-        <div class="project-overlay" id="tech-overlay-1">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>Echo Halt</h2>
-                    <button class="close-btn" onclick="document.getElementById('tech-overlay-1').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-echohalt"></div>
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const overlay = document.getElementById('tech-overlay-1');
-                        if (overlay) {
-                            const observer = new MutationObserver(function(mutations) {
-                                mutations.forEach(function(mutation) {
-                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
-                                        const container = document.getElementById('gallery-echohalt');
-                                        if (container) {
-                                            container.innerHTML = '';
-                                            for (let i = 1; i <= 6; i++) {
-                                                const img = document.createElement('img');
-                                                img.src = '../images/Technology/Echo_Halt/' + i + '.jpg';
-                                                img.alt = 'Echo Halt image ' + i;
-                                                img.className = 'gallery-image';
-                                                container.appendChild(img);
-                                            }
-                                        }
-                                    }
-                                });
-                            });
-                            observer.observe(overlay, { attributes: true });
-                        }
-                    });
-                    </script>
-                    <div style="text-align: center; margin-top: 2rem;">
-                        <a href="../images/Technology/Echo_Halt/echo_halt.pdf" 
-                            class="social-link" 
-                            style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                            </svg>
-                            <span style="transition:all 0.3s;">Echo_halt Documentation</span>
-                        </a>
-                    </div>
+        .carousel-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
 
-                    </script>
-                    <div style="text-align:center; margin-top:2rem;">
-                        <a href="https://github.com/debayanmkrj/Echo-Halt" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            <span style="transition:all 0.3s;">Echo Halt</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="project-overlay" id="tech-overlay-2">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>Warrior Duel</h2>
-                    <button class="close-btn" onclick="document.getElementById('tech-overlay-2').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-warriorduel"></div>
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const overlay = document.getElementById('tech-overlay-2');
-                        if (overlay) {
-                            const observer = new MutationObserver(function(mutations) {
-                                mutations.forEach(function(mutation) {
-                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
-                                        const container = document.getElementById('gallery-warriorduel');
-                                        if (container) {
-                                            container.innerHTML = '';
-                                            // Add description before images
-                                            const desc = document.createElement('p');
-                                            desc.style.marginBottom = '1.5rem';
-                                            desc.textContent = 'This is a 1 player game where the user takes on the role of one of the three warriors. The user gets options from a) A samurai b) A shinobi and c) A fighter. Each of the warriors have specialized attack weapons/styles – Samurai with a sword (katana), Fighter with a power kick or punch, Shinobi with a scythe. The game has duel sets at different world/scenes against Vampires with their own power moves – Converted Vampire with a sword (level 1), Vampire girl with transformation to werewolf (level 2) and final boss vampire villain with fire range attacks (level 3). The player navigates the duel across the 3-complexity level as mentioned above to finally free the world of vampires.';
-                                            container.appendChild(desc);
-                                            for (let i = 1; i <= 4; i++) {
-                                                const img = document.createElement('img');
-                                                img.src = '../images/Technology/Warrior_Duel/' + i + '.jpg';
-                                                img.alt = 'Warrior Duel image ' + i;
-                                                img.className = 'gallery-image';
-                                                container.appendChild(img);
-                                            }
-                                            // Add heading before video
-                                            const heading = document.createElement('h3');
-                                            heading.textContent = 'Gameplay';
-                                            heading.style.textAlign = 'center';
-                                            heading.style.margin = '2rem 0 1rem 0';
-                                            container.appendChild(heading);
-                                            // Add video
-                                            const video = document.createElement('video');
-                                            video.src = '../images/Technology/Warrior_Duel/Media1.mp4';
-                                            video.controls = true;
-                                            video.className = 'gallery-image';
-                                            container.appendChild(video);
-                                        }
-                                    }
-                                });
-                            });
-                            observer.observe(overlay, { attributes: true });
-                        }
-                    });
-                    </script>
-                    <div style="text-align:center; margin-top:2rem;">
-                        <a href="https://github.com/debayanmkrj/Warrior-Duel" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            <span style="transition:all 0.3s;">Warrior Duel</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="project-overlay" id="tech-overlay-3">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>GROO-V-IT</h2>
-                    <button class="close-btn" onclick="document.getElementById('tech-overlay-3').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-grooveit"></div>
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const overlay = document.getElementById('tech-overlay-3');
-                        if (overlay) {
-                            const observer = new MutationObserver(function(mutations) {
-                                mutations.forEach(function(mutation) {
-                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
-                                        const container = document.getElementById('gallery-grooveit');
-                                        if (container) {
-                                            container.innerHTML = '';
-                                            for (let i = 1; i <= 7; i++) {
-                                                const img = document.createElement('img');
-                                                img.src = '../images/Technology/Groove_it/' + i + '.jpg';
-                                                img.alt = 'GROO-V-IT image ' + i;
-                                                img.className = 'gallery-image';
-                                                container.appendChild(img);
-                                            }
-                                            // Add heading before 3D view video
-                                            const heading3d = document.createElement('h3');
-                                            heading3d.textContent = '3D view';
-                                            heading3d.style.textAlign = 'center';
-                                            heading3d.style.margin = '2rem 0 1rem 0';
-                                            container.appendChild(heading3d);
-                                            // Add 3D view video
-                                            const video3d = document.createElement('video');
-                                            video3d.src = '../images/Technology/Groove_it/media1.mp4';
-                                            video3d.controls = true;
-                                            video3d.className = 'gallery-image';
-                                            container.appendChild(video3d);
-                                            // Add heading before AR view video
-                                            const headingAR = document.createElement('h3');
-                                            headingAR.textContent = 'AR view';
-                                            headingAR.style.textAlign = 'center';
-                                            headingAR.style.margin = '2rem 0 1rem 0';
-                                            container.appendChild(headingAR);
-                                            // Add AR view video
-                                            const videoAR = document.createElement('video');
-                                            videoAR.src = '../images/Technology/Groove_it/media2.mp4';
-                                            videoAR.controls = true;
-                                            videoAR.className = 'gallery-image';
-                                            container.appendChild(videoAR);
-                                        }
-                                    }
-                                });
-                            });
-                            observer.observe(overlay, { attributes: true });
-                        }
-                    });
-                    </script>
-                    <div style="text-align:center; margin-top:2rem;">
-                        <a href="https://github.com/debayanmkrj/GROO-V-IT" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            <span style="transition:all 0.3s;">GROO-V-IT</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="project-overlay" id="tech-overlay-4">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>Imagebot</h2>
-                    <button class="close-btn" onclick="document.getElementById('tech-overlay-4').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-imagebot"></div>
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const overlay = document.getElementById('tech-overlay-4');
-                        if (overlay) {
-                            const observer = new MutationObserver(function(mutations) {
-                                mutations.forEach(function(mutation) {
-                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
-                                        const container = document.getElementById('gallery-imagebot');
-                                        if (container) {
-                                            container.innerHTML = '';
-                                            // Add description before images
-                                            const desc = document.createElement('p');
-                                            desc.style.marginBottom = '1.5rem';
-                                            desc.textContent = 'Image bot is an Image Editing and Sketch-to-Image AI Bot that combines basic image processing capabilities with advanced AI-based sketch-to-image conversion using the img2img-turbo model using natural language processing.';
-                                            container.appendChild(desc);
-                                            for (let i = 1; i <= 8; i++) {
-                                                const img = document.createElement('img');
-                                                img.src = '../images/Technology/Imagebot/' + i + '.jpg';
-                                                img.alt = 'Imagebot image ' + i;
-                                                img.className = 'gallery-image';
-                                                container.appendChild(img);
-                                            }
-                                            // Add heading before demo video
-                                            const headingdemo = document.createElement('h3');
-                                            headingdemo.textContent = 'Demonstration';
-                                            headingdemo.style.textAlign = 'center';
-                                            headingdemo.style.margin = '2rem 0 1rem 0';
-                                            container.appendChild(headingdemo);
-                                            // Add demo video
-                                            const videodemo = document.createElement('video');
-                                            videodemo.src = '../images/Technology/Imagebot/media1.mp4';
-                                            videodemo.controls = true;
-                                            videodemo.className = 'gallery-image';
-                                            container.appendChild(videodemo);
-                                            
-                                        }
-                                    }
-                                });
-                            });
-                            observer.observe(overlay, { attributes: true });
-                        }
-                    });
-                    </script>
-                    <div style="text-align:center; margin-top:2rem;">
-                        <a href="https://github.com/debayanmkrj/Imagebot" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            <span style="transition:all 0.3s;">Imagebot</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="project-overlay" id="tech-overlay-5">
-        <div class="project-detail">
-            <div class="overlay-header">
-                <h2>Alt-DJ</h2>
-                <button class="close-btn" onclick="document.getElementById('tech-overlay-5').classList.remove('active')">&times;</button>
-            </div>
-            <div class="overlay-content">
-                <div class="gallery-container" id="gallery-alt_dj"></div>
-                <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const overlay = document.getElementById('tech-overlay-5');
-                    if (overlay) {
-                        const observer = new MutationObserver(function(mutations) {
-                            mutations.forEach(function(mutation) {
-                                if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
-                                    const container = document.getElementById('gallery-alt_dj'); // Fixed: was 'gallery-prisma'
-                                    if (container) {
-                                        container.innerHTML = '';
-                                        // Add description before images
-                                        const desc = document.createElement('p');
-                                        desc.style.marginBottom = '1.5rem';
-                                        desc.textContent = 'ALT-DJ is a comprehensive machine learning system that analyzes DJ hand movements and applies neural audio style transfer to recreate the performance styles of famous DJs. The project combines computer vision with advanced audio processing, using YOLOv8 for real-time detection of DJ equipment interactions (crossfaders, EQ knobs, jog wheels) and a custom neural network architecture for audio style transfer between different DJ styles. The system achieved 67.5% mAP for interaction detection and successfully trained style embeddings for artists like Armin van Buuren, Calvin Harris, and Marshmello. The desktop application provides real-time visualization of predicted DJ movements synchronized with style-transferred audio, creating an immersive experience that demonstrates how AI can understand and replicate the nuanced artistry of professional DJ performances. This project showcases expertise in deep learning, computer vision, audio signal processing, and full-stack application development.';
-                                        container.appendChild(desc);
-                                        for (let i = 1; i <= 8; i++) {
-                                            const img = document.createElement('img');
-                                            img.src = '../images/Technology/Alt_dj/' + i + '.jpg';
-                                            img.alt = 'Alt-DJ image ' + i;
-                                            img.className = 'gallery-image';
-                                            container.appendChild(img);
-                                        }
-                                        // Add heading before demo video
-                                        const headingdemo = document.createElement('h3');
-                                        headingdemo.textContent = 'Demonstration';
-                                        headingdemo.style.textAlign = 'center';
-                                        headingdemo.style.margin = '2rem 0 1rem 0';
-                                        container.appendChild(headingdemo);
-                                        // Add demo video
-                                        const videodemo = document.createElement('video');
-                                        videodemo.src = '../images/Technology/Alt_dj/media1.mp4';
-                                        videodemo.controls = true;
-                                        videodemo.className = 'gallery-image';
-                                        container.appendChild(videodemo);
-                                    }
-                                }
-                            });
-                        });
-                        observer.observe(overlay, { attributes: true });
-                    }
-                });
-                </script>
-                    <div style="text-align:center; margin-top:2rem;">
-                        <a href="https://github.com/debayanmkrj/Alt-DJ" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            <span style="transition:all 0.3s;">Alt_dj</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="project-overlay" id="tech-overlay-6">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>Interactive Media</h2>
-                    <button class="close-btn" onclick="document.getElementById('tech-overlay-6').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-interactive-media"></div>
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const overlay = document.getElementById('tech-overlay-6');
-                        if (overlay) {
-                            const observer = new MutationObserver(function(mutations) {
-                                mutations.forEach(function(mutation) {
-                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
-                                        const container = document.getElementById('gallery-interactive-media');
-                                        if (container) {
-                                            container.innerHTML = '';
-                                            // Add description before images
-                                            const desc = document.createElement('p');
-                                            desc.style.marginBottom = '1.5rem';
-                                            desc.textContent = 'The Max/MSP patches demonstrates a hand tracking system that captures finger positions and gestures in real-time. The first patch shows the core hand detection module (jit.fill #0hand) processing skeletal data through matrix operations, converting raw hand coordinates into usable control parameters for the racing game. The project uses a pre-trained hand tracking model using Wekinator. The hand tracking gestures are illustrated in the images below. The intent of using both hands to control the car is to allow the user to use both hands to control the car was to provide an easy and intuitive way to control the car.';
-                                            container.appendChild(desc);
-                                            for (let i = 1; i <= 5; i++) {
-                                                const img = document.createElement('img');
-                                                img.src = '../images/Technology/Interactive_Media/' + i + '.jpg';
-                                                img.alt = 'Interactive Media image ' + i;
-                                                img.className = 'gallery-image';
-                                                container.appendChild(img);
-                                            }
-                                            // Add heading before demo video
-                                            const headinggameplay = document.createElement('h3');
-                                            headinggameplay.textContent = 'Gameplay';
-                                            headinggameplay.style.textAlign = 'center';
-                                            headinggameplay.style.margin = '2rem 0 1rem 0';
-                                            container.appendChild(headinggameplay);
-                                            // Add demo video
-                                            const videodemo = document.createElement('video');
-                                            videodemo.src = '../images/Technology/Interactive_Media/media1.mp4';
-                                            videodemo.controls = true;
-                                            videodemo.className = 'gallery-image';
-                                            container.appendChild(videodemo);
-                                            
-                                        }
-                                    }
-                                });
-                            });
-                            observer.observe(overlay, { attributes: true });
-                        }
-                    });
-                    </script>
-                </div>
-            </div>
-        </div>
-        <div class="project-overlay" id="tech-overlay-7">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>Prisma</h2>
-                    <button class="close-btn" onclick="document.getElementById('tech-overlay-7').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-prisma"></div>
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const overlay = document.getElementById('tech-overlay-7');
-                        if (overlay) {
-                            const observer = new MutationObserver(function(mutations) {
-                                mutations.forEach(function(mutation) {
-                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
-                                        const container = document.getElementById('gallery-prisma');
-                                        if (container) {
-                                            container.innerHTML = '';
-                                            // Add description before images
-                                            const desc = document.createElement('p');
-                                            desc.style.marginBottom = '1.5rem';
-                                            desc.textContent = 'Prisma is an interactive webcam based installation that provides user a visualization or glimpse of how humans were viewed in the past, how they are in the present and what could be the future. The vizualization incorporates various means to achieve this as explained below, not limited to body tracking for all phases, multiple color and shape deconstruction and reconstruction techniques. For the future Stabe Diffusion model was used to generate an exact replica of the pose from the 30th second of the interaction with the installation.';
-                                            container.appendChild(desc);
-                                            for (let i = 1; i <= 10; i++) {
-                                                const img = document.createElement('img');
-                                                img.src = '../images/Technology/Prisma/' + i + '.jpg';
-                                                img.alt = 'Prisma image ' + i;
-                                                img.className = 'gallery-image';
-                                                container.appendChild(img);
-                                            }
-                                            // Add heading before demo video
-                                            const headingdemo = document.createElement('h3');
-                                            headingdemo.textContent = 'Demonstration';
-                                            headingdemo.style.textAlign = 'center';
-                                            headingdemo.style.margin = '2rem 0 1rem 0';
-                                            container.appendChild(headingdemo);
-                                            // Add demo video
-                                            const videodemo = document.createElement('video');
-                                            videodemo.src = '../images/Technology/Prisma/Media1.mp4';
-                                            videodemo.controls = true;
-                                            videodemo.className = 'gallery-image';
-                                            container.appendChild(videodemo);
-                                            
-                                        }
-                                    }
-                                });
-                            });
-                            observer.observe(overlay, { attributes: true });
-                        }
-                    });
-                    </script>
-                    <div style="text-align:center; margin-top:2rem;">
-                        <a href="https://github.com/debayanmkrj/Prisma" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            <span style="transition:all 0.3s;">Prisma</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="project-overlay" id="tech-overlay-8">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>Interactive Media Gyroscope</h2>
-                    <button class="close-btn" onclick="document.getElementById('tech-overlay-8').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-interactive-media-gyroscope"></div>
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const overlay = document.getElementById('tech-overlay-8');
-                        if (overlay) {
-                            const observer = new MutationObserver(function(mutations) {
-                                mutations.forEach(function(mutation) {
-                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
-                                        const container = document.getElementById('gallery-interactive-media-gyroscope');
-                                        if (container) {
-                                            container.innerHTML = '';
-                                            // Add description before images
-                                            const desc = document.createElement('p');
-                                            desc.style.marginBottom = '1.5rem';
-                                            desc.textContent = 'The Max/MSP patch processes real-time gyroscopic input (pitch, roll, and yaw data) from a smartphone, which users manipulate to control RGB color channels on a monochrome source image. The system employs sophisticated data smoothing algorithms using mathematical modules and ranger objects to filter noise and scale the gyroscopic movements to precise RGB multiplier values (0-8 range) within the MUTIL8R module. The color matching system utilizes Jit matrix objects to extract RGB channel mean values from both the user-controlled image and a randomly generated source image processed through the Kaleidr module. A threshold-based comparison algorithm evaluates color accuracy across all three channels, triggering audio feedback when successful matches occur. This gamified approach makes color vision testing engaging for children, as they use natural phone movements to recreate target colors while receiving immediate auditory confirmation of their progress. This innovative approach transforms traditional color blindness screening into an interactive experience that can identify color perception deficiencies in young patients who might struggle with conventional testing methods.';
-                                            container.appendChild(desc);
-                                            for (let i = 1; i <= 5; i++) {
-                                                const img = document.createElement('img');
-                                                img.src = '../images/Technology/Interactive_Media_2/' + i + '.jpg';
-                                                img.alt = 'Interactive Media image ' + i;
-                                                img.className = 'gallery-image';
-                                                container.appendChild(img);
-                                            }
-                                            
-                                        }
-                                    }
-                                });
-                            });
-                            observer.observe(overlay, { attributes: true });
-                        }
-                    });
-                    </script>
-                </div>
-            </div>
-        </div>
-        <div class="project-overlay" id="tech-overlay-9">
-            <div class="project-detail">
-                <div class="overlay-header">
-                    <h2>Prisma</h2>
-                    <button class="close-btn" onclick="document.getElementById('tech-overlay-9').classList.remove('active')">&times;</button>
-                </div>
-                <div class="overlay-content">
-                    <div class="gallery-container" id="gallery-morodd"></div>
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const overlay = document.getElementById('tech-overlay-9');
-                        if (overlay) {
-                            const observer = new MutationObserver(function(mutations) {
-                                mutations.forEach(function(mutation) {
-                                    if (mutation.attributeName === 'class' && overlay.classList.contains('active')) {
-                                        const container = document.getElementById('gallery-morodd');
-                                        if (container) {
-                                            container.innerHTML = '';
-                                            // Add description before images
-                                            const desc = document.createElement('p');
-                                            desc.style.marginBottom = '1.5rem';
-                                            desc.textContent = 'The intersection of surveillance technology and creative expression has historically produced tension between observation and authenticity. Computer vision systems designed for identification and classification paradoxically offer new possibilities for artistic transformation and self-reflection. MD emerges from this philosophical tension, proposing that spaces between people contain impossible music, sonic territories that exist only when witnessed and heard only when sought.This work contributes a framework that transforms human presence into musical paradoxes through three interconnected technologies: human segmentation using Yolo 3D Gaussian splatting via Splatt3r and ML driven splat extension. ';
-                                            container.appendChild(desc);
-                                            for (let i = 1; i <= 9; i++) {
-                                                const img = document.createElement('img');
-                                                img.src = '../images/Technology/Morodd/' + i + '.jpg';
-                                                img.alt = 'Morodd ' + i;
-                                                img.className = 'gallery-image';
-                                                container.appendChild(img);
-                                            }
-                                            // Add heading before 3D view video
-                                            const heading3d = document.createElement('h3');
-                                            heading3d.textContent = 'Splatter 3D view';
-                                            heading3d.style.textAlign = 'center';
-                                            heading3d.style.margin = '2rem 0 1rem 0';
-                                            container.appendChild(heading3d);
-                                            // Add 3D view video
-                                            const video3d = document.createElement('video');
-                                            video3d.src = '../images/Technology/Morodd/media1.mp4';
-                                            video3d.controls = true;
-                                            video3d.className = 'gallery-image';
-                                            container.appendChild(video3d);
-                                            // Add heading before AR view video
-                                            const headingAR = document.createElement('h3');
-                                            headingAR.textContent = 'Splatter view with audio embeddings';
-                                            headingAR.style.textAlign = 'center';
-                                            headingAR.style.margin = '2rem 0 1rem 0';
-                                            container.appendChild(headingAR);
-                                            // Add AR view video
-                                            const videoAR = document.createElement('video');
-                                            videoAR.src = '../images/Technology/Morodd/media2.mp4';
-                                            videoAR.controls = true;
-                                            videoAR.className = 'gallery-image';
-                                            container.appendChild(videoAR);
-                                            
-                                        }
-                                    }
-                                });
-                            });
-                            observer.observe(overlay, { attributes: true });
-                        }
-                    });
-                    </script>
-                    <div style="text-align: center; margin-top: 2rem;">
-                        <a href="../images/Technology/Morodd/morodd.pdf" 
-                        class="social-link" 
-                        style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;">
-                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                            </svg>
-                            <span style="transition:all 0.3s;">Morodd Documentation</span>
-                        </a>
-                         
-                    </div> 
+        .counter-text {
+            color: var(--retro-yellow);
+            font-size: 1.5rem;
+            font-family: 'VT323', monospace;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 198, 39, 0.3);
+        }
 
-                    
-                    </script>
-                    <div style="text-align:center; margin-top:2rem;">
-                        <a href="https://github.com/debayanmkrj/Morodd" class="social-link" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--light-grey);text-decoration:none;font-size:1rem;letter-spacing:2px;transition:all 0.3s;text-transform:uppercase;opacity:0.8;font-family:'Space Mono',monospace;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            <span style="transition:all 0.3s;">Prisma</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <style>
+        /* Project Overlay */
         .project-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.98);
+            display: none;
+            z-index: 9999;
+            overflow-y: auto;
+        }
+
+        .project-overlay.active {
+            display: block;
+        }
+
+        .project-detail {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .overlay-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid var(--retro-cyan);
+            padding-bottom: 1rem;
+        }
+
+        .overlay-header h2 {
+            font-family: 'VT323', monospace;
+            font-size: 3rem;
+            color: var(--retro-cyan);
+            text-shadow: 0 0 20px rgba(90, 220, 255, 0.5);
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .close-btn {
+            background: rgba(8, 15, 25, 0.95);
+            border: 2px solid var(--retro-pink);
+            color: var(--retro-pink);
+            font-size: 2.5rem;
+            font-family: 'VT323', monospace;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--retro-pink);
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.8);
+        }
+
+        .overlay-content {
+            color: #c5dff5;
+            font-weight: 300;
+        }
+
+        .overlay-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .overlay-content h3 {
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            color: var(--retro-yellow);
+            margin: 2rem 0 1rem;
+            text-shadow: 0 0 10px rgba(255, 198, 39, 0.3);
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-image {
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-image:hover {
+            border-color: var(--retro-cyan);
+            box-shadow: 0 0 20px rgba(90, 220, 255, 0.4);
+            transform: scale(1.02);
+        }
+
+        .gallery-video {
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid rgba(90, 220, 255, 0.3);
+            margin: 1rem 0;
+        }
+
+        .gallery-audio {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--retro-cyan);
+            text-decoration: none;
+            font-size: 1rem;
+            font-family: 'VT323', monospace;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--retro-cyan);
+            border-radius: 4px;
+            background: rgba(8, 15, 25, 0.5);
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+
+        .resource-link:hover {
+            background: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 20px rgba(90, 220, 255, 0.6);
+        }
+
+        /* Full Image Overlay */
+        .full-image-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            padding: 0;
-        }
-        .project-overlay.active {
-            display: flex;
-        }
-        .project-detail {
-            width: 90%;
-            max-width: 800px;
-            background: rgba(48, 48, 48, 0.8);
-            border-radius: 10px;
-            padding: 0;
-            position: relative;
-            margin: 2rem auto;
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .overlay-header {
-            position: sticky;
-            top: 0;
-            background: rgba(48, 48, 48, 0.8);
-            z-index: 11;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 2rem 2rem 1rem 2rem;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-        .overlay-header h2 {
-            font-family: 'Space Mono', monospace;
-            font-size: 2rem;
-            margin: 0;
-            color: #fff;
-        }
-        .close-btn {
-            position: static;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
+            z-index: 99999;
             cursor: pointer;
-            z-index: 12;
         }
-        .overlay-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100%;
-            max-height: 100%;
-            overflow-y: auto;
-            padding: 0 2rem 2rem 2rem;
-        }
-        .expand-icon {
-            color: var(--accent-red);
-            opacity: 0.8;
-            transition: opacity 0.3s;
-            pointer-events: auto;
-            position: absolute;
-            right: 1.5rem;
-            bottom: 1.5rem;
-            width: 17px;
-            height: 17px;
-            background: none;
-            z-index: 2;
-        }
-        .project-card:hover .expand-icon {
-            opacity: 1;
-        }
-        .project-info {
-            position: relative;
-            padding-bottom: 2.5rem;
-        }
-        .gallery-container {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .gallery-image {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            object-fit: contain;
-            border-radius: 4px;
-            background: #222;
-            margin: 0 auto;
-        }
-        .echo-halt-cover {
-            opacity: 0.8;
-        }
-        .warrior-duel-cover {
-            opacity: 0.8;
-        }
-        .groove-it-cover {
-            opacity: 0.8;
-        }
-        .imagebot-cover {
-            opacity: 0.8;
-        }
-        .interactive-media-cover {
-            opacity: 0.8;
-        }
-        .prisma-cover{
-            opacity: 0.8;
-        }
-        .interactive-media-gyroscope{
-            opacity: 0.8;
-        }
-        .groove-it-video {
-            height: 100%;
-            max-height: 100%;
-            width: auto;
-            display: block;
-            margin: 0 auto;
-        }
-        </style>
 
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add click handler to each project card and expand icon
-            document.querySelectorAll('.project-card').forEach(function(card) {
-                card.addEventListener('click', function(e) {
-                    // Only open overlay if clicking card or expand icon, not if clicking inside overlay
-                    if (e.target.classList.contains('expand-icon') || e.currentTarget === e.target || e.target.classList.contains('project-image') || e.target.classList.contains('project-info')) {
-                        const overlayId = card.getAttribute('data-overlay');
-                        if (overlayId) {
-                            document.getElementById(overlayId).classList.add('active');
-                        }
-                    }
-                });
-            });
-            // Allow closing overlays by clicking the close button or outside the detail box
-            document.querySelectorAll('.project-overlay').forEach(function(overlay) {
-                overlay.addEventListener('click', function(e) {
-                    if (e.target === overlay) {
-                        overlay.classList.remove('active');
-                    }
-                });
-            });
-        });
-        </script>
+        .full-image-overlay.active {
+            display: flex;
+        }
+
+        .full-image-overlay img {
+            max-width: 95%;
+            max-height: 95vh;
+            object-fit: contain;
+            border: 3px solid var(--retro-cyan);
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(90, 220, 255, 0.6);
+        }
+
+        @media (max-width: 1024px) {
+            .carousel-item {
+                width: 400px;
+                height: 400px;
+            }
+
+            .carousel-item.left {
+                transform: translateX(-350px) scale(0.7) rotateY(12deg);
+            }
+
+            .carousel-item.right {
+                transform: translateX(350px) scale(0.7) rotateY(-12deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 3rem;
+            }
+
+            .carousel-container {
+                height: 350px;
+            }
+
+            .carousel-item {
+                width: 300px;
+                height: 300px;
+            }
+
+            .carousel-item.left {
+                transform: translateX(-250px) scale(0.6) rotateY(12deg);
+            }
+
+            .carousel-item.right {
+                transform: translateX(250px) scale(0.6) rotateY(-12deg);
+            }
+
+            .overlay-header h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-content">
+        <a href="../index.html" class="back-btn">← BACK</a>
+        <h1 class="section-title">CREATIVE TECHNOLOGY</h1>
+        <p class="section-subtitle">A collection of experimental projects that blend creative vision with technical innovation, exploring new possibilities at the intersection of design, technology, and user experience.</p>
+
+        <div class="projects-carousel">
+            <div class="carousel-container">
+                <div class="carousel" id="carousel"></div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn">←</button>
+                    <span class="counter-text" id="counter">1 OF 4</span>
+                    <button class="carousel-btn next-btn">→</button>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="../js/particles-monochrome.js"></script>
+
+    <!-- Project Overlays -->
+    <div class="project-overlay" id="project-overlay-0">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>DESIGNING FOR CONSUMERS</h2>
+                <button class="close-btn" onclick="closeOverlay(0)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>User-centered design approach focused on creating intuitive and engaging consumer experiences.</p>
+                <div class="gallery-container" id="gallery-0"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-1">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>PRISMA</h2>
+                <button class="close-btn" onclick="closeOverlay(1)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Visual design exploration combining color theory with modern digital aesthetics.</p>
+                <div class="gallery-container" id="gallery-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-2">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>PROCESS IMPROVEMENTS</h2>
+                <button class="close-btn" onclick="closeOverlay(2)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Systematic approach to optimizing creative workflows through design thinking and methodology.</p>
+                <div class="gallery-container" id="gallery-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-3">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>THE CORE PRINCIPLE</h2>
+                <button class="close-btn" onclick="closeOverlay(3)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Fundamental design principles applied to create coherent and impactful visual systems.</p>
+                <div class="gallery-container" id="gallery-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Image Overlay -->
+    <div class="full-image-overlay" id="full-image-overlay" onclick="closeFullImage()">
+        <img src="" alt="Full size image" id="full-image">
+    </div>
+
+    <script>
+        const projects = [
+            {
+                name: 'Designing_for_consumers',
+                title: 'DESIGNING FOR CONSUMERS',
+                description: 'User-centered design approach focused on creating intuitive and engaging consumer experiences.',
+                coverImage: '../content/Creative Design/Designing_for_consumers/1.jpg'
+            },
+            {
+                name: 'Prisma',
+                title: 'PRISMA',
+                description: 'Visual design exploration combining color theory with modern digital aesthetics.',
+                coverImage: '../content/Creative Design/Prisma/cover.jpg'
+            },
+            {
+                name: 'Process_improvements',
+                title: 'PROCESS IMPROVEMENTS',
+                description: 'Systematic approach to optimizing creative workflows through design thinking and methodology.',
+                coverImage: '../content/Creative Design/Process_improvements/1.jpeg'
+            },
+            {
+                name: 'The_core_principle',
+                title: 'THE CORE PRINCIPLE',
+                description: 'Fundamental design principles applied to create coherent and impactful visual systems.',
+                coverImage: '../content/Creative Design/The_core_principle/1.jpg'
+            }
+        ];
+
+        const carousel = document.getElementById('carousel');
+        const counterText = document.getElementById('counter');
+        let currentIndex = 0;
+
+        // Utility function to check if a file exists
+        async function fileExists(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                return response.ok;
+            } catch {
+                return false;
+            }
+        }
+
+        // Dynamically load all content from a project folder
+        async function loadProjectContent(project) {
+            const basePath = `../content/Creative Design/${project.name}/`;
+            const content = {
+                images: [],
+                videos: [],
+                pdfs: [],
+                audio: []
+            };
+
+            // Probe for numbered images (1.jpg, 2.jpg, etc.)
+            for (let i = 1; i <= 30; i++) {
+                const jpgUrl = `${basePath}${i}.jpg`;
+                const jpegUrl = `${basePath}${i}.jpeg`;
+                const pngUrl = `${basePath}${i}.png`;
+
+                if (await fileExists(jpgUrl)) {
+                    content.images.push(jpgUrl);
+                } else if (await fileExists(jpegUrl)) {
+                    content.images.push(jpegUrl);
+                } else if (await fileExists(pngUrl)) {
+                    content.images.push(pngUrl);
+                } else {
+                    break;
+                }
+            }
+
+            // Probe for videos
+            for (let i = 1; i <= 10; i++) {
+                const mediaUrl = `${basePath}media${i}.mp4`;
+                const videoUrl = `${basePath}video${i}.mp4`;
+
+                if (await fileExists(mediaUrl)) {
+                    content.videos.push(mediaUrl);
+                }
+                if (await fileExists(videoUrl)) {
+                    content.videos.push(videoUrl);
+                }
+            }
+
+            // Check for PDFs
+            const pdfPatterns = [
+                `${project.name.toLowerCase()}.pdf`,
+                'document.pdf',
+                'paper.pdf',
+                'presentation.pdf'
+            ];
+
+            for (const pdfName of pdfPatterns) {
+                const pdfUrl = `${basePath}${pdfName}`;
+                if (await fileExists(pdfUrl)) {
+                    content.pdfs.push(pdfUrl);
+                }
+            }
+
+            // Check for audio files
+            for (let i = 1; i <= 10; i++) {
+                const mp3Url = `${basePath}audio${i}.mp3`;
+                const wavUrl = `${basePath}sound${i}.wav`;
+
+                if (await fileExists(mp3Url)) {
+                    content.audio.push(mp3Url);
+                }
+                if (await fileExists(wavUrl)) {
+                    content.audio.push(wavUrl);
+                }
+            }
+
+            return content;
+        }
+
+        function setupCarousel() {
+            carousel.innerHTML = '';
+            const leftIndex = (currentIndex - 1 + projects.length) % projects.length;
+            const rightIndex = (currentIndex + 1) % projects.length;
+
+            createCarouselItem(leftIndex, 'left');
+            createCarouselItem(currentIndex, 'center');
+            createCarouselItem(rightIndex, 'right');
+
+            counterText.textContent = `${currentIndex + 1} OF ${projects.length}`;
+        }
+
+        function createCarouselItem(index, position) {
+            const project = projects[index];
+            const item = document.createElement('div');
+            item.className = `carousel-item ${position}`;
+
+            item.innerHTML = `
+                <div class="carousel-image-container">
+                    <img src="${project.coverImage}" alt="${project.title}" class="carousel-image">
+                    <div class="project-info">
+                        <div class="project-title">${project.title}</div>
+                        <div class="project-description">${project.description}</div>
+                    </div>
+                </div>
+            `;
+
+            item.addEventListener('click', function() {
+                if (position === 'center') {
+                    openOverlay(index);
+                } else {
+                    currentIndex = index;
+                    setupCarousel();
+                }
+            });
+
+            carousel.appendChild(item);
+        }
+
+        async function openOverlay(index) {
+            const overlay = document.getElementById(`project-overlay-${index}`);
+            const gallery = document.getElementById(`gallery-${index}`);
+
+            if (gallery && gallery.children.length === 0) {
+                const project = projects[index];
+
+                // Show loading indicator
+                gallery.innerHTML = '<p style="text-align: center; color: var(--retro-cyan);">Loading content...</p>';
+
+                // Load all content dynamically
+                const content = await loadProjectContent(project);
+
+                // Clear loading indicator
+                gallery.innerHTML = '';
+
+                // Add images
+                if (content.images.length > 0) {
+                    content.images.forEach((imgUrl, i) => {
+                        const img = document.createElement('img');
+                        img.src = imgUrl;
+                        img.alt = `${project.title} image ${i + 1}`;
+                        img.className = 'gallery-image';
+                        img.onclick = function() { openFullImage(this.src); };
+                        gallery.appendChild(img);
+                    });
+                }
+
+                // Add videos
+                if (content.videos.length > 0) {
+                    const videoSection = document.createElement('div');
+                    videoSection.style.gridColumn = '1 / -1';
+                    videoSection.innerHTML = '<h3>Videos</h3>';
+                    gallery.appendChild(videoSection);
+
+                    content.videos.forEach((videoUrl, i) => {
+                        const videoContainer = document.createElement('div');
+                        videoContainer.style.gridColumn = '1 / -1';
+                        videoContainer.innerHTML = `
+                            <video class="gallery-video" controls>
+                                <source src="${videoUrl}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        `;
+                        gallery.appendChild(videoContainer);
+                    });
+                }
+
+                // Add PDFs
+                if (content.pdfs.length > 0) {
+                    const pdfSection = document.createElement('div');
+                    pdfSection.style.gridColumn = '1 / -1';
+                    pdfSection.innerHTML = '<h3>Documents</h3>';
+                    gallery.appendChild(pdfSection);
+
+                    content.pdfs.forEach((pdfUrl, i) => {
+                        const pdfLink = document.createElement('a');
+                        pdfLink.href = pdfUrl;
+                        pdfLink.target = '_blank';
+                        pdfLink.className = 'resource-link';
+                        pdfLink.textContent = `View PDF ${i + 1}`;
+                        gallery.appendChild(pdfLink);
+                    });
+                }
+
+                // Add audio
+                if (content.audio.length > 0) {
+                    const audioSection = document.createElement('div');
+                    audioSection.style.gridColumn = '1 / -1';
+                    audioSection.innerHTML = '<h3>Audio</h3>';
+                    gallery.appendChild(audioSection);
+
+                    content.audio.forEach((audioUrl, i) => {
+                        const audioContainer = document.createElement('div');
+                        audioContainer.style.gridColumn = '1 / -1';
+                        audioContainer.innerHTML = `
+                            <audio class="gallery-audio" controls>
+                                <source src="${audioUrl}">
+                                Your browser does not support the audio element.
+                            </audio>
+                        `;
+                        gallery.appendChild(audioContainer);
+                    });
+                }
+            }
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOverlay(index) {
+            const overlay = document.getElementById(`project-overlay-${index}`);
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function openFullImage(src) {
+            const fullImageOverlay = document.getElementById('full-image-overlay');
+            const fullImage = document.getElementById('full-image');
+            fullImage.src = src;
+            fullImageOverlay.classList.add('active');
+        }
+
+        function closeFullImage() {
+            const fullImageOverlay = document.getElementById('full-image-overlay');
+            fullImageOverlay.classList.remove('active');
+        }
+
+        function navigateToPrevious() {
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            currentIndex = (currentIndex - 1 + projects.length) % projects.length;
+            setupCarousel();
+            setTimeout(() => {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }, 600);
+        }
+
+        function navigateToNext() {
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            currentIndex = (currentIndex + 1) % projects.length;
+            setupCarousel();
+            setTimeout(() => {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }, 600);
+        }
+
+        document.querySelector('.prev-btn').addEventListener('click', navigateToPrevious);
+        document.querySelector('.next-btn').addEventListener('click', navigateToNext);
+
+        setupCarousel();
+    </script>
 </body>
 </html>

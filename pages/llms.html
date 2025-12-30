@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Projects | Debayan Mukherjee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --retro-cyan: #5adcff;
+            --retro-yellow: #ffc627;
+            --retro-pink: #ff3366;
+            --dark-bg: #080f19;
+            --screen-glow: rgba(90, 220, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #e8f8ff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            padding: 0.75rem 1.5rem;
+            background-color: rgba(8, 15, 25, 0.85);
+            color: var(--retro-cyan);
+            text-decoration: none;
+            border: 2px solid var(--retro-cyan);
+            border-radius: 4px;
+            z-index: 100;
+            font-weight: 700;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 25px rgba(90, 220, 255, 0.6);
+        }
+
+        .page-content {
+            padding: 6rem 2rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        .section-title {
+            font-family: 'VT323', monospace;
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            color: var(--retro-cyan);
+            text-shadow: 0 0 20px var(--screen-glow), 0 0 40px var(--screen-glow);
+            letter-spacing: 3px;
+            font-weight: 400;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            max-width: 800px;
+            color: #8ac2ff;
+            line-height: 1.8;
+            margin-bottom: 4rem;
+            font-weight: 300;
+        }
+
+        .projects-carousel {
+            margin: 4rem 0;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 500px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+            border: 4px solid var(--retro-cyan);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow:
+                0 0 30px rgba(90, 220, 255, 0.4),
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.6);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-origin: center;
+        }
+
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                transparent 1px,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 3px
+            );
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.3;
+        }
+
+        .carousel-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.8) 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .carousel-item.left {
+            transform: translateX(-420px) scale(0.75) rotateY(12deg);
+            opacity: 0.6;
+            z-index: 1;
+            filter: brightness(0.7);
+        }
+
+        .carousel-item.center {
+            transform: translateX(0) scale(1) rotateY(0deg);
+            opacity: 1;
+            z-index: 3;
+            filter: brightness(1);
+        }
+
+        .carousel-item.right {
+            transform: translateX(420px) scale(0.75) rotateY(-12deg);
+            opacity: 0.6;
+            z-index: 1;
+            filter: brightness(0.7);
+        }
+
+        .carousel-item.center:hover {
+            border-color: var(--retro-yellow);
+            box-shadow:
+                0 0 40px rgba(255, 198, 39, 0.6),
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .carousel-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #000;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(90, 220, 255, 0.03) 2px, rgba(90, 220, 255, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(90, 220, 255, 0.03) 2px, rgba(90, 220, 255, 0.03) 4px);
+        }
+
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+            padding: 2rem 1.5rem 1.5rem;
+            z-index: 3;
+        }
+
+        .project-title {
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            color: var(--retro-yellow);
+            text-shadow: 0 0 10px rgba(255, 198, 39, 0.5);
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .project-description {
+            font-size: 0.9rem;
+            color: #8ac2ff;
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            bottom: -80px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .carousel-btn {
+            background: rgba(8, 15, 25, 0.85);
+            border: 2px solid var(--retro-cyan);
+            color: var(--retro-cyan);
+            font-size: 2rem;
+            font-family: 'VT323', monospace;
+            cursor: pointer;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .carousel-btn:hover:not(:disabled) {
+            background: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 25px rgba(90, 220, 255, 0.6);
+        }
+
+        .carousel-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .counter-text {
+            color: var(--retro-yellow);
+            font-size: 1.5rem;
+            font-family: 'VT323', monospace;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 198, 39, 0.3);
+        }
+
+        /* Project Overlay */
+        .project-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            display: none;
+            z-index: 9999;
+            overflow-y: auto;
+        }
+
+        .project-overlay.active {
+            display: block;
+        }
+
+        .project-detail {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .overlay-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid var(--retro-cyan);
+            padding-bottom: 1rem;
+        }
+
+        .overlay-header h2 {
+            font-family: 'VT323', monospace;
+            font-size: 3rem;
+            color: var(--retro-cyan);
+            text-shadow: 0 0 20px rgba(90, 220, 255, 0.5);
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .close-btn {
+            background: rgba(8, 15, 25, 0.95);
+            border: 2px solid var(--retro-pink);
+            color: var(--retro-pink);
+            font-size: 2.5rem;
+            font-family: 'VT323', monospace;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--retro-pink);
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.8);
+        }
+
+        .overlay-content {
+            color: #c5dff5;
+            font-weight: 300;
+        }
+
+        .overlay-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .overlay-content h3 {
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            color: var(--retro-yellow);
+            margin: 2rem 0 1rem;
+            text-shadow: 0 0 10px rgba(255, 198, 39, 0.3);
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-image {
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid rgba(90, 220, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-image:hover {
+            border-color: var(--retro-cyan);
+            box-shadow: 0 0 20px rgba(90, 220, 255, 0.4);
+            transform: scale(1.02);
+        }
+
+        .gallery-video {
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid rgba(90, 220, 255, 0.3);
+            margin: 1rem 0;
+        }
+
+        .gallery-audio {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--retro-cyan);
+            text-decoration: none;
+            font-size: 1rem;
+            font-family: 'VT323', monospace;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--retro-cyan);
+            border-radius: 4px;
+            background: rgba(8, 15, 25, 0.5);
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+
+        .resource-link:hover {
+            background: var(--retro-cyan);
+            color: #000;
+            box-shadow: 0 0 20px rgba(90, 220, 255, 0.6);
+        }
+
+        /* Full Image Overlay */
+        .full-image-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            cursor: pointer;
+        }
+
+        .full-image-overlay.active {
+            display: flex;
+        }
+
+        .full-image-overlay img {
+            max-width: 95%;
+            max-height: 95vh;
+            object-fit: contain;
+            border: 3px solid var(--retro-cyan);
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(90, 220, 255, 0.6);
+        }
+
+        @media (max-width: 1024px) {
+            .carousel-item {
+                width: 400px;
+                height: 400px;
+            }
+
+            .carousel-item.left {
+                transform: translateX(-350px) scale(0.7) rotateY(12deg);
+            }
+
+            .carousel-item.right {
+                transform: translateX(350px) scale(0.7) rotateY(-12deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 3rem;
+            }
+
+            .carousel-container {
+                height: 350px;
+            }
+
+            .carousel-item {
+                width: 300px;
+                height: 300px;
+            }
+
+            .carousel-item.left {
+                transform: translateX(-250px) scale(0.6) rotateY(12deg);
+            }
+
+            .carousel-item.right {
+                transform: translateX(250px) scale(0.6) rotateY(-12deg);
+            }
+
+            .overlay-header h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-content">
+        <a href="../index.html" class="back-btn">← BACK</a>
+        <h1 class="section-title">Machine Learning Projects</h1>
+        <p class="section-subtitle">Exploring the capabilities of Machine Learning through innovative applications and experimental projects that push the boundaries of AI-assisted creativity and interaction.</p>
+
+        <div class="projects-carousel">
+            <div class="carousel-container">
+                <div class="carousel" id="carousel"></div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn">←</button>
+                    <span class="counter-text" id="counter">1 OF 4</span>
+                    <button class="carousel-btn next-btn">→</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Overlays -->
+    <div class="project-overlay" id="project-overlay-0">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>ALT DJ</h2>
+                <button class="close-btn" onclick="closeOverlay(0)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>ALT-DJ is a comprehensive machine learning system that analyzes DJ hand movements and applies neural audio style transfer to recreate the performance styles of famous DJs.</p>
+                <div class="gallery-container" id="gallery-0"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-1">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>ECHO HALT</h2>
+                <button class="close-btn" onclick="closeOverlay(1)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Interactive storytelling experiment combining LLMs with generative audio to create unique narrative experiences.</p>
+                <div class="gallery-container" id="gallery-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-2">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>IMAGEBOT</h2>
+                <button class="close-btn" onclick="closeOverlay(2)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Natural language to image generation assistant with contextual understanding, enabling intuitive creative workflows.</p>
+                <div class="gallery-container" id="gallery-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-overlay" id="project-overlay-3">
+        <div class="project-detail">
+            <div class="overlay-header">
+                <h2>MORODD</h2>
+                <button class="close-btn" onclick="closeOverlay(3)">&times;</button>
+            </div>
+            <div class="overlay-content">
+                <p>Multi-modal content generation platform leveraging LLM capabilities for creative applications.</p>
+                <div class="gallery-container" id="gallery-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Image Overlay -->
+    <div class="full-image-overlay" id="full-image-overlay" onclick="closeFullImage()">
+        <img src="" alt="Full size image" id="full-image">
+    </div>
+
+    <script>
+        const projects = [
+            {
+                name: 'Alt_dj',
+                title: 'ALT DJ',
+                description: 'AI-powered music discovery and playlist generation using LLM context understanding.',
+                coverImage: '../content/Working LLMs/Alt_dj/cover.jpg'
+            },
+            {
+                name: 'Echo_Halt',
+                title: 'Echo Halt',
+                description: 'Interactive storytelling experiment combining LLMs with generative audio.',
+                coverImage: '../content/Working LLMs/Echo_Halt/cover.jpg'
+            },
+            {
+                name: 'Imagebot',
+                title: 'ImageBot',
+                description: 'Natural language to image generation assistant with contextual understanding.',
+                coverImage: '../content/Working LLMs/Imagebot/cover.jpg'
+            },
+            {
+                name: 'Morodd',
+                title: 'Morodd',
+                description: 'Multi-modal content generation platform leveraging LLM capabilities.',
+                coverImage: '../content/Working LLMs/Morodd/cover.jpg'
+            }
+        ];
+
+        const carousel = document.getElementById('carousel');
+        const counterText = document.getElementById('counter');
+        let currentIndex = 0;
+
+        // Utility function to check if a file exists
+        async function fileExists(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                return response.ok;
+            } catch {
+                return false;
+            }
+        }
+
+        // Dynamically load all content from a project folder
+        async function loadProjectContent(project) {
+            const basePath = `../content/Working LLMs/${project.name}/`;
+            const content = {
+                images: [],
+                videos: [],
+                pdfs: [],
+                audio: []
+            };
+
+            // Probe for numbered images (1.jpg, 2.jpg, etc.)
+            for (let i = 1; i <= 30; i++) {
+                const jpgUrl = `${basePath}${i}.jpg`;
+                const jpegUrl = `${basePath}${i}.jpeg`;
+                const pngUrl = `${basePath}${i}.png`;
+
+                if (await fileExists(jpgUrl)) {
+                    content.images.push(jpgUrl);
+                } else if (await fileExists(jpegUrl)) {
+                    content.images.push(jpegUrl);
+                } else if (await fileExists(pngUrl)) {
+                    content.images.push(pngUrl);
+                } else {
+                    break; // Stop when no more numbered images found
+                }
+            }
+
+            // Probe for videos (media1.mp4, media2.mp4, etc. and video1.mp4, video2.mp4, etc.)
+            for (let i = 1; i <= 10; i++) {
+                const mediaUrl = `${basePath}media${i}.mp4`;
+                const videoUrl = `${basePath}video${i}.mp4`;
+
+                if (await fileExists(mediaUrl)) {
+                    content.videos.push(mediaUrl);
+                }
+                if (await fileExists(videoUrl)) {
+                    content.videos.push(videoUrl);
+                }
+            }
+
+            // Check for PDFs (project_name.pdf, document.pdf, etc.)
+            const pdfPatterns = [
+                `${project.name.toLowerCase()}.pdf`,
+                'document.pdf',
+                'paper.pdf',
+                'presentation.pdf'
+            ];
+
+            for (const pdfName of pdfPatterns) {
+                const pdfUrl = `${basePath}${pdfName}`;
+                if (await fileExists(pdfUrl)) {
+                    content.pdfs.push(pdfUrl);
+                }
+            }
+
+            // Check for audio files (audio1.mp3, sound1.wav, etc.)
+            for (let i = 1; i <= 10; i++) {
+                const mp3Url = `${basePath}audio${i}.mp3`;
+                const wavUrl = `${basePath}sound${i}.wav`;
+
+                if (await fileExists(mp3Url)) {
+                    content.audio.push(mp3Url);
+                }
+                if (await fileExists(wavUrl)) {
+                    content.audio.push(wavUrl);
+                }
+            }
+
+            return content;
+        }
+
+        function setupCarousel() {
+            carousel.innerHTML = '';
+            const leftIndex = (currentIndex - 1 + projects.length) % projects.length;
+            const rightIndex = (currentIndex + 1) % projects.length;
+
+            createCarouselItem(leftIndex, 'left');
+            createCarouselItem(currentIndex, 'center');
+            createCarouselItem(rightIndex, 'right');
+
+            counterText.textContent = `${currentIndex + 1} OF ${projects.length}`;
+        }
+
+        function createCarouselItem(index, position) {
+            const project = projects[index];
+            const item = document.createElement('div');
+            item.className = `carousel-item ${position}`;
+
+            item.innerHTML = `
+                <div class="carousel-image-container">
+                    <img src="${project.coverImage}" alt="${project.title}" class="carousel-image">
+                    <div class="project-info">
+                        <div class="project-title">${project.title}</div>
+                        <div class="project-description">${project.description}</div>
+                    </div>
+                </div>
+            `;
+
+            item.addEventListener('click', function() {
+                if (position === 'center') {
+                    openOverlay(index);
+                } else {
+                    currentIndex = index;
+                    setupCarousel();
+                }
+            });
+
+            carousel.appendChild(item);
+        }
+
+        async function openOverlay(index) {
+            const overlay = document.getElementById(`project-overlay-${index}`);
+            const gallery = document.getElementById(`gallery-${index}`);
+
+            if (gallery && gallery.children.length === 0) {
+                const project = projects[index];
+
+                // Show loading indicator
+                gallery.innerHTML = '<p style="text-align: center; color: var(--retro-cyan);">Loading content...</p>';
+
+                // Load all content dynamically
+                const content = await loadProjectContent(project);
+
+                // Clear loading indicator
+                gallery.innerHTML = '';
+
+                // Add images
+                if (content.images.length > 0) {
+                    content.images.forEach((imgUrl, i) => {
+                        const img = document.createElement('img');
+                        img.src = imgUrl;
+                        img.alt = `${project.title} image ${i + 1}`;
+                        img.className = 'gallery-image';
+                        img.onclick = function() { openFullImage(this.src); };
+                        gallery.appendChild(img);
+                    });
+                }
+
+                // Add videos
+                if (content.videos.length > 0) {
+                    const videoSection = document.createElement('div');
+                    videoSection.style.gridColumn = '1 / -1';
+                    videoSection.innerHTML = '<h3>Videos</h3>';
+                    gallery.appendChild(videoSection);
+
+                    content.videos.forEach((videoUrl, i) => {
+                        const videoContainer = document.createElement('div');
+                        videoContainer.style.gridColumn = '1 / -1';
+                        videoContainer.innerHTML = `
+                            <video class="gallery-video" controls>
+                                <source src="${videoUrl}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        `;
+                        gallery.appendChild(videoContainer);
+                    });
+                }
+
+                // Add PDFs
+                if (content.pdfs.length > 0) {
+                    const pdfSection = document.createElement('div');
+                    pdfSection.style.gridColumn = '1 / -1';
+                    pdfSection.innerHTML = '<h3>Documents</h3>';
+                    gallery.appendChild(pdfSection);
+
+                    content.pdfs.forEach((pdfUrl, i) => {
+                        const pdfLink = document.createElement('a');
+                        pdfLink.href = pdfUrl;
+                        pdfLink.target = '_blank';
+                        pdfLink.className = 'resource-link';
+                        pdfLink.textContent = `View PDF ${i + 1}`;
+                        gallery.appendChild(pdfLink);
+                    });
+                }
+
+                // Add audio
+                if (content.audio.length > 0) {
+                    const audioSection = document.createElement('div');
+                    audioSection.style.gridColumn = '1 / -1';
+                    audioSection.innerHTML = '<h3>Audio</h3>';
+                    gallery.appendChild(audioSection);
+
+                    content.audio.forEach((audioUrl, i) => {
+                        const audioContainer = document.createElement('div');
+                        audioContainer.style.gridColumn = '1 / -1';
+                        audioContainer.innerHTML = `
+                            <audio class="gallery-audio" controls>
+                                <source src="${audioUrl}">
+                                Your browser does not support the audio element.
+                            </audio>
+                        `;
+                        gallery.appendChild(audioContainer);
+                    });
+                }
+            }
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOverlay(index) {
+            const overlay = document.getElementById(`project-overlay-${index}`);
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function openFullImage(src) {
+            const fullImageOverlay = document.getElementById('full-image-overlay');
+            const fullImage = document.getElementById('full-image');
+            fullImage.src = src;
+            fullImageOverlay.classList.add('active');
+        }
+
+        function closeFullImage() {
+            const fullImageOverlay = document.getElementById('full-image-overlay');
+            fullImageOverlay.classList.remove('active');
+        }
+
+        function navigateToPrevious() {
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            currentIndex = (currentIndex - 1 + projects.length) % projects.length;
+            setupCarousel();
+            setTimeout(() => {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }, 600);
+        }
+
+        function navigateToNext() {
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            currentIndex = (currentIndex + 1) % projects.length;
+            setupCarousel();
+            setTimeout(() => {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }, 600);
+        }
+
+        document.querySelector('.prev-btn').addEventListener('click', navigateToPrevious);
+        document.querySelector('.next-btn').addEventListener('click', navigateToNext);
+
+        setupCarousel();
+    </script>
+</body>
+</html>
