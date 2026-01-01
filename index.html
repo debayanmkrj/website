@@ -602,11 +602,6 @@
     }
     .carousel-item.left { transform: translateX(-280px) scale(0.7); }
     .carousel-item.right { transform: translateX(280px) scale(0.7); }
-
-    .nav-link {
-      font-size: 0.9rem;
-      padding: 10px 16px;
-    }
   }
 
   @media (max-width: 768px) {
@@ -617,83 +612,6 @@
     .carousel-item.right { transform: translateX(200px) scale(0.6); }
     .project-detail { padding: 1.6rem; }
     .overlay-header h2 { font-size: 1.6rem; }
-
-    /* Larger touch targets for mobile */
-    .carousel-btn {
-      font-size: 2rem;
-      padding: 0.8rem 1.6rem;
-      min-width: 50px;
-      min-height: 50px;
-    }
-
-    .nav-link {
-      font-size: 1rem;
-      padding: 12px 20px;
-      min-height: 44px;
-    }
-
-    .close-btn {
-      width: 60px;
-      height: 60px;
-      font-size: 3rem;
-    }
-
-    .scroll-up-btn {
-      width: 70px;
-      height: 70px;
-      font-size: 2.5rem;
-    }
-
-    /* Adjust subtitle font sizes for mobile */
-    .landing-subtitle {
-      font-size: 0.7rem;
-      padding: 0 1rem;
-      white-space: normal;
-      max-width: 90%;
-    }
-
-    .landing-subtitle2 {
-      font-size: 0.4rem;
-      padding: 0 1rem;
-      white-space: normal;
-      max-width: 90%;
-    }
-  }
-
-  /* Landscape orientation on mobile */
-  @media (orientation: landscape) and (max-height: 500px) {
-    #landing-section {
-      height: 100vh;
-      min-height: 400px;
-    }
-
-    .landing-subtitle {
-      bottom: 20%;
-      font-size: 0.6rem;
-    }
-
-    .landing-subtitle2 {
-      bottom: 12%;
-      font-size: 0.35rem;
-    }
-
-    .top-nav {
-      top: 15px;
-      right: 20px;
-      gap: 8px;
-    }
-
-    .nav-link {
-      font-size: 0.75rem;
-      padding: 8px 12px;
-    }
-  }
-
-  /* Fix for iOS Safari viewport height */
-  @supports (-webkit-touch-callout: none) {
-    #landing-section {
-      height: -webkit-fill-available;
-    }
   }
 </style>
 </head>

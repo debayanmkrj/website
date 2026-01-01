@@ -8,23 +8,11 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
 import { NavigationSystem } from './navigation.js';
 
-/* ================= DEVICE DETECTION ================= */
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-const isTablet = /iPad|Android/i.test(navigator.userAgent) && window.innerWidth >= 768;
-const isMobileDevice = isMobile || isTablet;
-
-console.log(`Device type: ${isMobileDevice ? 'Mobile/Tablet' : 'Desktop'}`);
-/* ==================================================== */
-
 /* ================= CONFIG ================= */
 const GLB_PATH = 'source/scene.glb';
-
-// Adaptive configuration based on device
-const ROWS = isMobileDevice ? 5 : 7;
-const COLS_FRONT = isMobileDevice ? 9 : 13;
-const STACK_MIN = isMobileDevice ? 2 : 3;
-const STACK_MAX = isMobileDevice ? 5 : 8;
-
+const ROWS = 7;
+const COLS_FRONT = 13;
+const STACK_MIN = 3, STACK_MAX = 8;
 const COL_SPREAD = 1.35;
 const ROW_Z_STEP = 2.00;
 const START_Z = -1;
@@ -36,31 +24,24 @@ const ROT_ALL_PITCH = THREE.MathUtils.degToRad(8);
 const ROT_HERO_YAW = THREE.MathUtils.degToRad(24);
 const ROT_HERO_PITCH = THREE.MathUtils.degToRad(10);
 
-// Reduced blur on mobile for better performance, but keep it enabled
-const DOF_DEFAULT = isMobileDevice
-  ? { focus: 6.0, aperture: 0.0002, maxblur: 0.002 }
-  : { focus: 6.0, aperture: 0.0003, maxblur: 0.003 };
-
+const DOF_DEFAULT = { focus: 6.0, aperture: 0.0003, maxblur: 0.003 };  // Reduced blur for clarity
 const qTmp = new THREE.Quaternion();
 /* ========================================== */
 
 const frame = document.getElementById('frame');
 const renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById('stage'),
-  antialias: !isMobileDevice, // Disable antialiasing on mobile for performance
+  antialias: true,
   alpha: true,
   powerPreference: 'high-performance'
 });
-
-// Lower pixel ratio on mobile for better performance
-renderer.setPixelRatio(isMobileDevice ? 1 : Math.min(devicePixelRatio, 2));
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.06;
 
 const scene = new THREE.Scene();
-// Lighter fog on mobile for simpler rendering
-scene.fog = new THREE.FogExp2(0x081426, isMobileDevice ? 0.05 : 0.06);
+scene.fog = new THREE.FogExp2(0x081426, 0.06);
 
 const camera = new THREE.PerspectiveCamera(36, frame.clientWidth / frame.clientHeight, 0.1, 200);
 camera.position.set(0, 6.5, 10);  // Adjusted to view the scene properly
@@ -220,9 +201,8 @@ function guessScreenMesh(root) {
 
 /* Paik canvas (hero) */
 const paikCanvas = document.createElement('canvas');
-// Lower resolution on mobile for better performance
-paikCanvas.width = isMobileDevice ? 640 : 1280;
-paikCanvas.height = isMobileDevice ? 360 : 720;
+paikCanvas.width = 1280;
+paikCanvas.height = 720;
 const pctx = paikCanvas.getContext('2d', { willReadFrequently: true });
 await document.fonts.ready;
 
@@ -393,15 +373,8 @@ frame.addEventListener('pointerleave', () => {
   if (hintEl) hintEl.classList.remove('visible');
 });
 
-// Touch events for mobile/tablet with throttling
-let lastTouchTime = 0;
-const TOUCH_THROTTLE = 16; // ~60fps
-
+// Touch events for mobile/tablet
 frame.addEventListener('touchmove', (e) => {
-  const now = performance.now();
-  if (now - lastTouchTime < TOUCH_THROTTLE) return;
-  lastTouchTime = now;
-
   e.preventDefault(); // Prevent scrolling while touching the frame
   if (e.touches.length > 0) {
     const touch = e.touches[0];
@@ -461,106 +434,85 @@ window.addEventListener('resize', sizeToFrame);
 
 /* Main loop */
 let last = performance.now() / 1000, paikIntensity = 0.25;
-let frameCount = 0; // For throttling raycasting on mobile
 
 function animate(nowMs) {
   requestAnimationFrame(animate);
   const now = nowMs / 1000, dt = Math.min(0.05, now - last);
   last = now;
-  frameCount++;
 
-  // Throttle raycasting on mobile (every 3 frames)
-  const shouldRaycast = !isMobileDevice || (frameCount % 3 === 0);
+  // Raycast to find hovered TV (yard + navigation)
+  raycaster.setFromCamera(mouse, camera);
+  const allTVs = [];
+  const navTVs = [];
 
+  // Collect all yard TVs
+  yard.children.forEach(row => {
+    row.children.forEach(col => {
+      col.children.forEach(tv => {
+        allTVs.push(tv);
+      });
+    });
+  });
+
+  // Collect navigation TVs
+  if (navigationSystem && navigationSystem.navModels) {
+    navigationSystem.navModels.forEach(nm => {
+      navTVs.push(nm.tv);
+      allTVs.push(nm.tv);
+    });
+  }
+
+  // Check for intersections
+  const intersects = raycaster.intersectObjects(allTVs, true);
   let newHoveredTV = null;
   let hoveredNavModel = null;
 
-  if (shouldRaycast) {
-    // Raycast to find hovered TV (yard + navigation)
-    raycaster.setFromCamera(mouse, camera);
-    const allTVs = [];
-    const navTVs = [];
-
-    // Collect all yard TVs
-    yard.children.forEach(row => {
-      row.children.forEach(col => {
-        col.children.forEach(tv => {
-          allTVs.push(tv);
-        });
-      });
-    });
-
-    // Collect navigation TVs
-    if (navigationSystem && navigationSystem.navModels) {
-      navigationSystem.navModels.forEach(nm => {
-        navTVs.push(nm.tv);
-        allTVs.push(nm.tv);
-      });
-    }
-
-    // Check for intersections
-    const intersects = raycaster.intersectObjects(allTVs, true);
-
-    if (intersects.length > 0) {
-      // Find which TV was hit
-      for (let i = 0; i < intersects.length; i++) {
-        let obj = intersects[i].object;
-        // Walk up the parent chain to find the TV
-        while (obj.parent && !allTVs.includes(obj)) {
-          obj = obj.parent;
+  if (intersects.length > 0) {
+    // Find which TV was hit
+    for (let i = 0; i < intersects.length; i++) {
+      let obj = intersects[i].object;
+      // Walk up the parent chain to find the TV
+      while (obj.parent && !allTVs.includes(obj)) {
+        obj = obj.parent;
+      }
+      if (allTVs.includes(obj)) {
+        newHoveredTV = obj;
+        // Check if it's a nav TV
+        if (navigationSystem && navigationSystem.navModels) {
+          hoveredNavModel = navigationSystem.navModels.find(nm => nm.tv === obj);
         }
-        if (allTVs.includes(obj)) {
-          newHoveredTV = obj;
-          // Check if it's a nav TV
-          if (navigationSystem && navigationSystem.navModels) {
-            hoveredNavModel = navigationSystem.navModels.find(nm => nm.tv === obj);
-          }
-          break;
-        }
+        break;
       }
     }
-
-    // Update hovered TV reference
-    if (newHoveredTV !== hoveredTV) {
-      hoveredTV = newHoveredTV;
-    }
   }
 
-  // Yard parallax - simplified on mobile for better performance
-  if (!isMobileDevice) {
-    // Desktop: Full parallax for all yard TVs
-    yard.children.forEach(row => {
-      row.children.forEach(col => {
-        col.children.forEach(tv => {
-          if (!tv.userData.baseQuat) tv.userData.baseQuat = tv.quaternion.clone();
+  // Update hovered TV reference
+  if (newHoveredTV !== hoveredTV) {
+    hoveredTV = newHoveredTV;
+  }
 
-          // If this TV is hovered, make it face the camera directly
-          if (hoveredTV === tv) {
-            const tvWorldPos = new THREE.Vector3();
-            tv.getWorldPosition(tvWorldPos);
-            const targetQuat = new THREE.Quaternion().setFromRotationMatrix(
-              new THREE.Matrix4().lookAt(tvWorldPos, camera.position, new THREE.Vector3(0, 1, 0))
-            );
-            tv.quaternion.slerp(targetQuat, 0.1);
-          } else {
-            // Apply normal parallax
-            qTmp.setFromEuler(new THREE.Euler(ny * ROT_ALL_PITCH, nx * ROT_ALL_YAW, 0));
-            tv.quaternion.slerp(tv.userData.baseQuat.clone().multiply(qTmp), 0.1);
-          }
-        });
+  // Yard parallax - individual TV rotation towards camera when hovered
+  yard.children.forEach(row => {
+    row.children.forEach(col => {
+      col.children.forEach(tv => {
+        if (!tv.userData.baseQuat) tv.userData.baseQuat = tv.quaternion.clone();
+
+        // If this TV is hovered, make it face the camera directly
+        if (hoveredTV === tv) {
+          const tvWorldPos = new THREE.Vector3();
+          tv.getWorldPosition(tvWorldPos);
+          const targetQuat = new THREE.Quaternion().setFromRotationMatrix(
+            new THREE.Matrix4().lookAt(tvWorldPos, camera.position, new THREE.Vector3(0, 1, 0))
+          );
+          tv.quaternion.slerp(targetQuat, 0.1);
+        } else {
+          // Apply normal parallax
+          qTmp.setFromEuler(new THREE.Euler(ny * ROT_ALL_PITCH, nx * ROT_ALL_YAW, 0));
+          tv.quaternion.slerp(tv.userData.baseQuat.clone().multiply(qTmp), 0.1);
+        }
       });
     });
-  } else {
-    // Mobile: Only apply parallax to hovered TV for performance
-    if (hoveredTV) {
-      const tvWorldPos = new THREE.Vector3();
-      hoveredTV.getWorldPosition(tvWorldPos);
-      const targetQuat = new THREE.Quaternion().setFromRotationMatrix(
-        new THREE.Matrix4().lookAt(tvWorldPos, camera.position, new THREE.Vector3(0, 1, 0))
-      );
-      hoveredTV.quaternion.slerp(targetQuat, 0.1);
-    }
-  }
+  });
 
   // Update navigation TV screens - show text only when hovered
   if (navigationSystem && navigationSystem.navModels) {
@@ -593,12 +545,8 @@ function animate(nowMs) {
   // Hero screen content
   const strong = powerTarget > 0;
   paikIntensity += ((strong ? 0.9 : 0.25) - paikIntensity) * 0.10;
-
-  // On mobile, run glitch effect every other frame for better performance
-  if (!isMobileDevice || (frameCount % 2 === 0)) {
-    drawPaikBase(paikIntensity);
-    paikGlitch(paikIntensity, now);
-  }
+  drawPaikBase(paikIntensity);
+  paikGlitch(paikIntensity, now);
 
   // Page-models: mouse tilt with hover detection
   if (navigationSystem) {
