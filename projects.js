@@ -37,17 +37,7 @@ const carouselStates = {
   photography: { currentIndex: 0, projectContent: {} }
 };
 
-// Utility function to check if a file exists
-async function fileExists(url) {
-  try {
-    const response = await fetch(url, { method: 'HEAD' });
-    return response.ok;
-  } catch {
-    return false;
-  }
-}
-
-// Dynamically load all content from a project folder
+// Load project content from manifest.json
 async function loadProjectContent(section, project) {
   const basePaths = {
     llms: 'content/Working LLMs',
@@ -63,83 +53,53 @@ async function loadProjectContent(section, project) {
     audio: []
   };
 
-  // Special handling for photography section (no subfolders)
-  if (section === 'photography') {
-    const basePath = `${basePaths[section]}/`;
-    // Load Portfolio_debayan.XXX.jpeg files
-    for (let i = 1; i <= 50; i++) {
-      const num = String(i).padStart(3, '0');
-      const jpegUrl = `${basePath}Portfolio_debayan.${num}.jpeg`;
-      if (await fileExists(jpegUrl)) {
-        content.images.push(jpegUrl);
-      } else {
-        break;
+  try {
+    // Special handling for photography section (no subfolders)
+    if (section === 'photography') {
+      const manifestUrl = `${basePaths[section]}/manifest.json`;
+      const response = await fetch(manifestUrl);
+
+      if (!response.ok) {
+        console.warn(`Manifest not found for photography section`);
+        return content;
       }
+
+      const manifest = await response.json();
+      const basePath = `${basePaths[section]}/`;
+
+      // Convert filenames to full URLs
+      content.images = manifest.images.map(img => `${basePath}${img}`);
+      content.videos = manifest.videos.map(vid => `${basePath}${vid}`);
+      content.pdfs = manifest.pdfs.map(pdf => `${basePath}${pdf}`);
+      content.audio = manifest.audio.map(aud => `${basePath}${aud}`);
+
+      return content;
     }
+
+    // Load manifest for project
+    const basePath = `${basePaths[section]}/${project.name}/`;
+    const manifestUrl = `${basePath}manifest.json`;
+
+    const response = await fetch(manifestUrl);
+
+    if (!response.ok) {
+      console.warn(`Manifest not found for ${project.name}`);
+      return content;
+    }
+
+    const manifest = await response.json();
+
+    // Convert filenames to full URLs
+    content.images = manifest.images.map(img => `${basePath}${img}`);
+    content.videos = manifest.videos.map(vid => `${basePath}${vid}`);
+    content.pdfs = manifest.pdfs.map(pdf => `${basePath}${pdf}`);
+    content.audio = manifest.audio.map(aud => `${basePath}${aud}`);
+
+    return content;
+  } catch (error) {
+    console.error(`Error loading manifest for ${project.name || 'photography'}:`, error);
     return content;
   }
-
-  const basePath = `${basePaths[section]}/${project.name}/`;
-
-  // Probe for numbered images (1.jpg, 2.jpg, etc.)
-  for (let i = 1; i <= 30; i++) {
-    const jpgUrl = `${basePath}${i}.jpg`;
-    const jpegUrl = `${basePath}${i}.jpeg`;
-    const pngUrl = `${basePath}${i}.png`;
-
-    if (await fileExists(jpgUrl)) {
-      content.images.push(jpgUrl);
-    } else if (await fileExists(jpegUrl)) {
-      content.images.push(jpegUrl);
-    } else if (await fileExists(pngUrl)) {
-      content.images.push(pngUrl);
-    } else {
-      break;
-    }
-  }
-
-  // Probe for videos (media1.mp4, media2.mp4, etc. and video1.mp4, video2.mp4, etc.)
-  for (let i = 1; i <= 10; i++) {
-    const mediaUrl = `${basePath}media${i}.mp4`;
-    const videoUrl = `${basePath}video${i}.mp4`;
-
-    if (await fileExists(mediaUrl)) {
-      content.videos.push(mediaUrl);
-    }
-    if (await fileExists(videoUrl)) {
-      content.videos.push(videoUrl);
-    }
-  }
-
-  // Check for PDFs
-  const pdfPatterns = [
-    `${project.name.toLowerCase()}.pdf`,
-    'document.pdf',
-    'paper.pdf',
-    'presentation.pdf'
-  ];
-
-  for (const pdfName of pdfPatterns) {
-    const pdfUrl = `${basePath}${pdfName}`;
-    if (await fileExists(pdfUrl)) {
-      content.pdfs.push(pdfUrl);
-    }
-  }
-
-  // Check for audio files
-  for (let i = 1; i <= 10; i++) {
-    const mp3Url = `${basePath}audio${i}.mp3`;
-    const wavUrl = `${basePath}sound${i}.wav`;
-
-    if (await fileExists(mp3Url)) {
-      content.audio.push(mp3Url);
-    }
-    if (await fileExists(wavUrl)) {
-      content.audio.push(wavUrl);
-    }
-  }
-
-  return content;
 }
 
 // Setup carousel for a section
@@ -479,32 +439,41 @@ function updateNavigationButtons() {
   nextBtn.disabled = false;
 }
 
-// Load photography images dynamically
+// Load photography images dynamically from manifest
 async function loadPhotographyImages() {
   const basePath = 'content/Photography/';
   const photographyArray = [];
 
-  for (let i = 1; i <= 50; i++) {
-    const num = String(i).padStart(3, '0');
-    const jpegUrl = `${basePath}Portfolio_debayan.${num}.jpeg`;
-    if (await fileExists(jpegUrl)) {
-      photographyArray.push({
-        name: `photo_${num}`,
-        title: `Photo ${i}`,
-        description: '',
-        coverImage: jpegUrl
-      });
-    } else {
-      break;
+  try {
+    const manifestUrl = `${basePath}manifest.json`;
+    const response = await fetch(manifestUrl);
+
+    if (!response.ok) {
+      console.warn('Photography manifest not found');
+      return;
     }
-  }
 
-  projectsData.photography = photographyArray;
+    const manifest = await response.json();
 
-  // Update counter
-  const counter = document.getElementById('counter-photography');
-  if (counter && photographyArray.length > 0) {
-    counter.textContent = `1 OF ${photographyArray.length}`;
+    // Create project entries from manifest images
+    manifest.images.forEach((filename, i) => {
+      photographyArray.push({
+        name: `photo_${String(i + 1).padStart(3, '0')}`,
+        title: `Photo ${i + 1}`,
+        description: '',
+        coverImage: `${basePath}${filename}`
+      });
+    });
+
+    projectsData.photography = photographyArray;
+
+    // Update counter
+    const counter = document.getElementById('counter-photography');
+    if (counter && photographyArray.length > 0) {
+      counter.textContent = `1 OF ${photographyArray.length}`;
+    }
+  } catch (error) {
+    console.error('Error loading photography manifest:', error);
   }
 }
 
