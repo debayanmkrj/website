@@ -1,6 +1,13 @@
 // Projects data for all sections
 const projectsData = {
   llms: [
+    { name: 'Fashion_video', title: 'EDITORIAL', description: 'Generative AI fashion video production and styling.', coverVideo: 'content/Gen-AI/Fashion_video/media1.mp4', images: ['content/Gen-AI/Fashion_video/Portfolio_debayan.001.jpeg', 'content/Gen-AI/Fashion_video/Portfolio_debayan.002.jpeg'] },
+    { name: 'Cinematic', title: 'CINEMATIC', description: 'Generative AI driven cinematic video content creation.', coverVideo: 'content/Gen-AI/Cinematic/media1.mp4', images: ['content/Gen-AI/Cinematic/Portfolio_debayan.01.jpeg', 'content/Gen-AI/Cinematic/Portfolio_debayan.02.jpeg'] },
+    { name: 'Ecommerce', title: 'ECOMMERCE', description: 'AI powered ecommerce visual content generation.', coverVideo: 'content/Gen-AI/Ecommerce/media1.mp4', images: ['content/Gen-AI/Ecommerce/Portfolio_debayan.001.jpeg', 'content/Gen-AI/Ecommerce/Portfolio_debayan.002.jpeg'] },
+    { name: 'Home', title: 'HOME', description: 'AI generated home and interior design visualizations.', coverVideo: 'content/Gen-AI/Home/media1.mp4', images: ['content/Gen-AI/Home/port_1.jpeg', 'content/Gen-AI/Home/port_2.jpeg'] },
+    { name: 'Imaginative', title: 'IMAGINATIVE', description: 'Experimental generative AI art and creative explorations.', coverVideo: 'content/Gen-AI/Imaginative/media1.mp4', images: ['content/Gen-AI/Imaginative/Portfolio_debayan.01.jpeg', 'content/Gen-AI/Imaginative/Portfolio_debayan.02.jpeg'] }
+  ],
+  creative: [
     { name: 'Prisma', title: 'PRISMA', description: 'Prisma is an interactive webcam installation that transforms viewers video feed in real time, displaying themselves across three distinct temporal perspective using machine learning and creative coding.', coverImage: 'content/Working LLMs/Prisma/cover.jpg', github: 'https://github.com/debayanmkrj/Prisma' },
     { name: 'Morodd', title: 'MORODD', description: 'Morodd is a machine learning based interactive project using neural networks to imagine the space within viewers in point cloud systems and sonic embeddings.', coverImage: 'content/Working LLMs/Morodd/cover.jpg', github: 'https://github.com/debayanmkrj/Morodd' },
     { name: 'Imagebot', title: 'IMAGEBOT', description: 'A natural language processing assistant for image editing and generative art. The playform offers a glimpse into how photoshop with co-pilot could feel like.', coverImage: 'content/Working LLMs/Imagebot/cover.jpg', github: 'https://github.com/debayanmkrj/Imagebot' },
@@ -10,21 +17,16 @@ const projectsData = {
     { name: 'Alt_dj', title: 'ALT DJ', description: 'A Machine Learning project that predicts a DJ\'s interaction with the equipment and replicates it for style transfer video feed.', coverImage: 'content/Working LLMs/Alt_dj/cover.jpg', github: 'https://github.com/debayanmkrj/Alt-Dj' },
     { name: 'Ads', title: 'ADAPTIVE ADS', description: 'Dynamic advertisement generation using adaptive algorithms and SAM3 model.', coverImage: 'content/Working LLMs/Ads/cover.jpg', github: 'https://github.com/debayanmkrj/Adaptive_ads' }
   ],
-  creative: [
+  visual: [
     { name: 'Warrior_Duel', title: 'WARRIOR DUEL', description: 'Warrior Duel is a side-scrolling combat game developed in Swift using SpriteKit. Players select from three character classes (Fighter, Samurai, or Shinobi) and battle through increasingly difficult vampire enemies across three unique castle environments.', coverImage: 'content/Visual Experience/Warrior_Duel/cover.jpg', github: 'https://github.com/debayanmkrj/Warrior-Duel' },
     { name: 'Usdz', title: 'USDZ AR EXPERIENCES', description: '3D augmented reality content creation for mobile platforms.', coverImage: 'content/Visual Experience/Usdz/cover.jpg' },
     { name: 'SnipeZone', title: 'SNIPEZONE', description: 'Unity FPS Game that combines game play with intelligent Enemy AI and facetracking to control player.', coverImage: 'content/Visual Experience/SnipeZone/cover.jpg', github: 'https://github.com/debayanmkrj/Snipezone' },
     { name: 'Reverse_Mirror', title: 'REVERSE MIRROR', description: 'Interaction design based on user persona and generative art.', coverImage: 'content/Visual Experience/Reverse_Mirror/cover.jpg' },
     { name: 'Interactive_Media_2', title: 'INTERACTIVE MEDIA II', description: 'The Max/MSP patch processes real-time gyroscopic input (pitch, roll, and yaw data) from a smartphone, which users manipulate to control RGB color channels on a monochrome source image. The system employs sophisticated data smoothing algorithms using mathematical modules and ranger objects to filter noise and scale the gyroscopic movements to precise RGB multiplier values (0-8 range) within the MUTIL8R module. The color matching system utilizes Jit matrix objects to extract RGB channel mean values from both the user-controlled image and a randomly generated source image processed through the Kaleidr module. A threshold-based comparison algorithm evaluates color accuracy across all three channels, triggering audio feedback when successful matches occur. This gamified approach makes color vision testing engaging for children, as they use natural phone movements to recreate target colors while receiving immediate auditory confirmation of their progress. This innovative approach transforms traditional color blindness screening into an interactive experience that can identify color perception deficiencies in young patients who might struggle with conventional testing methods.', coverImage: 'content/Visual Experience/Interactive_Media_2/cover.jpg' },
     { name: 'Interactive_Media', title: 'INTERACTIVE MEDIA I', description: 'The Max/MSP patches demonstrates a hand tracking system that captures finger positions and gestures in real-time. The first patch shows the core hand detection module (jit.fill #0hand) processing skeletal data through matrix operations, converting raw hand coordinates into usable control parameters for the racing game. The project uses a pre-trained hand tracking model using Wekinator. The hand tracking gestures are illustrated in the images below. The intent of using both hands to control the car is to allow the user to use both hands to control the car was to provide an easy and intuitive way to control the car.', coverImage: 'content/Visual Experience/Interactive_Media/cover.jpg' },
-    { name: 'Groove_it', title: 'GROOVE IT', description: 'An immersive music player iOS app developed with Swift, RealityKit, AR Kit that combines audio playback with real time 3D experience.', coverImage: 'content/Visual Experience/Groove_it/cover.jpg', github: 'https://github.com/debayanmkrj/GROO-V-IT' }
-  ],
-  visual: [
-    { name: 'The_core_principle', title: 'THE CORE PRINCIPLE', description: 'Exploring fundamental design principles in digital experiences.', coverImage: 'content/Creative Design/The_core_principle/cover.jpg' },
-    { name: 'Process_improvements', title: 'PROCESS IMPROVEMENTS', description: 'Workflow optimization through creative technology solutions.', coverImage: 'content/Creative Design/Process_improvements/cover.jpg' },
-    { name: 'Gan', title: 'GAN EXPLORATIONS', description: 'Generative Adversarial Network experiments in visual style transfer and creation.', coverImage: 'content/Creative Design/Gan/cover.jpg' },
-    { name: 'Designing_for_consumers', title: 'DESIGNING FOR CONSUMERS', description: 'User-centered design methodologies for consumer products.', coverImage: 'content/Creative Design/Designing_for_consumers/cover.jpg' },
-    { name: 'Content_Repurpose', title: 'CONTENT REPURPOSE', description: 'Strategic content transformation across multiple platforms and formats.', coverImage: 'content/Creative Design/Content_Repurpose/cover.jpg' }
+    { name: 'Groove_it', title: 'GROOVE IT', description: 'An immersive music player iOS app developed with Swift, RealityKit, AR Kit that combines audio playback with real time 3D experience.', coverImage: 'content/Visual Experience/Groove_it/cover.jpg', github: 'https://github.com/debayanmkrj/GROO-V-IT' },
+    { name: 'Gan', title: 'GAN EXPLORATIONS', description: 'Generative Adversarial Network experiments in visual style transfer and creation.', coverImage: 'content/Visual Experience/Gan/cover.jpg' },
+    { name: 'Designing_for_consumers', title: 'DESIGNING FOR CONSUMERS', description: 'User-centered design methodologies for consumer products.', coverImage: 'content/Visual Experience/Designing_for_consumers/cover.jpg' }
   ],
   photography: [] // Will be populated dynamically
 };
@@ -40,9 +42,9 @@ const carouselStates = {
 // Load project content from manifest.json
 async function loadProjectContent(section, project) {
   const basePaths = {
-    llms: 'content/Working LLMs',
-    creative: 'content/Visual Experience',
-    visual: 'content/Creative Design',
+    llms: 'content/Gen-AI',
+    creative: 'content/Working LLMs',
+    visual: 'content/Visual Experience',
     photography: 'content/Photography'
   };
 
@@ -144,6 +146,26 @@ function createCarouselItem(section, index, position) {
       if (position === 'center') {
         // Open fullscreen without navigation (single image only)
         openFullImage(project.coverImage, [project.coverImage], 0);
+      } else {
+        carouselStates[section].currentIndex = index;
+        setupCarousel(section);
+      }
+    });
+  } else if (section === 'llms' && project.coverVideo) {
+    // Gen-AI projects use video as carousel hero
+    item.innerHTML = `
+      <div class="carousel-image-container">
+        <video src="${project.coverVideo}" muted autoplay loop playsinline class="carousel-image" style="object-fit: cover; width:100%; height:100%;"></video>
+        <div class="project-info">
+          <div class="project-title">${project.title}</div>
+          <div class="project-description">${project.description}</div>
+        </div>
+      </div>
+    `;
+
+    item.addEventListener('click', function() {
+      if (position === 'center') {
+        openGenAIOverlay(index);
       } else {
         carouselStates[section].currentIndex = index;
         setupCarousel(section);
@@ -373,6 +395,57 @@ async function openProjectOverlay(section, index) {
   overlay.classList.add('active');
 }
 
+// Open Gen-AI project overlay with video + labeled images
+function openGenAIOverlay(index) {
+  const project = projectsData.llms[index];
+
+  let overlay = document.getElementById(`overlay-llms-${index}`);
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = `overlay-llms-${index}`;
+    overlay.className = 'project-overlay';
+
+    const images = project.images || [];
+    let imagesHTML = '';
+    if (images.length >= 1) {
+      imagesHTML += `<h3 class="gallery-section-title">Reference Image</h3>
+        <div class="gallery-item" style="max-width:100%; aspect-ratio:auto;"><img src="${images[0]}" alt="Reference Image" style="width:100%; height:auto; object-fit:contain;"></div>`;
+    }
+    if (images.length >= 2) {
+      imagesHTML += `<h3 class="gallery-section-title">Workflow</h3>
+        <div class="gallery-item" style="max-width:100%; aspect-ratio:auto;"><img src="${images[1]}" alt="Workflow" style="width:100%; height:auto; object-fit:contain;"></div>`;
+    }
+
+    overlay.innerHTML = `
+      <div class="project-detail">
+        <div class="overlay-header">
+          <h2>${project.title}</h2>
+          <button class="close-btn" onclick="closeProjectOverlay('llms', ${index})">&times;</button>
+        </div>
+        <div class="overlay-content">
+          <p>${project.description}</p>
+          <div class="video-container" style="width:100%; margin-bottom:2rem;">
+            <video controls autoplay style="width:100%; max-width:100%;">
+              <source src="${project.coverVideo}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          ${imagesHTML}
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        closeProjectOverlay('llms', index);
+      }
+    });
+  }
+
+  overlay.classList.add('active');
+}
+
 // Close project overlay
 function closeProjectOverlay(section, index) {
   const overlay = document.getElementById(`overlay-${section}-${index}`);
@@ -523,6 +596,7 @@ async function initializeProjects() {
 
 // Make functions globally accessible
 window.closeProjectOverlay = closeProjectOverlay;
+window.openGenAIOverlay = openGenAIOverlay;
 window.openFullImage = openFullImage;
 window.closeFullImage = closeFullImage;
 window.navigateFullImage = navigateFullImage;
