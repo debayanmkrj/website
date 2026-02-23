@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photography | Debayan Mukherjee</title>
+    <title>Content Creation | Debayan Mukherjee</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -350,8 +350,8 @@
 <body>
     <div class="page-content">
         <a href="../index.html" class="back-btn">← BACK</a>
-        <h1 class="section-title">PHOTOGRAPHY</h1>
-        <p class="section-subtitle">Capturing compelling visual narratives through the lens, specializing in fashion photography that combines artistic vision with technical expertise to create stunning imagery.</p>
+        <h1 class="section-title">CONTENT CREATION</h1>
+        <p class="section-subtitle">A diverse collection of visual content spanning photography, videography, and digital media production, blending artistic vision with technical expertise to create compelling narratives across multiple formats.</p>
 
         <div class="photo-carousel">
             <div class="carousel-container">
@@ -376,43 +376,80 @@
     </div>
 
     <script>
-        const totalImages = 32;
+        let allMedia = [];
+        let currentIndex = 0;
         const carousel = document.getElementById('carousel');
         const counterText = document.getElementById('counter');
         const imageOverlay = document.getElementById('image-overlay');
         const overlayImage = document.getElementById('overlay-image');
 
-        let currentIndex = 1;
+        async function loadContentManifest() {
+            try {
+                const response = await fetch('../content/Photography/manifest.json');
+                const manifest = await response.json();
+                
+                // Load images
+                manifest.images.forEach(img => {
+                    allMedia.push({
+                        type: 'image',
+                        src: `../content/Photography/${img}`,
+                        alt: 'Content image'
+                    });
+                });
+                
+                // Load videos
+                manifest.videos.forEach(vid => {
+                    allMedia.push({
+                        type: 'video',
+                        src: `../content/Photography/${vid}`,
+                        alt: 'Content video'
+                    });
+                });
+                
+                setupCarousel();
+            } catch (error) {
+                console.error('Error loading manifest:', error);
+            }
+        }
 
         function setupCarousel() {
             carousel.innerHTML = '';
+            const totalItems = allMedia.length;
+            
+            if (totalItems === 0) return;
 
-            const leftIndex = currentIndex === 1 ? totalImages : currentIndex - 1;
-            const rightIndex = currentIndex === totalImages ? 1 : currentIndex + 1;
+            const leftIndex = (currentIndex - 1 + totalItems) % totalItems;
+            const rightIndex = (currentIndex + 1) % totalItems;
 
             createCarouselItem(leftIndex, 'left');
             createCarouselItem(currentIndex, 'center');
             createCarouselItem(rightIndex, 'right');
 
-            counterText.textContent = `${currentIndex} OF ${totalImages}`;
+            counterText.textContent = `${currentIndex + 1} OF ${totalItems}`;
         }
 
         function createCarouselItem(index, position) {
             const item = document.createElement('div');
             item.className = `carousel-item ${position}`;
+            const media = allMedia[index];
 
-            const imagePath = `../content/Photography/Portfolio_debayan.${String(index).padStart(3, '0')}.jpeg`;
-
-            item.innerHTML = `
-                <div class="carousel-image-container">
-                    <img src="${imagePath}" alt="Photography ${index}" class="carousel-image">
-                </div>
-            `;
+            let htmlContent = '<div class="carousel-image-container">';
+            if (media.type === 'image') {
+                htmlContent += `<img src="${media.src}" alt="${media.alt}" class="carousel-image">`;
+            } else if (media.type === 'video') {
+                htmlContent += `<video class="carousel-image" style="width: 100%; height: 100%; object-fit: cover;" muted autoplay loop playsinline><source src="${media.src}" type="video/mp4"></video>`;
+            }
+            htmlContent += '</div>';
+            item.innerHTML = htmlContent;
 
             item.addEventListener('click', function() {
                 if (position === 'center') {
-                    overlayImage.src = imagePath;
-                    imageOverlay.classList.add('active');
+                    if (media.type === 'image') {
+                        overlayImage.src = media.src;
+                        overlayImage.style.display = 'block';
+                        imageOverlay.style.display = 'flex';
+                        imageOverlay.classList.add('active');
+                    }
                 } else {
                     currentIndex = index;
                     setupCarousel();
@@ -429,7 +466,7 @@
             prevBtn.disabled = true;
             nextBtn.disabled = true;
 
-            currentIndex = currentIndex === 1 ? totalImages : currentIndex - 1;
+            currentIndex = (currentIndex - 1 + allMedia.length) % allMedia.length;
             setupCarousel();
 
             setTimeout(() => {
@@ -445,7 +482,7 @@
             prevBtn.disabled = true;
             nextBtn.disabled = true;
 
-            currentIndex = currentIndex === totalImages ? 1 : currentIndex + 1;
+            currentIndex = (currentIndex + 1) % allMedia.length;
             setupCarousel();
 
             setTimeout(() => {
@@ -464,7 +501,7 @@
         });
 
         // Initialize
-        setupCarousel();
+        loadContentManifest();
     </script>
 </body>
 </html>

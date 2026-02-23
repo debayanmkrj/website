@@ -1,9 +1,9 @@
 // Projects data for all sections
 const projectsData = {
   llms: [
-    { name: 'Fashion_video', title: 'EDITORIAL', description: 'Generative AI fashion video production and styling.', coverVideo: 'content/Gen-AI/Fashion_video/media1.mp4', images: ['content/Gen-AI/Fashion_video/Portfolio_debayan.001.jpeg', 'content/Gen-AI/Fashion_video/Portfolio_debayan.002.jpeg'] },
     { name: 'Cinematic', title: 'CINEMATIC', description: 'Generative AI driven cinematic video content creation.', coverVideo: 'content/Gen-AI/Cinematic/media1.mp4', images: ['content/Gen-AI/Cinematic/Portfolio_debayan.01.jpeg', 'content/Gen-AI/Cinematic/Portfolio_debayan.02.jpeg'] },
     { name: 'Ecommerce', title: 'ECOMMERCE', description: 'AI powered ecommerce visual content generation.', coverVideo: 'content/Gen-AI/Ecommerce/media1.mp4', images: ['content/Gen-AI/Ecommerce/Portfolio_debayan.001.jpeg', 'content/Gen-AI/Ecommerce/Portfolio_debayan.002.jpeg'] },
+    { name: 'Fashion_video', title: 'EDITORIAL', description: 'Generative AI fashion video production and styling.', coverVideo: 'content/Gen-AI/Fashion_video/media1.mp4', images: ['content/Gen-AI/Fashion_video/Portfolio_debayan.001.jpeg', 'content/Gen-AI/Fashion_video/Portfolio_debayan.002.jpeg'] },
     { name: 'Home', title: 'HOME', description: 'AI generated home and interior design visualizations.', coverVideo: 'content/Gen-AI/Home/media1.mp4', images: ['content/Gen-AI/Home/port_1.jpeg', 'content/Gen-AI/Home/port_2.jpeg'] },
     { name: 'Imaginative', title: 'IMAGINATIVE', description: 'Experimental generative AI art and creative explorations.', coverVideo: 'content/Gen-AI/Imaginative/media1.mp4', images: ['content/Gen-AI/Imaginative/Portfolio_debayan.01.jpeg', 'content/Gen-AI/Imaginative/Portfolio_debayan.02.jpeg'] }
   ],
@@ -135,10 +135,11 @@ function createCarouselItem(section, index, position) {
   item.className = `carousel-item ${position}`;
 
   // Special handling for photography section - no title/description overlay
-  if (section === 'photography') {
+  if (section === 'photography' && project.coverVideo) {
     item.innerHTML = `
       <div class="carousel-image-container">
-        <img src="${project.coverImage}" alt="Photography ${index + 1}" class="carousel-image" style="object-fit: contain;">
+      <video src="${project.coverVideo}" muted autoplay loop playsinline class="carousel-image" style="object-fit: cover; width:100%; height:100%;"></video>  
+      <img src="${project.coverImage}" alt="Photography ${index + 1}" class="carousel-image" style="object-fit: contain;">
       </div>
     `;
 
@@ -512,7 +513,7 @@ function updateNavigationButtons() {
   nextBtn.disabled = false;
 }
 
-// Load photography images dynamically from manifest
+// Load photography images and videos dynamically from manifest
 async function loadPhotographyImages() {
   const basePath = 'content/Photography/';
   const photographyArray = [];
@@ -528,7 +529,17 @@ async function loadPhotographyImages() {
 
     const manifest = await response.json();
 
-    // Create project entries from manifest images
+    // Create project entries from manifest videos FIRST
+    manifest.videos.forEach((filename, i) => {
+      photographyArray.push({
+        name: `video_${String(i + 1).padStart(3, '0')}`,
+        title: `Video ${i + 1}`,
+        description: '',
+        coverVideo: `${basePath}${filename}`
+      });
+    });
+
+    // Create project entries from manifest images SECOND
     manifest.images.forEach((filename, i) => {
       photographyArray.push({
         name: `photo_${String(i + 1).padStart(3, '0')}`,

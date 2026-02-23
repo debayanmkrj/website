@@ -29,7 +29,12 @@
     "Portfolio_debayan.031.jpeg",
     "Portfolio_debayan.032.jpeg"
   ],
-  "videos": [],
+  "videos": [
+    "media1.mp4",
+    "media2.mp4",
+    "media3.mp4",
+    "media4.mp4"
+  ],
   "pdfs": [],
   "audio": []
 }

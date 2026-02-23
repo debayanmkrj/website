@@ -5,7 +5,7 @@ const NAV_PAGES = [
   { id: 'llms',        title: 'Gen - AI\nProjects',                position: 'left'   },
   { id: 'creative',    title: 'Machine Learning\nProjects',        position: 'left'  },
   { id: 'visual',      title: 'Digital Experience\nProjects',      position: 'right'  },
-  { id: 'photography', title: 'Photography',                         position: 'right'  }
+  { id: 'photography', title: 'Content\nCreation',                 position: 'right'  }
 ];
 
 const ROT_HERO_YAW   = THREE.MathUtils.degToRad(24);
