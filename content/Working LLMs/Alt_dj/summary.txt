@@ -1,0 +1,27 @@
+In Alt-DJ, I built an AI system to analyze, quantify, and recreate DJ techniques by connecting what happens in a DJ’s hands and equipment to the corresponding changes in audio. I started from the gaps I saw in current DJ learning: there isn’t a systematic way to study famous DJs, training relies heavily on manual observation and trial-and-error, and existing tools either focus only on audio (BPM/key detection) or require expensive studio motion-capture without audio integration.
+
+My solution has four phases: In the learning phase, I train a computer-vision detector (listed as YOLOv8/YOLO in my materials) on DJ tutorial videos to detect hand–equipment interactions. In the prototype scope, I target interaction classes such as crossfader, EQ knobs, jog wheels, hot cues, and volume faders, aiming for 4 interaction classes early on. In the analysis phase, I apply the trained model to performances by famous DJs and run audio feature extraction to build a correlation algorithm between visual interactions and audio changes. In the prediction/style-transfer phase, I use a neural network-based audio style transfer approach to predict a DJ’s style on new tracks and recreate style-specific mixing behavior. Finally, I generate video montages/clips that highlight key interaction moments and provide an interactive desktop player UI for playback, analysis, and visualization.
+
+Tech Stack (from GitHub)
+
+Python 3.8+, FFmpeg (audio/video processing)
+
+Libraries: NumPy, Pandas, Matplotlib, SciPy, tqdm
+
+Audio: Librosa, SoundFile, Pygame
+
+Vision: OpenCV, Pillow
+
+ML: PyTorch, Torchvision, Scikit-learn, Ultralytics (YOLO)
+
+GUI: tk/tkinter
+
+ML Models / Algorithms Mentioned
+
+YOLO object detection for DJ equipment + hand interaction detection (YOLOv8 noted in slides; repo includes YOLO models)
+
+Audio feature extraction (spectral, rhythm/tempo/beat tracking, dynamics, frequency band analysis)
+
+Correlation network / correlation mapping between visual actions and audio changes
+
+Neural audio style transfer (NN-based; repo also mentions a GAN-based implementation)

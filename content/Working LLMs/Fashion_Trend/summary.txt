@@ -1,0 +1,22 @@
+I built a multi-modal fashion trend phase predictor that takes a fashion product video (mp4) and outputs a trend phase + confidence, along with garment details. 
+I used the Amazon Fashion Video Dataset (UBC Vision Lab): 600 total videos, with 300 selected and keyframes extracted at 1-second timestamps (total size ~280MB; average length ~10s). 
+For preprocessing, I uniformly sampled 64 frames per video at 256×256 RGB, normalized to [-1, 1], and ran a V-JEPA preprocessing pipeline. 
+I performed garment detection on keyframes (0, 16, 32, 48), then extracted video features and fed them into an attentive probe for 3-class classification (Mainstream / Emerging / Declining).
+
+For modeling, I used V-JEPA 2 with a ViT-Large backbone (frozen; ~300M params) producing 1024-d embeddings per patch, and trained a 55,115,779-parameter attentive probe. 
+The probe uses cross-attention with 4 learnable query tokens, followed by a classification head (LayerNorm → Linear 1024→512 → GELU → Dropout → Linear 512→3), and includes 4 transformer encoder layers (8 heads; FFN dim 4096).
+
+Tech stack: 
+Python. 
+PyTorch/torchvision. 
+Transformers. 
+OpenCV. 
+Pandas. 
+Numpy. 
+Matplotlib. 
+Tqdm. 
+Scikit-learn. 
+Yt-dlp. 
+Einops. 
+Timm.
+

@@ -1,0 +1,19 @@
+In this project, I built a hand-tracking control system in Max/MSP to drive a racing game using real-time finger positions and gesture inputs. I designed the interaction so the player controls the car with both hands, aiming to make steering and speed changes feel more intuitive and physically expressive than keyboard-only input.
+
+I implemented the core pipeline as a set of Max/MSP patches that capture and process skeletal hand data. In the primary hand-detection patch, I used the module shown as jit fill #0hand and passed the output through matrix operations (jit matrix, jit coerce, jit map, jit op) to transform raw hand coordinates into stable control parameters usable by the game. I also created a visualization layer using jit gl mesh to render the hand as both points and lines, which helped me debug tracking quality and confirm that the skeletal data was being mapped correctly.
+
+For gesture recognition, I used a pre-trained hand tracking model in Wekinator and connected its output to gameplay actions. I mapped gestures to commands including null/no input, slow down, accelerate, and combined gestures for direction + speed such as left turn + accelerate, right turn + accelerate, right turn + slow down, and left turn + slow down (as illustrated in the gesture reference image). The end result is a two-hand control scheme that translates continuous hand movement and discrete gesture states into responsive driving control in the racing game.
+
+Tech Stack
+
+Max/MSP
+
+Jitter (jit.* modules such as jit.fill, jit.matrix, jit.coerce, jit.map, jit.op, jit.gl.mesh)
+
+Wekinator (pre-trained hand tracking / gesture model)
+
+ML Models / Algorithms Mentioned
+
+Pre-trained hand tracking model using Wekinator
+
+Real-time skeletal processing via matrix transformations and coordinate mapping within Jitter (as shown in the patch)

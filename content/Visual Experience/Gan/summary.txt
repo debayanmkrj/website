@@ -1,0 +1,9 @@
+In this project, I addressed a long-standing challenge in e-commerce apparel imaging: on-model catalogue photography has followed an almost 20-year-old process with limited automation and iteration. At the same time, creating fully rendered 3D images from scratch remained an improbable task to execute at scale. I initiated and delivered this work to benchmark the quality standards of rendered images against traditional/manual processes, using GAN (Generative Adversarial Networks)-enabled solutions for composite imaging—specifically virtual model and product rendering—with the goal of evolving still-image production for scale.
+
+I structured the work across multiple phases, including testing for apparel and non-apparel products, aligned with vendor capabilities and the experiences offered on amaozn. The module I evaluated was trained on thousands of images from two input sources and generated final outputs for close to 800 products.
+
+I defined two key inputs and a quality-controlled output workflow. Input 1 captured aesthetic variables (technical and aesthetic), including imaging technicalities, lighting design, image specifications, template skin-render quality, and aesthetic elements such as hair and makeup and pairing options based on product type and persona. Input 2 incorporated product images captured at specific intervals to complete a 360-degree spin using automated imaging devices synchronized to 10-degree angles, with lighting consistency, garment fall, and silhouette monitoring as checkpoints. Finally, I implemented a quality-check step where each rendered product image was measured against 5–6 quality standards and criteria.
+
+ML Models
+
+GAN (Generative Adversarial Networks) for composite imaging (virtual model + product rendering).

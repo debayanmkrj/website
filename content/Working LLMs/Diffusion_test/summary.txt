@@ -1,0 +1,17 @@
+I built a two-part research project that connects diffusion-model conditioning theory with a practical virtual try-on system.
+
+In Part 1 (Noise-Aligned Conditioning for Diffusion Models), I tested the idea that diffusion models reconstruct better when the conditioning signal is aligned to the current noise level. I conditioned the denoiser using time-synchronized noisy conditioning​ alongside a clean condition, and introduced a hybrid conditioning strategy (c₀ + cₜ) with adaptive weighting by timestep. I validated this across three datasets and consistently saw sharper reconstructions and better quantitative performance:
+
+Fashion-MNIST (Epoch 50): Hybrid achieved 0.0150 loss (~40% better than baseline) and delivered a ~16% improvement over c₀-only while keeping edges and garment details sharper.
+
+CIFAR-10 (Epoch 50): Hybrid reached 0.004 loss (~88% lower than baseline), showing strong gains on complex natural images.
+
+Flowers102 (class-conditional generation): Hybrid produced the sharpest petal details and improved training/image-quality metrics, including ~21% lower training loss, ~14% higher PSNR, and ~54% higher SSIM versus the baseline setting.
+
+In Part 2 (Virtual Try-On using Diffusion & JEPA Models), I applied the diffusion insights to a garment try-on pipeline. My goal was to generate realistic images of a person wearing a target garment while preserving identity, pose, and fine texture. I implemented and compared two complementary approaches:
+
+JEPA-VTON (image-space): I used TPS warping for spatial alignment and a JEPA-style completion network for clean blending, supported by a multi-scale discriminator and VGG-based perceptual/texture losses to preserve logos/patterns.
+
+D-JEPA (latent diffusion + JEPA): I combined a pretrained VAE (latent encoding) with token-wise diffusion refinement, where a JEPA context encoder predicts masked garment regions and diffusion refines the final output.
+
+Across experiments (trained on VITON-HD, ~100 epochs), I achieved stable convergence with multi-objective losses, strong warping behavior from TPS, and noticeably improved texture/detail retention from the discriminator + perceptual losses. My main takeaway is that noise-aware conditioning improves diffusion stability/quality, and that explicit spatial alignment (TPS) plus strong perceptual constraints is critical for realistic try-on outputs.

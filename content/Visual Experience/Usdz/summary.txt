@@ -1,0 +1,13 @@
+In this project, I led an initiative (2022) to accelerate the production of 3D models for products sold on Amazon, focusing especially on softline categories such as shoes, bags, and luggage—areas where conventional 3D modeling workflows are typically slower and harder to scale than hardline products like furniture. I started by acknowledging the two dominant traditional approaches: building 3D models from scratch in a software environment, or using a multi-camera rig (hundreds of cameras) to capture products from all angles and process those images into a 3D model.
+
+To open new doors for scalable modeling, I explored the shift of LiDAR-enabled devices into commodity mobile phones and augmented the workflow using Apple’s Object Capture program. I designed the project around establishing a repeatable scanning workflow and testing lighting conditions and processing steps that could reduce manual remodeling and intensive quality checks. Through this exploration, I observed that the scans, lighting setup, and processing algorithm could capture approximately ~80% of intricate details and texture, which materially lowered the amount of rework required for final 3D outputs. The early experimentation produced significant results for product types that usually demand high time and effort under conventional methods.
+
+My goal was to prove a practical lighting-and-workflow standard that could enable sellers to create low-cost, AR-optimized 3D models for their products on Amazon more easily, helping expand 3D content coverage beyond hardline products and into softlines where detail and material complexity are the main bottlenecks.
+
+Tech Stack
+
+LiDAR-enabled mobile devices
+
+Apple Object Capture
+
+AR (Augmented Reality) optimized 3D models (output target)

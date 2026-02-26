@@ -1,0 +1,9 @@
+In this project, I built ImageBot, a desktop chat-style image editor that lets me edit images through conversational commands and generate images from hand-drawn sketches. The app has a split UI: a chat panel for instructions “help”, “reset”, “quit” and other NLP based functions and an editor panel where I can load an image (from disk or a preset), create a sketch, and then apply transformations or save results. From the slides and README, the core capabilities include brightness/contrast adjustment, grayscale conversion, edge detection, blur, and resetting back to the original image, all triggered through the chatbot flow.
+
+For sketch-to-image, I integrated an AI-based conversion pipeline using the img2img-turbo model, so I can draw a simple sketch, enter a text prompt, and generate a rendered image from it. This makes the tool feel like a lightweight “editing assistant” where the interaction is driven by natural-language-style commands and quick UI actions (buttons for loading images, presets, sketching, resetting, and saving).
+
+Tech stack: 
+Python, Tkinter (GUI).
+Pillow/PIL (image I/O).
+OpenCV (cv2) + NumPy (image processing).
+img2img-turbo model for sketch-to-image generation.

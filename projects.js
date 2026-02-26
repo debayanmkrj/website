@@ -8,25 +8,49 @@ const projectsData = {
     { name: 'Imaginative', title: 'IMAGINATIVE', description: 'Experimental generative AI art and creative explorations.', coverVideo: 'content/Gen-AI/Imaginative/media1.mp4', images: ['content/Gen-AI/Imaginative/Portfolio_debayan.01.jpeg', 'content/Gen-AI/Imaginative/Portfolio_debayan.02.jpeg'] }
   ],
   creative: [
-    { name: 'Prisma', title: 'PRISMA', description: 'Prisma is an interactive webcam installation that transforms viewers video feed in real time, displaying themselves across three distinct temporal perspective using machine learning and creative coding.', coverImage: 'content/Working LLMs/Prisma/cover.jpg', github: 'https://github.com/debayanmkrj/Prisma' },
-    { name: 'Morodd', title: 'MORODD', description: 'Morodd is a machine learning based interactive project using neural networks to imagine the space within viewers in point cloud systems and sonic embeddings.', coverImage: 'content/Working LLMs/Morodd/cover.jpg', github: 'https://github.com/debayanmkrj/Morodd' },
-    { name: 'Imagebot', title: 'IMAGEBOT', description: 'A natural language processing assistant for image editing and generative art. The playform offers a glimpse into how photoshop with co-pilot could feel like.', coverImage: 'content/Working LLMs/Imagebot/cover.jpg', github: 'https://github.com/debayanmkrj/Imagebot' },
-    { name: 'Fashion_Trend', title: 'FASHION TREND PREDICTION', description: 'Using VJEPA Model to analyse video for fashion trend forecasting.', coverImage: 'content/Working LLMs/Fashion_Trend/cover.jpg', github: 'https://github.com/debayanmkrj/Fashion_trend_prediction_VJEPA' },
-    { name: 'Echo_Halt', title: 'ECHO HALT', description: 'Imagining an AI powered social media platform that doesnt allow duplication of content.', coverImage: 'content/Working LLMs/Echo_Halt/cover.jpg', github: 'https://github.com/debayanmkrj/Echo-Halt' },
-    { name: 'Diffusion_test', title: 'DIFFUSION TEST', description: 'Experimenting with architecture of diffusion models to improve output accuracy and Virtual try-on for garment experimentations.', coverImage: 'content/Working LLMs/Diffusion_test/cover.jpg' },
-    { name: 'Alt_dj', title: 'ALT DJ', description: 'A Machine Learning project that predicts a DJ\'s interaction with the equipment and replicates it for style transfer video feed.', coverImage: 'content/Working LLMs/Alt_dj/cover.jpg', github: 'https://github.com/debayanmkrj/Alt-Dj' },
-    { name: 'Ads', title: 'ADAPTIVE ADS', description: 'Dynamic advertisement generation using adaptive algorithms and SAM3 model.', coverImage: 'content/Working LLMs/Ads/cover.jpg', github: 'https://github.com/debayanmkrj/Adaptive_ads' }
+    {
+      name: 'Prisma', title: 'PRISMA', coverImage: 'content/Working LLMs/Prisma/cover.jpg', github: 'https://github.com/debayanmkrj/Prisma',
+      newMedia: ['content/Working LLMs/Prisma/new_media/Media1.mp4']
+    },
+    {
+      name: 'Morodd', title: 'MORODD', coverImage: 'content/Working LLMs/Morodd/cover.jpg', github: 'https://github.com/debayanmkrj/Morodd',
+      newMedia: ['content/Working LLMs/Morodd/new_media/media1.mp4', 'content/Working LLMs/Morodd/new_media/media2.mp4']
+    },
+    {
+      name: 'Imagebot', title: 'IMAGEBOT', coverImage: 'content/Working LLMs/Imagebot/cover.jpg', github: 'https://github.com/debayanmkrj/Imagebot',
+      newMedia: ['content/Working LLMs/Imagebot/new_media/media1.mp4']
+    },
+    {
+      name: 'Fashion_Trend', title: 'FASHION TREND PREDICTION', coverImage: 'content/Working LLMs/Fashion_Trend/cover.jpg', github: 'https://github.com/debayanmkrj/Fashion_trend_prediction_VJEPA',
+      newMedia: ['content/Working LLMs/Fashion_Trend/new_media/28.jpg', 'content/Working LLMs/Fashion_Trend/new_media/29.jpg', 'content/Working LLMs/Fashion_Trend/new_media/30.jpg']
+    },
+    {
+      name: 'Echo_Halt', title: 'ECHO HALT', coverImage: 'content/Working LLMs/Echo_Halt/cover.jpg', github: 'https://github.com/debayanmkrj/Echo-Halt',
+      newMedia: ['content/Working LLMs/Echo_Halt/new_media/6.jpg']
+    },
+    {
+      name: 'Diffusion_test', title: 'DIFFUSION TEST', coverImage: 'content/Working LLMs/Diffusion_test/cover.jpg',
+      newMedia: ['content/Working LLMs/Diffusion_test/new_media/5.jpg', 'content/Working LLMs/Diffusion_test/new_media/7.jpg', 'content/Working LLMs/Diffusion_test/new_media/9.jpg', 'content/Working LLMs/Diffusion_test/new_media/16.jpg']
+    },
+    {
+      name: 'Alt_dj', title: 'ALT DJ', coverImage: 'content/Working LLMs/Alt_dj/cover.jpg', github: 'https://github.com/debayanmkrj/Alt-Dj',
+      newMedia: ['content/Working LLMs/Alt_dj/new_media/media1.mp4']
+    },
+    {
+      name: 'Ads', title: 'ADAPTIVE ADS', coverImage: 'content/Working LLMs/Ads/cover.jpg', github: 'https://github.com/debayanmkrj/Adaptive_ads',
+      newMedia: ['content/Working LLMs/Ads/new_media/media1.mp4']
+    }
   ],
   visual: [
-    { name: 'Warrior_Duel', title: 'WARRIOR DUEL', description: 'Warrior Duel is a side-scrolling combat game developed in Swift using SpriteKit. Players select from three character classes (Fighter, Samurai, or Shinobi) and battle through increasingly difficult vampire enemies across three unique castle environments.', coverImage: 'content/Visual Experience/Warrior_Duel/cover.jpg', github: 'https://github.com/debayanmkrj/Warrior-Duel' },
-    { name: 'Usdz', title: 'USDZ AR EXPERIENCES', description: '3D augmented reality content creation for mobile platforms.', coverImage: 'content/Visual Experience/Usdz/cover.jpg' },
-    { name: 'SnipeZone', title: 'SNIPEZONE', description: 'Unity FPS Game that combines game play with intelligent Enemy AI and facetracking to control player.', coverImage: 'content/Visual Experience/SnipeZone/cover.jpg', github: 'https://github.com/debayanmkrj/Snipezone' },
-    { name: 'Reverse_Mirror', title: 'REVERSE MIRROR', description: 'Interaction design based on user persona and generative art.', coverImage: 'content/Visual Experience/Reverse_Mirror/cover.jpg' },
-    { name: 'Interactive_Media_2', title: 'INTERACTIVE MEDIA II', description: 'The Max/MSP patch processes real-time gyroscopic input (pitch, roll, and yaw data) from a smartphone, which users manipulate to control RGB color channels on a monochrome source image. The system employs sophisticated data smoothing algorithms using mathematical modules and ranger objects to filter noise and scale the gyroscopic movements to precise RGB multiplier values (0-8 range) within the MUTIL8R module. The color matching system utilizes Jit matrix objects to extract RGB channel mean values from both the user-controlled image and a randomly generated source image processed through the Kaleidr module. A threshold-based comparison algorithm evaluates color accuracy across all three channels, triggering audio feedback when successful matches occur. This gamified approach makes color vision testing engaging for children, as they use natural phone movements to recreate target colors while receiving immediate auditory confirmation of their progress. This innovative approach transforms traditional color blindness screening into an interactive experience that can identify color perception deficiencies in young patients who might struggle with conventional testing methods.', coverImage: 'content/Visual Experience/Interactive_Media_2/cover.jpg' },
-    { name: 'Interactive_Media', title: 'INTERACTIVE MEDIA I', description: 'The Max/MSP patches demonstrates a hand tracking system that captures finger positions and gestures in real-time. The first patch shows the core hand detection module (jit.fill #0hand) processing skeletal data through matrix operations, converting raw hand coordinates into usable control parameters for the racing game. The project uses a pre-trained hand tracking model using Wekinator. The hand tracking gestures are illustrated in the images below. The intent of using both hands to control the car is to allow the user to use both hands to control the car was to provide an easy and intuitive way to control the car.', coverImage: 'content/Visual Experience/Interactive_Media/cover.jpg' },
-    { name: 'Groove_it', title: 'GROOVE IT', description: 'An immersive music player iOS app developed with Swift, RealityKit, AR Kit that combines audio playback with real time 3D experience.', coverImage: 'content/Visual Experience/Groove_it/cover.jpg', github: 'https://github.com/debayanmkrj/GROO-V-IT' },
-    { name: 'Gan', title: 'GAN EXPLORATIONS', description: 'Generative Adversarial Network experiments in visual style transfer and creation.', coverImage: 'content/Visual Experience/Gan/cover.jpg' },
-    { name: 'Designing_for_consumers', title: 'DESIGNING FOR CONSUMERS', description: 'User-centered design methodologies for consumer products.', coverImage: 'content/Visual Experience/Designing_for_consumers/cover.jpg' }
+    { name: 'Warrior_Duel', title: 'WARRIOR DUEL', description: 'Warrior Duel is a side-scrolling combat game developed in Swift using SpriteKit. Players select from three character classes (Fighter, Samurai, or Shinobi) and battle through increasingly difficult vampire enemies across three unique castle environments.', coverImage: 'content/Visual Experience/Warrior_Duel/cover.jpg', github: 'https://github.com/debayanmkrj/Warrior-Duel', newMedia: ['content/Visual Experience/Warrior_Duel/new_media/Media1.mp4'] },
+    { name: 'Usdz', title: 'USDZ AR EXPERIENCES', description: '3D augmented reality content creation for mobile platforms.', coverImage: 'content/Visual Experience/Usdz/cover.jpg', newMedia: ['content/Visual Experience/Usdz/new_media/3.jpg'] },
+    { name: 'SnipeZone', title: 'SNIPEZONE', description: 'Unity FPS Game that combines game play with intelligent Enemy AI and facetracking to control player.', coverImage: 'content/Visual Experience/SnipeZone/cover.jpg', github: 'https://github.com/debayanmkrj/Snipezone', newMedia: ['content/Visual Experience/SnipeZone/new_media/media1.mp4', 'content/Visual Experience/SnipeZone/new_media/media2.mp4', 'content/Visual Experience/SnipeZone/new_media/media3.mp4', 'content/Visual Experience/SnipeZone/new_media/media4.mp4'] },
+    { name: 'Reverse_Mirror', title: 'REVERSE MIRROR', description: 'Interaction design based on user persona and generative art.', coverImage: 'content/Visual Experience/Reverse_Mirror/cover.jpg', newMedia: ['content/Visual Experience/Reverse_Mirror/new_media/media1.mp4', 'content/Visual Experience/Reverse_Mirror/new_media/media2.mp4', 'content/Visual Experience/Reverse_Mirror/new_media/media3.mp4', 'content/Visual Experience/Reverse_Mirror/new_media/media4.mp4'] },
+    { name: 'Interactive_Media_2', title: 'INTERACTIVE MEDIA II', description: 'The Max/MSP patch processes real-time gyroscopic input (pitch, roll, and yaw data) from a smartphone, which users manipulate to control RGB color channels on a monochrome source image. The system employs sophisticated data smoothing algorithms using mathematical modules and ranger objects to filter noise and scale the gyroscopic movements to precise RGB multiplier values (0-8 range) within the MUTIL8R module. The color matching system utilizes Jit matrix objects to extract RGB channel mean values from both the user-controlled image and a randomly generated source image processed through the Kaleidr module. A threshold-based comparison algorithm evaluates color accuracy across all three channels, triggering audio feedback when successful matches occur. This gamified approach makes color vision testing engaging for children, as they use natural phone movements to recreate target colors while receiving immediate auditory confirmation of their progress. This innovative approach transforms traditional color blindness screening into an interactive experience that can identify color perception deficiencies in young patients who might struggle with conventional testing methods.', coverImage: 'content/Visual Experience/Interactive_Media_2/cover.jpg', newMedia: ['content/Visual Experience/Interactive_Media_2/new_media/1.jpg', 'content/Visual Experience/Interactive_Media_2/new_media/2.jpg', 'content/Visual Experience/Interactive_Media_2/new_media/3.jpg', 'content/Visual Experience/Interactive_Media_2/new_media/4.jpg', 'content/Visual Experience/Interactive_Media_2/new_media/5.jpg'] },
+    { name: 'Interactive_Media', title: 'INTERACTIVE MEDIA I', description: 'The Max/MSP patches demonstrates a hand tracking system that captures finger positions and gestures in real-time. The first patch shows the core hand detection module (jit.fill #0hand) processing skeletal data through matrix operations, converting raw hand coordinates into usable control parameters for the racing game. The project uses a pre-trained hand tracking model using Wekinator. The hand tracking gestures are illustrated in the images below. The intent of using both hands to control the car is to allow the user to use both hands to control the car was to provide an easy and intuitive way to control the car.', coverImage: 'content/Visual Experience/Interactive_Media/cover.jpg', newMedia: ['content/Visual Experience/Interactive_Media/new_media/media1.mp4'] },
+    { name: 'Groove_it', title: 'GROOVE IT', description: 'An immersive music player iOS app developed with Swift, RealityKit, AR Kit that combines audio playback with real time 3D experience.', coverImage: 'content/Visual Experience/Groove_it/cover.jpg', github: 'https://github.com/debayanmkrj/GROO-V-IT', newMedia: ['content/Visual Experience/Groove_it/new_media/media1.mp4', 'content/Visual Experience/Groove_it/new_media/media2.mp4'] },
+    { name: 'Gan', title: 'GAN EXPLORATIONS', description: 'Generative Adversarial Network experiments in visual style transfer and creation.', coverImage: 'content/Visual Experience/Gan/cover.jpg', newMedia: ['content/Visual Experience/Gan/new_media/2.jpg', 'content/Visual Experience/Gan/new_media/3.jpg'] },
+    { name: 'Designing_for_consumers', title: 'DESIGNING FOR CONSUMERS', description: 'User-centered design methodologies for consumer products.', coverImage: 'content/Visual Experience/Designing_for_consumers/cover.jpg', newMedia: ['content/Visual Experience/Designing_for_consumers/new_media/6.jpg', 'content/Visual Experience/Designing_for_consumers/new_media/7.jpg'] }
   ],
   photography: [] // Will be populated dynamically
 };
@@ -143,7 +167,7 @@ function createCarouselItem(section, index, position) {
       </div>
     `;
 
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function () {
       if (position === 'center') {
         // Open fullscreen without navigation (single image only)
         openFullImage(project.coverImage, [project.coverImage], 0);
@@ -164,7 +188,7 @@ function createCarouselItem(section, index, position) {
       </div>
     `;
 
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function () {
       if (position === 'center') {
         openGenAIOverlay(index);
       } else {
@@ -183,7 +207,7 @@ function createCarouselItem(section, index, position) {
       </div>
     `;
 
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function () {
       if (position === 'center') {
         openProjectOverlay(section, index);
       } else {
@@ -245,7 +269,7 @@ async function openProjectOverlay(section, index) {
     document.body.appendChild(overlay);
 
     // Close on click outside
-    overlay.addEventListener('click', function(e) {
+    overlay.addEventListener('click', function (e) {
       if (e.target === overlay) {
         closeProjectOverlay(section, index);
       }
@@ -437,7 +461,7 @@ function openGenAIOverlay(index) {
     `;
     document.body.appendChild(overlay);
 
-    overlay.addEventListener('click', function(e) {
+    overlay.addEventListener('click', function (e) {
       if (e.target === overlay) {
         closeProjectOverlay('llms', index);
       }
@@ -561,19 +585,453 @@ async function loadPhotographyImages() {
   }
 }
 
+// =====================================================
+// SHARED MEDIA MOSAIC HELPER
+// =====================================================
+
+/**
+ * Create a media mosaic that:
+ *  - 1 item  → centered, full width
+ *  - landscape items → full width, stacked vertically
+ *  - portrait items  → two per row (half width each)
+ */
+function buildMediaMosaic(mediaList, itemClass, mosaicClass) {
+  const mosaic = document.createElement('div');
+  mosaic.className = mosaicClass;
+  // Always 2 columns — landscape items will span both
+  mosaic.style.gridTemplateColumns = mediaList.length === 1 ? '1fr' : 'repeat(2, 1fr)';
+  mosaic.style.gap = '0.75rem';
+
+  mediaList.forEach(({ src, type, alt }) => {
+    const item = document.createElement('div');
+    item.className = itemClass;
+
+    if (mediaList.length === 1) {
+      // Single item: centered with comfortable max-width
+      item.style.gridColumn = '1 / -1';
+      item.style.justifySelf = 'center';
+      item.style.width = '100%';
+      item.style.maxWidth = '720px';
+    }
+
+    if (type === 'video') {
+      const vid = document.createElement('video');
+      vid.src = src;
+      vid.controls = true;
+      vid.muted = true;
+      vid.playsInline = true;
+
+      vid.addEventListener('loadedmetadata', () => {
+        if (mediaList.length > 1) {
+          const isLandscape = vid.videoWidth >= vid.videoHeight;
+          item.style.gridColumn = isLandscape ? '1 / -1' : 'span 1';
+        }
+      });
+      item.appendChild(vid);
+    } else {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = alt || '';
+      img.loading = 'lazy';
+
+      img.addEventListener('load', () => {
+        if (mediaList.length > 1) {
+          const isLandscape = img.naturalWidth >= img.naturalHeight;
+          item.style.gridColumn = isLandscape ? '1 / -1' : 'span 1';
+        }
+      });
+      item.appendChild(img);
+    }
+
+    mosaic.appendChild(item);
+  });
+
+  return mosaic;
+}
+
+// =====================================================
+// ML PROJECTS TILE GRID + OVERLAY
+// =====================================================
+
+/**
+ * Build the tile grid for the ML (creative) section.
+ * Renders one .ml-tile per project into #ml-tiles-grid.
+ */
+function buildMLTileGrid() {
+  const grid = document.getElementById('ml-tiles-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  projectsData.creative.forEach((project, index) => {
+    const tile = document.createElement('div');
+    tile.className = 'ml-tile';
+    tile.innerHTML = `
+      <img class="ml-tile-cover" src="${project.coverImage}" alt="${project.title}" loading="lazy">
+      <div class="ml-tile-heading">${project.title}</div>
+    `;
+    tile.addEventListener('click', () => openMLProjectOverlay(index));
+    grid.appendChild(tile);
+  });
+}
+
+/**
+ * Parse summary.txt content into { summary, techStack, algorithms } sections.
+ * Also strips noise lines (single-word lines matching the project folder name).
+ */
+function parseSummaryText(rawText, projectName) {
+  // Noise token: project name lowercased, underscores → spaces or raw
+  const noiseToken = projectName.toLowerCase().replace(/_/g, '').replace(/\s/g, '');
+
+  // Split into lines, remove noise lines
+  const lines = rawText.split(/\r?\n/);
+  const cleaned = lines.filter(line => {
+    const t = line.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    return t !== noiseToken && t !== '';
+  });
+
+  const text = cleaned.join('\n');
+
+  // Detect section split markers (case-insensitive)
+  const techMatch = text.search(/tech stack/i);
+  const algoMatch = text.search(/ml\/algorithms|algorithms used|ml models|algorithms\:/i);
+
+  let summary = '';
+  let techStack = '';
+  let algorithms = '';
+
+  if (techMatch === -1 && algoMatch === -1) {
+    // No sections — entire text is the summary
+    summary = text.trim();
+  } else {
+    const firstSplit = Math.min(
+      techMatch !== -1 ? techMatch : Infinity,
+      algoMatch !== -1 ? algoMatch : Infinity
+    );
+    summary = text.slice(0, firstSplit).trim();
+
+    const rest = text.slice(firstSplit);
+
+    // Extract tech stack block
+    if (techMatch !== -1) {
+      const techStart = rest.search(/tech stack/i);
+      const techEnd = rest.search(/ml\/algorithms|algorithms used|ml models|algorithms\:/i);
+      if (techStart !== -1) {
+        const block = techEnd !== -1 && techEnd > techStart
+          ? rest.slice(techStart, techEnd)
+          : rest.slice(techStart);
+        // Remove the heading line itself
+        techStack = block.replace(/^.*tech stack.*$/im, '').trim();
+      }
+    }
+
+    // Extract algorithms block
+    const algoStart = rest.search(/ml\/algorithms|algorithms used|ml models|algorithms\:/i);
+    if (algoStart !== -1) {
+      algorithms = rest.slice(algoStart).replace(/^.*(?:ml\/algorithms|algorithms used|ml models|algorithms\:).*$/im, '').trim();
+    }
+  }
+
+  return { summary, techStack, algorithms };
+}
+
+/**
+ * Convert a block of prose text into a <ul> with <li> bullet points.
+ * Splits on: newlines first, then on '. ' sentence boundaries for long blocks.
+ */
+function textToBullets(text) {
+  const ul = document.createElement('ul');
+  ul.className = 'ml-overlay-bullets';
+
+  // Split by newlines first
+  const rawLines = text.split(/\n+/);
+  const bullets = [];
+
+  rawLines.forEach(line => {
+    line = line.trim();
+    if (!line) return;
+
+    // If the line is a long sentence block, split further by '. '
+    if (line.length > 200) {
+      const sentences = line.match(/[^.!?]+[.!?]+/g) || [line];
+      sentences.forEach(s => {
+        const trimmed = s.trim();
+        if (trimmed) bullets.push(trimmed);
+      });
+    } else {
+      bullets.push(line);
+    }
+  });
+
+  bullets.forEach(bullet => {
+    const li = document.createElement('li');
+    li.textContent = bullet;
+    ul.appendChild(li);
+  });
+
+  return ul;
+}
+
+/**
+ * Open the ML project overlay for the given project index.
+ * Fetches summary.txt, populates left panel with parsed sections,
+ * and populates right panel with new_media assets.
+ */
+async function openMLProjectOverlay(index) {
+  const project = projectsData.creative[index];
+  const overlay = document.getElementById('ml-project-overlay');
+  const leftPanel = document.getElementById('ml-overlay-left');
+  const rightPanel = document.getElementById('ml-overlay-right');
+  if (!overlay || !leftPanel || !rightPanel) return;
+
+  // ---- Populate left panel ----
+  leftPanel.innerHTML = '';
+
+  // Title
+  const titleEl = document.createElement('div');
+  titleEl.className = 'ml-overlay-project-title';
+  titleEl.textContent = project.title;
+  leftPanel.appendChild(titleEl);
+
+  // Fetch + parse summary.txt
+  try {
+    const summaryPath = `content/Working LLMs/${project.name}/summary.txt`;
+    const resp = await fetch(summaryPath);
+    if (resp.ok) {
+      const raw = await resp.text();
+      const { summary, techStack, algorithms } = parseSummaryText(raw, project.name);
+
+      // PROJECT SUMMARY
+      if (summary) {
+        const h1 = document.createElement('div');
+        h1.className = 'ml-overlay-section-title';
+        h1.textContent = 'PROJECT SUMMARY';
+        leftPanel.appendChild(h1);
+        leftPanel.appendChild(textToBullets(summary));
+      }
+
+      // TECH STACK
+      if (techStack) {
+        const h2 = document.createElement('div');
+        h2.className = 'ml-overlay-section-title';
+        h2.textContent = 'TECH STACK';
+        leftPanel.appendChild(h2);
+        leftPanel.appendChild(textToBullets(techStack));
+      }
+
+      // ALGORITHMS / ML MODELS
+      if (algorithms) {
+        const h3 = document.createElement('div');
+        h3.className = 'ml-overlay-section-title';
+        h3.textContent = 'ALGORITHMS / ML MODELS';
+        leftPanel.appendChild(h3);
+        leftPanel.appendChild(textToBullets(algorithms));
+      }
+    }
+  } catch (err) {
+    console.warn('Could not load summary.txt for', project.name, err);
+  }
+
+  // GitHub link
+  if (project.github) {
+    const ghLink = document.createElement('a');
+    ghLink.className = 'ml-overlay-github-link';
+    ghLink.href = project.github;
+    ghLink.target = '_blank';
+    ghLink.rel = 'noopener noreferrer';
+    ghLink.textContent = '⌥ VIEW ON GITHUB';
+    leftPanel.appendChild(ghLink);
+  }
+
+  // ---- Populate right panel (media mosaic) ----
+  rightPanel.innerHTML = '';
+  const media = (project.newMedia || []).map(src => ({
+    src,
+    type: /\.(mp4|webm|mov|ogg)$/i.test(src) ? 'video' : 'image',
+    alt: project.title
+  }));
+
+  const mosaic = buildMediaMosaic(media, 'ml-media-item', 'ml-media-mosaic');
+  rightPanel.appendChild(mosaic);
+
+  // Show overlay + prevent body scroll
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Close on backdrop click (clicking the outer overlay itself)
+  overlay._backdropHandler = function (e) {
+    if (e.target === overlay) closeMLProjectOverlay();
+  };
+  overlay.addEventListener('click', overlay._backdropHandler);
+}
+
+/**
+ * Close and clean up the ML project overlay.
+ */
+function closeMLProjectOverlay() {
+  const overlay = document.getElementById('ml-project-overlay');
+  const rightPanel = document.getElementById('ml-overlay-right');
+  if (!overlay) return;
+
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+
+  // Pause all videos to stop audio/network
+  if (rightPanel) {
+    rightPanel.querySelectorAll('video').forEach(v => { v.pause(); v.src = ''; });
+  }
+
+  // Remove backdrop listener
+  if (overlay._backdropHandler) {
+    overlay.removeEventListener('click', overlay._backdropHandler);
+    overlay._backdropHandler = null;
+  }
+}
+
+// =====================================================
+// DIGITAL EXPERIENCE TILE GRID + OVERLAY
+// =====================================================
+
+function buildDETileGrid() {
+  const grid = document.getElementById('de-tiles-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  projectsData.visual.forEach((project, index) => {
+    const tile = document.createElement('div');
+    tile.className = 'de-tile';
+    tile.innerHTML = `
+      <img class="de-tile-cover" src="${project.coverImage}" alt="${project.title}" loading="lazy">
+      <div class="de-tile-heading">${project.title}</div>
+    `;
+    tile.addEventListener('click', () => openDEProjectOverlay(index));
+    grid.appendChild(tile);
+  });
+}
+
+async function openDEProjectOverlay(index) {
+  const project = projectsData.visual[index];
+  const overlay = document.getElementById('de-project-overlay');
+  const leftPanel = document.getElementById('de-overlay-left');
+  const rightPanel = document.getElementById('de-overlay-right');
+  if (!overlay || !leftPanel || !rightPanel) return;
+
+  // ---- Populate left panel ----
+  leftPanel.innerHTML = '';
+
+  const titleEl = document.createElement('div');
+  titleEl.className = 'de-overlay-project-title';
+  titleEl.textContent = project.title;
+  leftPanel.appendChild(titleEl);
+
+  // Try summary.txt, fall back to description
+  let usedSummary = false;
+  try {
+    const resp = await fetch(`content/Visual Experience/${project.name}/summary.txt`);
+    if (resp.ok) {
+      const raw = await resp.text();
+      const { summary, techStack, algorithms } = parseSummaryText(raw, project.name);
+      if (summary) {
+        const h = document.createElement('div');
+        h.className = 'de-overlay-section-title';
+        h.textContent = 'PROJECT SUMMARY';
+        leftPanel.appendChild(h);
+        leftPanel.appendChild(textToBullets(summary));
+        usedSummary = true;
+      }
+      if (techStack) {
+        const h = document.createElement('div');
+        h.className = 'de-overlay-section-title';
+        h.textContent = 'TECH STACK';
+        leftPanel.appendChild(h);
+        leftPanel.appendChild(textToBullets(techStack));
+      }
+      if (algorithms) {
+        const h = document.createElement('div');
+        h.className = 'de-overlay-section-title';
+        h.textContent = 'TOOLS / TECH';
+        leftPanel.appendChild(h);
+        leftPanel.appendChild(textToBullets(algorithms));
+      }
+    }
+  } catch { /* ignore */ }
+
+  if (!usedSummary && project.description) {
+    const h = document.createElement('div');
+    h.className = 'de-overlay-section-title';
+    h.textContent = 'PROJECT OVERVIEW';
+    leftPanel.appendChild(h);
+    const descEl = document.createElement('div');
+    descEl.className = 'de-overlay-body-text';
+    descEl.textContent = project.description;
+    leftPanel.appendChild(descEl);
+  }
+
+  if (project.github) {
+    const ghLink = document.createElement('a');
+    ghLink.className = 'de-overlay-github-link';
+    ghLink.href = project.github;
+    ghLink.target = '_blank';
+    ghLink.rel = 'noopener noreferrer';
+    ghLink.textContent = '⌥ VIEW ON GITHUB';
+    leftPanel.appendChild(ghLink);
+  }
+
+  // ---- Populate right panel (media mosaic) ----
+  rightPanel.innerHTML = '';
+
+  const allMedia = (project.newMedia || []).map(src => ({
+    src,
+    type: /\.(mp4|webm|mov|ogg)$/i.test(src) ? 'video' : 'image',
+    alt: project.title
+  }));
+
+  const mosaic = buildMediaMosaic(allMedia, 'de-media-item', 'de-media-mosaic');
+  rightPanel.appendChild(mosaic);
+
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  overlay._backdropHandler = function (e) {
+    if (e.target === overlay) closeDEProjectOverlay();
+  };
+  overlay.addEventListener('click', overlay._backdropHandler);
+}
+
+function closeDEProjectOverlay() {
+  const overlay = document.getElementById('de-project-overlay');
+  const rightPanel = document.getElementById('de-overlay-right');
+  if (!overlay) return;
+
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+
+  if (rightPanel) {
+    rightPanel.querySelectorAll('video').forEach(v => { v.pause(); v.src = ''; });
+  }
+
+  if (overlay._backdropHandler) {
+    overlay.removeEventListener('click', overlay._backdropHandler);
+    overlay._backdropHandler = null;
+  }
+}
+
 // Initialize all carousels on page load
 async function initializeProjects() {
   // Load photography images first
   await loadPhotographyImages();
 
-  // Setup all carousels
-  Object.keys(projectsData).forEach(section => {
+  // Build tile grids (replace carousels)
+  buildMLTileGrid();
+  buildDETileGrid();
+
+  // Setup remaining carousels (llms, photography — skip creative and visual)
+  ['llms', 'photography'].forEach(section => {
     setupCarousel(section);
   });
 
   // Setup carousel navigation buttons
   document.querySelectorAll('.carousel-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function () {
       const section = this.getAttribute('data-section');
       const action = this.getAttribute('data-action');
       navigateCarousel(section, action);
@@ -583,23 +1041,27 @@ async function initializeProjects() {
   // Setup fullsize overlay close on click
   const fullsizeOverlay = document.getElementById('fullsize-overlay');
   if (fullsizeOverlay) {
-    fullsizeOverlay.addEventListener('click', function(e) {
+    fullsizeOverlay.addEventListener('click', function (e) {
       if (e.target === fullsizeOverlay) {
         closeFullImage();
       }
     });
   }
 
-  // Add keyboard navigation for full-screen images
-  document.addEventListener('keydown', function(e) {
-    const overlay = document.getElementById('fullsize-overlay');
-    if (overlay && overlay.classList.contains('active')) {
-      if (e.key === 'ArrowLeft') {
-        navigateFullImage('prev');
-      } else if (e.key === 'ArrowRight') {
-        navigateFullImage('next');
-      } else if (e.key === 'Escape') {
-        closeFullImage();
+  // Keyboard navigation
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      const mlOverlay = document.getElementById('ml-project-overlay');
+      if (mlOverlay && mlOverlay.classList.contains('active')) { closeMLProjectOverlay(); return; }
+      const deOverlay = document.getElementById('de-project-overlay');
+      if (deOverlay && deOverlay.classList.contains('active')) { closeDEProjectOverlay(); return; }
+      const fsOverlay = document.getElementById('fullsize-overlay');
+      if (fsOverlay && fsOverlay.classList.contains('active')) { closeFullImage(); }
+    } else {
+      const overlay = document.getElementById('fullsize-overlay');
+      if (overlay && overlay.classList.contains('active')) {
+        if (e.key === 'ArrowLeft') navigateFullImage('prev');
+        else if (e.key === 'ArrowRight') navigateFullImage('next');
       }
     }
   });
@@ -611,6 +1073,8 @@ window.openGenAIOverlay = openGenAIOverlay;
 window.openFullImage = openFullImage;
 window.closeFullImage = closeFullImage;
 window.navigateFullImage = navigateFullImage;
+window.closeMLProjectOverlay = closeMLProjectOverlay;
+window.closeDEProjectOverlay = closeDEProjectOverlay;
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {

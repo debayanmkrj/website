@@ -1,0 +1,61 @@
+Echo Halt is a prototype social-media upload pipeline that helps creators avoid reposting/near-duplicate short-form videos before they “go live” The core idea is to measure and explain how much an upload overlaps with an existing platform repository—especially when creators slightly edit content (cropping, resizing, overlays, frame inserts, split-screens, mirroring) to bypass detection. Instead of a single “duplicate / not duplicate” flag, Echo Halt runs a multi-tier analysis that (1) extracts representative frames, (2) computes multiple similarity signals (hash, color, deep features, temporal structure), (3) detects common manipulation patterns, and (4) combines everything into a weighted similarity score that produces an intuitive uniqueness/overlap quotient for the user. On the product side, the app is designed like a short-video platform (feed/reels-style viewing) with an upload + analysis flow and an AI assistant chat that can answer questions about the project’s analysis and keyframes (bounded to project directories for safety/relevance). 
+
+How Echo Halt works:
+
+User flow (experience layer)
+
+User uploads a short video → 2) system previews and analyzes → 3) shows similarity/uniqueness + “most similar” matches → 4) user optionally refines/captions → 5) uploads to repository if acceptable. 
+
+System flow (analysis layer)
+
+Frame extraction chooses the best keyframes using a mix of:
+
+Temporal-focused sampling (emphasis on beginning/end where manipulations often occur),
+
+Uniform sampling (baseline coverage),
+
+Scene-based extraction (scene change–driven keyframes when applicable). 
+
+Core similarity signals are computed per-frame / per-video:
+
+Enhanced perceptual hashing (gradient-aware; smoother similarity curve),
+
+Color histogram features (HSV distribution as a complementary cue),
+
+Deep semantic features using a pretrained ResNet-18 on frames (robust to many transforms). 
+
+Manipulation detection explicitly checks for common evasion tactics:
+
+temporal edits (frame insertion/truncation/reordering, using DTW-style temporal comparison),
+
+overlays (text/logos),
+
+split-screen layouts,
+
+reflections/mirroring. 
+
+Decision layer (weighted aggregation) combines signals into an overall similarity score, then converts to uniqueness and a duplicate decision threshold (with manipulation-aware penalties/boosts). 
+
+Tech stack:
+Frontend (Web App)
+
+React.js (UI) 
+Redux (state management) 
+Tailwind CSS (styling, responsive UI) 
+Axios (API calls) 
+WebSockets (real-time feedback updates during analysis/upload) 
+
+Backend / Services (distributed)
+Python video analysis server (core CV/ML pipeline) 
+Node.js middleware service (supporting backend routing/coordination) 
+AI agent service (chat assistant endpoint) 
+CORS handling across services (explicitly addressed as an engineering challenge in the prototype) 
+Computer Vision / ML (analysis engine)
+OpenCV (frame extraction, image preprocessing, hashing + histogram utilities) 
+PyTorch (deep feature extraction) 
+Pretrained ResNet-18 (semantic frame embeddings) 
+Temporal alignment / DTW-style comparison (for detecting temporal manipulation patterns) 
+AI assistant (project-bounded Q&A)
+Initial attempts: Llama 2 / Llama 3 via Ollama (noted issues) 
+
+Final implementation: Mistral Instruct 7B via GPT4All with context injection + directory boundaries (answers restricted to project materials to reduce hallucinations and keep responses relevant).

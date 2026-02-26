@@ -1,0 +1,27 @@
+I built GROO-V-IT (GrooveMusic), an immersive iOS music player that blends audio playback with real-time 3D visualizations and an AR mode driven by music analysis. While users listen in a standard player, I overlay album art with animated 3D dancers that react to the track’s beat, bass, frequency distribution, overall energy, and section changes (intro/verse/chorus/bridge/outro). I also implemented an AR experience where users can place dancers in their physical environment, scale them, and keep full playback controls active while the models respond in real time.
+
+I designed and implemented key app flows: HomeView for recently played and library browsing, FavoritesView for saving/removing tracks, EnhancedPlayerView for full-screen playback with 3D visualization, EnhancedARModelView for AR interaction, and a MiniPlayerView for persistent playback control during navigation. Under the hood, I structured the app around core services: MusicDataStore for track/state management, AudioPlayerService for playback controls, AudioAnalysisService for extracting beats, frequency-band data, and section transitions, and Model3D for selecting and rendering models based on the analyzed audio. I also built a visualization system that dynamically selects dancer styles by genre (hip-hop vs pop) and adapts movement intensity across low/medium/high ranges, enabling smooth transitions and responsive animations throughout a song.
+
+Tech Stack (from repo)
+
+iOS 15.0+, Swift 5.0+, Xcode 14.0+
+
+SwiftUI (reactive UI)
+
+SceneKit (3D rendering)
+
+RealityKit + ARKit (AR mode; ARKit-capable devices)
+
+USDZ 3D models, MP3 files (testing)
+
+Architecture / Core Components (from repo)
+
+MusicDataStore, AudioPlayerService, AudioAnalysisService, Model3D
+
+Views: HomeView, EnhancedPlayerView, EnhancedARModelView, FavoritesView, MiniPlayerView
+
+ML Models / Algorithms Mentioned
+
+Real-time audio analysis: beat detection, bass/midrange/treble separation, section detection, energy level calculation
+
+Dynamic 3D model selection based on genre + intensity + section recognition

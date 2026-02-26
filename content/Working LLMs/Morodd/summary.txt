@@ -1,0 +1,15 @@
+In MORODD (Morphed Oddity), I built an interactive installation that turns a viewer’s presence into a navigable 3D Gaussian splat “self-space” containing musical paradoxes—impossible genres that only reveal themselves through exploration. The experience is structured as Reflection → Discovery → Collaboration: first, I watch my body dissolve from a camera feed into thousands of points; then I move through that point-cloud to uncover spatially embedded audio zones; finally, the system is designed to generate personalized paradoxes from user-provided vocal/audio input. 
+
+Tech stack: 
+Flask server (Windows → WSL workflow). 
+YOLOv8n-seg for real-time human segmentation. 
+Splatt3r (pretrained) for single-image 3D Gaussian reconstruction. 
+Point-cloud visualization layer with dynamic palette animation (five palettes cycling every 20s, plus audio-sourced ripple transitions). 
+For spatial audio, I embed up to 10 audio zones, place sources via KMeans, query neighborhoods with KDTree, and trigger playback through an ffplay subprocess. 
+
+ML/algorithms used: 
+YOLOv8 instance masks + background blur. 
+Splatt3r Gaussian attributes exported to PLY. 
+Three-stage neural extension system (Density Field Estimator with Fourier features, Conditional Attribute Model with dual heads for uncertainty. 
+Main Scene Extender with global pooling). 
+For music, I use an RNN with two GRU layers trained on MAESTRO v2.0.0 (1,282 MIDI files) to predict pitch/step/duration, then post-process via symbolic “operatic” style transfer using pretty_midi.

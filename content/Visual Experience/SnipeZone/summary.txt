@@ -1,0 +1,27 @@
+I built SnipeZone, a tactical first-person sniper game that combines traditional FPS controls with an optional face-tracking control mode to improve accessibility and create a hands-free camera + shooting experience. My core design uses an elevated sniper vantage point in an industrial urban environment, where I detect enemies approaching from street level, aim with a zoomable scope, and survive waves of intelligent AI with a 20-round magazine and a 100 HP health system.
+
+I implemented a dual control system: keyboard/mouse for standard play, and face tracking where head movement drives camera rotation and a triple-blink triggers firing, with seamless switching between modes during gameplay. For face tracking, I integrated a pipeline from webcam → MediaPipe Face Mesh → Python processing → UDP → Unity, transmitting rotationX/rotationY and a shoot flag at 30 FPS. On the Python side, I used a real-time face mesh (468 landmarks) for blink detection using eye landmark distances and head rotation tracking using a nose-tip reference. In Unity, I used a background UDP listener and smoothed inputs using Lerp interpolation.
+
+For enemy behavior, I designed “assault” and “sniper” enemy types that both use 8-state behavioral AI, including tactical systems for cover selection (NavMesh + LOS-based scoring) and flanking (probabilistic repositioning). I also built combat systems that model accuracy via parameters like base accuracy, movement penalty, distance falloff, and spread angle, with adaptive behaviors such as repositioning after consecutive misses.
+
+Tech Stack (from GitHub)
+
+Unity 2021.3 LTS
+
+C# scripting (IDE: Visual Studio / Rider)
+
+Unity systems: CharacterController, NavMesh, Animator (blend trees), Canvas UI, AudioSource (spatial audio)
+
+Python libs: MediaPipe 0.10.7, OpenCV 4.8.1.78, NumPy 1.26.4, socket/UDP communication
+
+Unity Asset Store components listed: Industrial Set, WarFX, Ilumisoft Health System, Custom Crosshairs
+
+ML Models / Algorithms Mentioned
+
+MediaPipe Face Mesh (468 landmarks) for face tracking
+
+Blink detection algorithm (eye distance threshold + 3-second window + triple-blink trigger)
+
+Head tracking algorithm (nose-tip calibration + delta scaling + Unity Lerp smoothing)
+
+8-state enemy behavioral AI + cover search (NavMesh + LOS scoring) + flanking system (probability + vector math)

@@ -1,0 +1,23 @@
+In this project, I created Reverse Mirror (Deconstructed Conformity)—a concept and prototype that explores how a person’s social presence can be viewed as an “anti-art” form, inspired by Nam June Paik and the idea that “everyone will have his own TV channel.” I framed the experience as an inverted realism: instead of presenting a curated, idealized self-image, I metaphorically “reverse” it through analysis and transformations, referencing Paik’s video-synthesizer aesthetics. I also defined an “anti-art” contrast within the project framing—art is intended to be looked at, while anti-art isn’t—yet both coexist in what people consume.
+
+To structure outputs, I used pre-defined logics based on MBTI personality types and mapped them on a “social presence matrix” (observer ↔ creator, dormant ↔ active) to determine final effects. I designed the full user journey as a client/server workflow. On the client side (WebUI), I guided users to submit data, optionally upload images and review color analysis, start the camera, record video, view live expression analysis, and then view the final synthesis output and rate the experience. On the server side (local), I set up steps to create directories, process images and extract colors, save user data, download Pexel videos using predefined prompts, create a Stable Diffusion color prompt, process recordings and expressions, generate Stable Diffusion personality and combined prompts, generate Stable Diffusion images, process the synthesizer, store feedback, and clean up. I also integrated uploads via Google Cloud + Watcher for uploads and cleanup, and I triggered Stable Diffusion after processing expression data. Finally, I implemented prompt generation that combines personality, color analysis, and social-presence signals to drive both filler video selection and generative image synthesis.
+
+Tech Stack (only what’s shown)
+
+WebUI
+
+Server (local workflow)
+
+Google Cloud + Watcher (uploads + cleanup)
+
+Pexel videos (downloaded via predefined prompts)
+
+Stable Diffusion (prompted image generation)
+
+ML Models / Algorithms Mentioned
+
+Stable Diffusion (generative image model)
+
+Face detection models (loaded during the expression-capture step; specific model names not shown)
+
+Color extraction / analysis (used to create Stable Diffusion color prompts; method not specified)

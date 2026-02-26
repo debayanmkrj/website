@@ -1,0 +1,13 @@
+In this project, I built Warrior Duel, a side-scrolling 2D fighting game where I play as one of three warrior characters—Fighter, Samurai, or Shinobi—and battle vampire enemies across three increasingly difficult levels. I designed the experience around a clear loop: I start at the home screen, select a character, enter the battle, and progress through a sequence of scenes from Main Menu → Character Select → Level 1 → Level 2 → Level 3. During combat, I implemented a health system and a time-based match structure (a 100-second limit per battle), along with a special meter that builds as I land attacks and unlocks a powerful special move.
+
+I created an on-screen virtual controller so the game is playable with touch controls: a left joystick for movement (with running triggered after holding movement for a second), two attacks (basic punch and stronger kick), a special button, and a shield button that reduces incoming damage by 70%. I also built the game using a scene-based architecture with dedicated modules for the menu, character selection, HUD, and per-level logic. For gameplay feel, I implemented combat using a physics-based collision system with custom hit detection for attacks and defensive maneuvers. Finally, I added adaptive enemy behavior where enemies can chase, block, attack when in range, and trigger special attacks when their meter is full, scaling difficulty across the three levels.
+
+Tech Stack (from GitHub)
+
+Swift 5.0+, iOS 14.0+, Xcode 12.0+
+
+SpriteKit (core 2D game engine)
+
+SwiftUI (used as the container via ContentView.swift)
+
+Key modules visible in repo: GameScene, Level1/2/3Scene, VirtualController, HUD, AudioManager, SpriteAnimation

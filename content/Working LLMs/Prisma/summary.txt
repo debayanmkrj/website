@@ -1,0 +1,8 @@
+In PRISMA, I built an interactive webcam installation that refracts a participant’s live video into three simultaneous temporal perspectives—Past, Present, and Future—framed with geometric structures inspired by Leonardo da Vinci’s Vitruvian Man. The interaction starts when a user stands in front of the installation: the browser captures webcam frames, sends them to a server via socket, the server processes body data, an AI system generates a transformed “future” image, and the server returns results to the client via WebSockets, where the client renders all three panels together as a triptych.
+
+Conceptually, each panel has its own visual language. Past explicitly references Vitruvian geometry and historical photographic aesthetics to evoke the “calculated human,” using a particle-based system. Present focuses on contemporary redefinition—movement trails and prismatic viewing that visualizes a transition between defined and fluid humanity. Future breaks away from Vitruvian constraints into new forms, again using a particle-based system to suggest expansion beyond architecture.
+
+Tech stack:
+Frontend HTML5/CSS/JavaScript with panel-specific effects. 
+Backend Python + Flask + WebSockets/Socket.IO; MediaPipe Pose for body tracking (33 3D landmarks, ~30fps). 
+Stable Diffusion v1.5 (via a PyTorch diffusion transformer) for real-time image-to-image transformation, with prompt enhancements informed by pose detection and configurable.

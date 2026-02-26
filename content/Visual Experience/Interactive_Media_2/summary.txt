@@ -1,0 +1,21 @@
+In this project, I built a Max/MSP interactive system that turns smartphone motion into a gamified color-matching experience. I streamed real-time gyroscope data—pitch, roll, and yaw—into my patch via UDP (shown as udpreceive 7499) and routed the sensor stream (route /gyrosc/gyro) to derive three continuous control signals. I mapped these signals to RGB manipulation so users could tilt and rotate their phone to adjust red, green, and blue channels on a monochrome source image.
+
+To make the interaction stable and usable, I applied data smoothing and scaling logic using mathematical modules and ranger objects, converting noisy gyroscope movement into precise RGB multiplier values within the MUTIL8R module (0–8 range). I designed a simple step flow: users first load an image into PLAYR, then generate a target pattern using OSCIL8R and Kaleidr, and finally perform the color-matching task by moving the phone. For evaluation, I used Jitter matrix objects to extract and compare RGB channel mean values from the user-controlled output and the target image. I implemented a threshold-based comparison across all three channels, and when the user’s RGB values crossed the predefined thresholds for red, green, and blue simultaneously, the system triggered audio feedback to confirm a successful match.
+
+My intent was to make color-vision testing more engaging—especially for children—by replacing static prompts with a movement-driven, interactive challenge that provides immediate auditory confirmation and can help surface color-perception difficulties in a playful way.
+
+Tech Stack
+
+Max/MSP
+
+Jitter (jit.matrix, jit.rgb2luma, jit.unpack, jit.sub, jit.3m, etc.)
+
+UDP networking (udpreceive)
+
+Max video modules shown: PLAYR, OSCIL8R, Kaleidr, MUTIL8R, FREEZR, VIEWR, PROJECTR
+
+ML Models / Algorithms Mentioned
+
+Data smoothing and scaling using ranger objects (sensor-noise filtering + mapping to 0–8 RGB multipliers)
+
+Threshold-based RGB accuracy comparison using extracted channel mean values (Jitter matrix analysis)

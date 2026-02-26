@@ -1,0 +1,21 @@
+In this project, I built an AI-powered adaptive advertising system to solve four core gaps I observed in traditional ads: they stay static, require manual design, offer poor personalization, and provide no real-time engagement insights. My solution automatically segments products, generates contextual backgrounds, tracks engagement live, and adapts ad layouts based on how users interact.
+
+I designed the workflow so a user uploads a product image and enters a text prompt (“red sneaker”). I then use SAM 3 to segment the product from the background and extract it as a transparent PNG for a product library with multiple views. I use CLIP to analyze the original image context, compare against 8 abstract scene categories, identify a dominant color palette, and select the top 3 matching background styles. Next, Stable Diffusion generates contextual abstract backgrounds, and I composite the product onto these backgrounds with shadow effects. I also implemented real-time engagement tracking—click coordinates, hover duration, hotspot detection, and per-user session analytics—with a heatmap visualization used to reposition products via heatmap centroids. After ~45 seconds of interaction, the system triggers composition generation and produces three variations. I measured performance such as ~30–50ms SAM 3 segmentation on GPU and ~2–5s SD generation per background.
+
+Tech Stack (from GitHub/slides)
+
+Python 3.8+, Flask 3.0.0 (CORS-enabled REST API), PyTorch 2.7.0, Pillow, NumPy
+
+React 18, Vanilla CSS3, Babel
+
+REST API endpoints for upload/segment, tracking, analysis, heatmap, stats
+
+Deployment options referenced: Docker, cloud GPUs (AWS/GCP/Azure), local GPU workstation
+
+ML Models / Algorithms Mentioned
+
+SAM 3 (Segment Anything Model 3) for text-prompted product segmentation
+
+CLIP ViT-B/32 for semantic analysis + background-style selection
+
+Stable Diffusion 1.5 for background generation
