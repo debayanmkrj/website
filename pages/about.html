@@ -1,477 +1,629 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me | Debayan Mukherjee</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=VT323&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --retro-cyan: #5adcff;
-            --retro-yellow: #ffc627;
-            --retro-pink: #ff3366;
-            --dark-bg: #080f19;
-            --screen-glow: rgba(90, 220, 255, 0.3);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Debayan Mukherjee</title>
+  <meta name="description" content="Creative Technologist, Gen·AI Specialist, Designer and Multimodal Producer with 10+ years at Amazon and ASU research.">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
-        body {
-            background-color: #000;
-            color: #e8f8ff;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 300;
-            overflow-x: hidden;
-        }
+  <style>
+    /* ─── VARS (match index.html) ─── */
+    :root {
+      --bg:      #0b0b0b;
+      --bg2:     #111111;
+      --bg3:     #181818;
+      --text:    #ede9e0;
+      --muted:   #5a5752;
+      --accent:  #d4ff47;
+      --border:  rgba(237,233,224,0.07);
+      --border2: rgba(237,233,224,0.16);
+      --nav-h:   60px;
+      --ff-d:    'Bebas Neue', sans-serif;
+      --ff-b:    'Outfit', sans-serif;
+      --ff-m:    'DM Mono', monospace;
+    }
 
-        .back-btn {
-            position: fixed;
-            top: 2rem;
-            left: 2rem;
-            padding: 0.75rem 1.5rem;
-            background-color: rgba(8, 15, 25, 0.85);
-            color: var(--retro-cyan);
-            text-decoration: none;
-            border: 2px solid var(--retro-cyan);
-            border-radius: 4px;
-            z-index: 100;
-            font-weight: 700;
-            font-family: 'VT323', monospace;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 0 15px rgba(90, 220, 255, 0.3);
-            transition: all 0.3s ease;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--ff-b);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        .back-btn:hover {
-            background-color: var(--retro-cyan);
-            color: #000;
-            box-shadow: 0 0 25px rgba(90, 220, 255, 0.6);
-        }
+    /* ─── NAV ─── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px,4vw,48px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(11,11,11,0.92);
+      backdrop-filter: blur(16px);
+    }
+    .nav-logo {
+      font-family: var(--ff-d);
+      font-size: 1.35rem; letter-spacing: 0.06em;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-logo em { color: var(--accent); font-style: normal; }
+    .nav-back {
+      font-family: var(--ff-m);
+      font-size: 0.68rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; padding: 7px 14px;
+      border: 1px solid transparent;
+      transition: color .2s, border-color .2s;
+    }
+    .nav-back:hover { color: var(--text); border-color: var(--border2); }
+    .nav-resume {
+      font-family: var(--ff-m);
+      font-size: 0.68rem; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent); text-decoration: none;
+      padding: 7px 14px;
+      border: 1px solid rgba(212,255,71,0.25);
+      transition: all .2s;
+    }
+    .nav-resume:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
 
-        .page-content {
-            padding: 6rem 2rem 4rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            min-height: 100vh;
-        }
+    /* ─── HERO ─── */
+    .page-hero {
+      padding-top: calc(var(--nav-h) + 72px);
+      padding-bottom: 72px;
+      padding-left: clamp(20px,5vw,80px);
+      padding-right: clamp(20px,5vw,80px);
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 72px 72px;
+    }
+    .page-hero::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 90% 120% at 30% 60%, transparent 10%, var(--bg) 70%);
+    }
+    .hero-inner { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      font-family: var(--ff-m);
+      font-size: 0.68rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--accent);
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 36px; height: 1px; background: var(--accent);
+    }
+    .hero-name {
+      font-family: var(--ff-d);
+      font-size: clamp(4rem, 10vw, 10rem);
+      line-height: 0.88; letter-spacing: 0.015em;
+      color: var(--text); margin-bottom: 36px;
+    }
+    .hero-name em { color: var(--accent); font-style: normal; }
+    .hero-bio {
+      max-width: 680px;
+      font-size: clamp(0.9rem,1.2vw,1.05rem);
+      font-weight: 300; line-height: 1.9;
+      color: rgba(237,233,224,0.6);
+    }
+    .hero-tags {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px;
+    }
+    .tag {
+      font-family: var(--ff-m); font-size: 0.62rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); padding: 5px 12px;
+      border: 1px solid var(--border2);
+    }
 
-        .section-title {
-            font-family: 'VT323', monospace;
-            font-size: 3.6rem;
-            margin-bottom: 2rem;
-            color: var(--retro-cyan);
-            text-shadow: 0 0 20px var(--screen-glow), 0 0 40px var(--screen-glow);
-            letter-spacing: 3px;
-            font-weight: 400;
-            position: relative;
-            display: inline-block;
-        }
+    /* ─── LAYOUT ─── */
+    .page-wrap { max-width: 1440px; margin: 0 auto; }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background-color: var(--retro-yellow);
-            box-shadow: 0 0 10px var(--retro-yellow);
-        }
+    /* ─── SECTION BLOCK ─── */
+    .block {
+      border-bottom: 1px solid var(--border);
+      padding: 72px clamp(20px,5vw,80px);
+    }
+    .block-label {
+      font-family: var(--ff-m); font-size: 0.62rem;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 40px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .block-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border2);
+    }
+    .block-title {
+      font-family: var(--ff-d);
+      font-size: clamp(2.4rem,5vw,5rem);
+      letter-spacing: 0.025em; line-height: 0.9;
+      margin-bottom: 40px;
+    }
 
-        .about-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin-top: 3rem;
-        }
+    /* ─── EXPERIENCE ─── */
+    .exp-list { display: flex; flex-direction: column; gap: 0; }
+    .exp-item {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 0 40px;
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+    .exp-item:first-child { border-top: none; }
+    .exp-meta {
+      padding-top: 2px;
+    }
+    .exp-period {
+      font-family: var(--ff-m); font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 8px;
+    }
+    .exp-co {
+      font-family: var(--ff-m); font-size: 0.72rem;
+      letter-spacing: 0.08em; color: var(--muted);
+      line-height: 1.5;
+    }
+    .exp-role {
+      font-family: var(--ff-d);
+      font-size: 1.5rem; letter-spacing: 0.04em;
+      color: var(--text); margin-bottom: 14px;
+    }
+    .exp-bullets {
+      list-style: none; padding: 0;
+    }
+    .exp-bullets li {
+      font-size: 0.84rem; font-weight: 300;
+      color: rgba(237,233,224,0.55);
+      line-height: 1.85; padding-left: 16px;
+      position: relative; margin-bottom: 7px;
+    }
+    .exp-bullets li::before {
+      content: '—'; position: absolute; left: 0;
+      color: var(--accent); font-size: 0.7rem;
+    }
 
-        .about-text {
-            line-height: 1.8;
-            background: linear-gradient(145deg, rgba(8, 15, 25, 0.85) 0%, rgba(0, 0, 0, 0.7) 100%);
-            padding: 2.5rem;
-            border: 2px solid rgba(90, 220, 255, 0.3);
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(90, 220, 255, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.3);
-        }
+    /* ─── SKILLS GRID ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .skill-card {
+      background: var(--bg2);
+      padding: 28px 24px;
+    }
+    .skill-card-title {
+      font-family: var(--ff-m); font-size: 0.62rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 18px;
+    }
+    .skill-items {
+      list-style: none;
+    }
+    .skill-items li {
+      font-size: 0.82rem; font-weight: 300;
+      color: rgba(237,233,224,0.55);
+      line-height: 1.8; padding-left: 14px;
+      position: relative; margin-bottom: 4px;
+    }
+    .skill-items li::before {
+      content: '·'; position: absolute; left: 0;
+      color: var(--muted);
+    }
 
-        .about-text p {
-            margin-bottom: 1.5rem;
-            color: #c5dff5;
-            font-size: 1rem;
-        }
+    /* ─── ACADEMIC ─── */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .edu-card {
+      background: var(--bg2); padding: 36px 32px;
+    }
+    .edu-school {
+      font-family: var(--ff-m); font-size: 0.62rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 12px;
+    }
+    .edu-degree {
+      font-family: var(--ff-d);
+      font-size: 1.6rem; letter-spacing: 0.04em;
+      line-height: 1.0; color: var(--text); margin-bottom: 14px;
+    }
+    .edu-detail {
+      font-size: 0.82rem; font-weight: 300;
+      color: rgba(237,233,224,0.45);
+      line-height: 1.8;
+    }
 
-        .about-text h3 {
-            color: var(--retro-yellow);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-            text-shadow: 0 0 10px rgba(255, 198, 39, 0.3);
-            font-family: 'VT323', monospace;
-            letter-spacing: 1px;
-        }
+    /* ─── CONTACT ─── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+    .contact-info { }
+    .contact-info-title {
+      font-family: var(--ff-d); font-size: 2.8rem;
+      letter-spacing: 0.03em; line-height: 0.95;
+      margin-bottom: 28px;
+    }
+    .contact-info-title em { color: var(--accent); font-style: normal; }
+    .contact-links { display: flex; flex-direction: column; gap: 12px; }
+    .c-link {
+      font-family: var(--ff-m); font-size: 0.7rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; color: var(--muted);
+      display: flex; align-items: center; gap: 10px;
+      transition: color .2s;
+    }
+    .c-link:hover { color: var(--text); }
+    .c-link::before {
+      content: ''; display: block; width: 20px; height: 1px;
+      background: var(--border2); transition: width .2s, background .2s;
+    }
+    .c-link:hover::before { width: 32px; background: var(--accent); }
 
-        .about-text strong {
-            color: var(--retro-cyan);
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
+    /* ─── FORM ─── */
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-group label {
+      font-family: var(--ff-m); font-size: 0.6rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .form-group input,
+    .form-group textarea {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      font-family: var(--ff-b); font-size: 0.88rem; font-weight: 300;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color .2s;
+      resize: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { min-height: 130px; }
+    .submit-btn {
+      font-family: var(--ff-m); font-size: 0.72rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      background: var(--accent); color: var(--bg);
+      border: 1px solid var(--accent); padding: 15px 30px;
+      cursor: pointer; font-weight: 500; align-self: flex-start;
+      transition: background .2s, color .2s;
+    }
+    .submit-btn:hover { background: transparent; color: var(--accent); }
+    .submit-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .form-msg {
+      font-family: var(--ff-m); font-size: 0.7rem;
+      letter-spacing: 0.08em; padding: 14px 16px;
+      border: 1px solid; display: none;
+    }
+    .form-msg.success { color: var(--accent); border-color: rgba(212,255,71,.3); }
+    .form-msg.error   { color: #ff5f5f; border-color: rgba(255,95,95,.3); }
 
-        .skills-section {
-            background: linear-gradient(145deg, rgba(8, 15, 25, 0.85) 0%, rgba(0, 0, 0, 0.7) 100%);
-            padding: 2.5rem;
-            border: 2px solid rgba(90, 220, 255, 0.3);
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(90, 220, 255, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.3);
-        }
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px clamp(20px,5vw,80px);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo {
+      font-family: var(--ff-d); font-size: 1.8rem;
+      color: var(--text); text-decoration: none;
+    }
+    .footer-logo em { color: var(--accent); font-style: normal; }
+    .footer-copy {
+      font-family: var(--ff-m); font-size: 0.6rem;
+      letter-spacing: 0.06em; color: var(--muted);
+    }
 
-        .skills-section h3 {
-            color: var(--retro-cyan);
-            margin-bottom: 2rem;
-            font-size: 1.8rem;
-            font-family: 'VT323', monospace;
-            letter-spacing: 2px;
-            text-shadow: 0 0 15px rgba(90, 220, 255, 0.5);
-        }
+    /* ─── PORTRAIT ─── */
+    .hero-head {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 24px;
+      margin-bottom: 28px;
+    }
+    .portrait-circle {
+      width: 140px; height: 140px; flex-shrink: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1.5px solid var(--border2);
+      margin-top: 6px;
+    }
+    .portrait-circle img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
 
-        .skill-category {
-            margin-bottom: 2rem;
-        }
+    /* ─── REVEAL ─── */
+    .reveal {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.in { opacity: 1; transform: none; }
 
-        .skill-category h4 {
-            color: var(--retro-yellow);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            font-family: 'VT323', monospace;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 198, 39, 0.3);
-        }
-
-        .skill-list {
-            list-style: none;
-        }
-
-        .skill-list li {
-            margin-bottom: 0.7rem;
-            position: relative;
-            padding-left: 1.2rem;
-            color: #8ac2ff;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .skill-list li::before {
-            content: '▸';
-            color: var(--retro-pink);
-            position: absolute;
-            left: 0;
-            font-size: 1.1rem;
-        }
-
-        /* Contact Form */
-        .contact-section {
-            margin-top: 4rem;
-            grid-column: 1 / -1;
-        }
-
-        .contact-section h3 {
-            color: var(--retro-cyan);
-            margin-bottom: 2rem;
-            font-size: 2rem;
-            font-family: 'VT323', monospace;
-            letter-spacing: 2px;
-            text-shadow: 0 0 15px rgba(90, 220, 255, 0.5);
-        }
-
-        .contact-form {
-            background: linear-gradient(145deg, rgba(8, 15, 25, 0.85) 0%, rgba(0, 0, 0, 0.7) 100%);
-            padding: 2.5rem;
-            border: 2px solid rgba(90, 220, 255, 0.3);
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(90, 220, 255, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-            color: var(--retro-yellow);
-            font-family: 'VT323', monospace;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.9rem;
-            background-color: rgba(0, 0, 0, 0.5);
-            border: 2px solid rgba(90, 220, 255, 0.3);
-            border-radius: 4px;
-            color: #e8f8ff;
-            font-size: 1rem;
-            font-family: 'Montserrat', sans-serif;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--retro-cyan);
-            box-shadow: 0 0 15px rgba(90, 220, 255, 0.4);
-        }
-
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            background-color: rgba(8, 15, 25, 0.85);
-            color: var(--retro-cyan);
-            border: 2px solid var(--retro-cyan);
-            padding: 0.9rem 2.5rem;
-            font-size: 1.2rem;
-            font-family: 'VT323', monospace;
-            letter-spacing: 2px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(90, 220, 255, 0.3);
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            background-color: var(--retro-cyan);
-            color: #000;
-            box-shadow: 0 0 25px rgba(90, 220, 255, 0.6);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .success-message {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.1));
-            color: #4CAF50;
-            border: 2px solid #4CAF50;
-            padding: 1rem;
-            border-radius: 4px;
-            margin-top: 1rem;
-            display: none;
-            box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
-        }
-
-        .error-message {
-            background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(244, 67, 54, 0.1));
-            color: #f44336;
-            border: 2px solid #f44336;
-            padding: 1rem;
-            border-radius: 4px;
-            margin-top: 1rem;
-            display: none;
-            box-shadow: 0 0 20px rgba(244, 67, 54, 0.3);
-        }
-
-        @media (max-width: 1024px) {
-            .about-container {
-                grid-template-columns: 1fr;
-            }
-
-            .section-title {
-                font-size: 3.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 2.8rem;
-            }
-
-            .page-content {
-                padding: 5rem 1.5rem 3rem;
-            }
-        }
-    </style>
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .exp-item { grid-template-columns: 1fr; gap: 8px; }
+      .exp-meta { display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 540px) {
+      .skills-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .hero-name { font-size: clamp(3.2rem, 16vw, 5rem); }
+    }
+  </style>
 </head>
 <body>
-    <div class="page-content">
-        <a href="../index.html" class="back-btn">← BACK</a>
-        <h1 class="section-title">ABOUT ME</h1>
 
-        <div class="about-container">
-            <div class="about-text">
-                <p>Hi, Thank you for visiting my website. I am Debayan Mukherjee, a creative technologist with over 10 years of experience bridging the gap between artistic expression and engineering scale. Currently pursuing an MS in Media Arts and Sciences at Arizona State University, with a concentration in multi-modal generative art, I specialize in designing human-centered workflows that leverage both technical and creative aesthetics.</p>
-
-                <p>My professional journey spans from hands-on photography and design to leading global creative teams at Amazon, where I managed cross-functional teams across Middle East, Africa, Turkey, India, and Singapore markets. This trajectory has given me experience in both the creative process and the scalable production systems needed to deliver visual content at enterprise scale.</p>
-
-                <p>My work focuses on the intersection of generative AI, computer vision, interactive media, and workflow automation. I develop immersive experiences using real-time interactive systems while optimizing production pipelines for efficiency and quality.</p>
-
-                <h3>PROFESSIONAL EXPERIENCE</h3>
-
-                <strong>Creative Leadership & Workflow Architecture</strong>
-                <p>As Creative Manager at Amazon Dubai, I engineered automated creative pipelines and integrated new technologies, achieving a 10% year-over-year efficiency gain. I managed cross-functional teams of 20+ professionals including videographers, art directors, and digital asset technicians, while directing CAPEX strategy that resulted in a 50% increase in production capacity.</p>
-
-                <strong>Content Production & Technical Innovation</strong>
-                <p>I've architected standardization protocols for video production across international studios, achieving a 30% efficiency improvement. My work includes spearheading the technical deployment of new media formats like "Video-in-Search" and automated bilingual content workflows for 5 Amazon marketplaces, as well as launching live streaming and short-form video verticals.</p>
-
-                <strong>Research & Development</strong>
-                <p>I led qualitative user studies and prototype testing on the UserZoom Platform, utilizing data to inform content design decisions. My current academic research focuses on developing immersive experiences using Generative AI workflows, computer vision, and real-time interactive systems.</p>
-            </div>
-
-            <div class="skills-section">
-                <h3>SKILLS & EXPERTISE</h3>
-
-                <div class="skill-category">
-                    <h4>CREATIVE TECHNOLOGY</h4>
-                    <ul class="skill-list">
-                        <li>Interactive Media: TouchDesigner, Max MSP, Unity</li>
-                        <li>Web Technologies: Three.js, WebGL, React, JavaScript</li>
-                        <li>iOS App Development: Swift, Xcode, RealityKit, Vision framework, AR experiences, computer vision integration</li>
-                        <li>Generative AI: Python workflows, API integrations, model development</li>
-                        <li>Computer Vision: Applications in content creation and user experience</li>
-                        <li>AR/VR Prototyping: Immersive experience development</li>
-                    </ul>
-                </div>
-
-                <div class="skill-category">
-                    <h4>VISUAL PRODUCTION</h4>
-                    <ul class="skill-list">
-                        <li>Photography & Videography: Fashion, product, and campaign content</li>
-                        <li>Post-Production: Adobe Creative Suite (Premiere Pro, After Effects, Photoshop)</li>
-                        <li>Studio Management: Lighting design, workflow optimization, equipment procurement</li>
-                        <li>Content Strategy: Multi-platform campaigns, trend analysis, user research</li>
-                    </ul>
-                </div>
-
-                <div class="skill-category">
-                    <h4>LEADERSHIP & OPERATIONS</h4>
-                    <ul class="skill-list">
-                        <li>Team Management: Cross-cultural teams, freelancer coordination, capacity planning</li>
-                        <li>Process Innovation: DMAIC methodology, Kaizen leadership, automation implementation</li>
-                        <li>Strategic Planning: Resource allocation, quality management, cost optimization</li>
-                        <li>User Research: UserZoom platform, qualitative studies, prototype testing</li>
-                    </ul>
-                </div>
-
-                <div class="skill-category">
-                    <h4>DESIGN & DEVELOPMENT</h4>
-                    <ul class="skill-list">
-                        <li>Programming: Python, JavaScript, Swift, HTML/CSS, C#</li>
-                        <li>Design Tools: Capture One, Photoshop, Illustrator, Premier Pro, DaVinci Resolve, design thinking methodologies</li>
-                        <li>3D & Motion: Unity, After Effects and animation</li>
-                        <li>Data Visualization: Creative process analytics and optimization</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Full-width contact section -->
-            <div class="contact-section">
-                <h3>GET IN TOUCH</h3>
-                <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" id="contactForm">
-                    <!-- Replace with your Access Key -->
-                    <input type="hidden" name="access_key" value="f453a9a9-1e5a-49b9-8042-80e4f8bab03f">
-
-                    <div class="form-group">
-                        <label for="name">NAME</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">EMAIL</label>
-                        <input type="email" id="email" name="_replyto" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="subject">SUBJECT</label>
-                        <input type="text" id="subject" name="_subject" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="message">MESSAGE</label>
-                        <textarea id="message" name="message" required></textarea>
-                    </div>
-
-                    <!-- Hidden field to prevent spam -->
-                    <input type="hidden" name="_next" value="https://yourdomain.com/thanks.html">
-                    <input type="hidden" name="_captcha" value="false">
-
-                    <button type="submit" class="submit-btn">SEND MESSAGE</button>
-                </form>
-
-                <div class="success-message" id="successMessage">
-                    Thank you! Your message has been sent successfully.
-                </div>
-
-                <div class="error-message" id="errorMessage">
-                    Sorry, there was an error sending your message. Please try again.
-                </div>
-            </div>
-        </div>
+  <!-- ─── NAV ─── -->
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">DEB<em>.</em></a>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <a href="../index.html" class="nav-back">← Portfolio</a>
+      <a href="../content/Resume/DEBAYAN_MUKHERJEE_CV_2_Pages_Generic_12292025.pdf"
+         download class="nav-resume">Resume ↓</a>
     </div>
+  </nav>
 
-    <script>
-        // Enhanced form handling with AJAX for better UX
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('contactForm');
-            const submitBtn = document.querySelector('.submit-btn');
-            const successMsg = document.getElementById('successMessage');
-            const errorMsg = document.getElementById('errorMessage');
+  <!-- ─── PAGE HERO ─── -->
+  <section class="page-hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">About</div>
+      <div class="hero-head">
+        <h1 class="hero-name">CREATIVE<br>TECH<em>.</em></h1>
+        <div class="portrait-circle">
+          <img src="../content/Portrait/portrait.png" alt="Debayan Mukherjee">
+        </div>
+      </div>
+      <p class="hero-bio">
+        Creative Technologist and Generative AI Producer with 10+ years of production-grade experience
+        spanning multimodal content, enterprise creative pipelines, and interactive systems.
+        Currently completing an MS in Media Arts &amp; Sciences at Arizona State University, with
+        concentration in multi-modal generative AI. Former Creative Manager at Amazon across
+        Middle East, India, and Singapore markets.
+      </p>
+      <div class="hero-tags">
+        <span class="tag">Gen·AI Production</span>
+        <span class="tag">ComfyUI Pipelines</span>
+        <span class="tag">Creative Leadership</span>
+        <span class="tag">Interactive Systems</span>
+        <span class="tag">Computer Vision</span>
+        <span class="tag">10+ Years Amazon</span>
+        <span class="tag">ASU Researcher</span>
+      </div>
+    </div>
+  </section>
 
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
+  <div class="page-wrap">
 
-                // Hide previous messages
-                successMsg.style.display = 'none';
-                errorMsg.style.display = 'none';
+    <!-- ─── SKILLS ─── -->
+    <section class="block reveal">
+      <div class="block-label">Technical Skills</div>
+      <div class="skills-grid">
 
-                // Disable submit button
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'SENDING...';
+        <div class="skill-card">
+          <div class="skill-card-title">Gen·AI Image &amp; Video</div>
+          <ul class="skill-items">
+            <li>ComfyUI — node-based pipeline construction, sampler/VAE/preprocessor chaining</li>
+            <li>Stable Diffusion (SD 1.5, SDXL), Flux — CFG/step tuning, checkpoint management, model merging</li>
+            <li>ControlNet — depth, canny, openpose, lineart, tile; multi-ControlNet stacking</li>
+            <li>In/out-painting, masking, style &amp; character consistency workflows</li>
+            <li>AnimateDiff, SVD — image-to-video &amp; text-to-video, motion module config</li>
+            <li>Sora (OpenAI), Veo (Google DeepMind), Kling</li>
+          </ul>
+        </div>
 
-                // Get form data
-                const formData = new FormData(form);
+        <div class="skill-card">
+          <div class="skill-card-title">Fine-Tuning &amp; LLMs</div>
+          <ul class="skill-items">
+            <li>LoRA — dataset curation, training configuration, concept/style model authoring</li>
+            <li>LangChain, OpenAI / Gemini / Claude APIs — prompt templating, chain construction</li>
+            <li>Python — API clients, async handling, pipeline automation scripts</li>
+            <li>Node.js — workflow automation and integration patterns</li>
+            <li>Audio: Suno, ElevenLabs</li>
+          </ul>
+        </div>
 
-                // Send to Web3Forms
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        successMsg.style.display = 'block';
-                        form.reset();
-                    } else {
-                        throw new Error('Network response was not ok');
-                    }
-                })
-                .catch(error => {
-                    errorMsg.style.display = 'block';
-                    console.error('Error:', error);
-                })
-                .finally(() => {
-                    // Re-enable submit button
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'SEND MESSAGE';
-                });
-            });
+        <div class="skill-card">
+          <div class="skill-card-title">Creative Technology</div>
+          <ul class="skill-items">
+            <li>iOS: Swift, Xcode, RealityKit, ARKit, Vision Framework</li>
+            <li>Games: Unity (C#), SpriteKit</li>
+            <li>Interactive: TouchDesigner, Max/MSP</li>
+            <li>Web: Three.js, WebGL, React, JavaScript</li>
+            <li>3D: USDZ, AR experience authoring</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-title">Post-Production &amp; Design</div>
+          <ul class="skill-items">
+            <li>DaVinci Resolve — compositing, color, audio mixing, caption workflows</li>
+            <li>Adobe Creative Suite — Premiere Pro, After Effects, Photoshop, Illustrator</li>
+            <li>OBS Studio — capture and recording</li>
+            <li>Git — version control for workflow and prompt systems</li>
+            <li>DAM architecture, brand governance, IP/licensing awareness</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-title">Creative Fundamentals</div>
+          <ul class="skill-items">
+            <li>Composition, lighting design, motion direction</li>
+            <li>Typography, sound design, visual storytelling</li>
+            <li>Studio and on-location photo/video production</li>
+            <li>Safety guardrails for AI-generated media</li>
+            <li>Accessibility standards</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-title">Leadership &amp; Operations</div>
+          <ul class="skill-items">
+            <li>High-volume creative production at enterprise scale</li>
+            <li>Cross-cultural team management (28+ FTE)</li>
+            <li>Creative analytics, A/B testing, output scoring</li>
+            <li>Vendor &amp; agency management across India, UAE, Singapore</li>
+            <li>Training program design, SOPs, operational playbooks</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── EDUCATION ─── -->
+    <section class="block reveal">
+      <div class="block-label">Education</div>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div class="edu-school">Arizona State University</div>
+          <div class="edu-degree">M.S. Media Arts<br>&amp; Sciences</div>
+          <div class="edu-detail">2024 - 2026 · Concentration: Multi-modal Generative Art</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-school">National Institute of Fashion Technology (NIFT)</div>
+          <div class="edu-degree">Bachelor of<br>Design</div>
+          <div class="edu-detail">2009 – 2013 · Concentration: Fashion Design</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CONTACT ─── -->
+    <section class="block reveal" id="contact">
+      <div class="block-label">Contact</div>
+      <div class="contact-grid">
+
+        <div class="contact-info">
+          <div class="contact-info-title">LET'S<br>WORK<br><em>TOGETHER.</em></div>
+          <div class="contact-links">
+            <a href="https://linkedin.com/in/debmkrj" target="_blank" rel="noopener" class="c-link">LinkedIn ↗</a>
+            <a href="https://github.com/debayanmkrj" target="_blank" rel="noopener" class="c-link">GitHub ↗</a>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contactForm"
+              action="https://api.web3forms.com/submit" method="POST">
+          <!-- Web3Forms access key — preserved from original -->
+          <input type="hidden" name="access_key" value="f453a9a9-1e5a-49b9-8042-80e4f8bab03f">
+          <input type="hidden" name="_subject" id="hidden-subject" value="Portfolio Contact">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://debsweb.in/pages/about.html">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="_replyto" required placeholder="your@email.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject_line" required
+                   placeholder="What's this about?"
+                   oninput="document.getElementById('hidden-subject').value = this.value">
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required
+                      placeholder="Tell me about your project or opportunity…"></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submit-btn">Send Message →</button>
+
+          <div class="form-msg success" id="successMsg">
+            ✓ Message sent — I'll be in touch soon.
+          </div>
+          <div class="form-msg error" id="errorMsg">
+            Something went wrong. Please try emailing me directly.
+          </div>
+        </form>
+
+      </div>
+    </section>
+
+  </div><!-- /page-wrap -->
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <a href="../index.html" class="footer-logo">DEB<em>.</em></a>
+    <span class="footer-copy">© 2026 Debayan Mukherjee</span>
+  </footer>
+
+  <script>
+    /* ── Scroll reveal ── */
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* ── Contact form (AJAX via Web3Forms) ── */
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn   = document.getElementById('submit-btn');
+      const okMsg = document.getElementById('successMsg');
+      const errMsg = document.getElementById('errorMsg');
+
+      okMsg.style.display = 'none';
+      errMsg.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: new FormData(this),
+          headers: { Accept: 'application/json' }
         });
-    </script>
+        if (res.ok) {
+          okMsg.style.display = 'block';
+          this.reset();
+        } else {
+          throw new Error('non-ok');
+        }
+      } catch {
+        errMsg.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send Message →';
+      }
+    });
+  </script>
 </body>
 </html>

@@ -3,7 +3,7 @@ const projectsData = {
   llms: [
     { name: 'Cinematic', title: 'CINEMATIC', description: 'Generative AI driven cinematic video content creation.', coverVideo: 'content/Gen-AI/Cinematic/media1.mp4', images: ['content/Gen-AI/Cinematic/Portfolio_debayan.01.jpeg', 'content/Gen-AI/Cinematic/Portfolio_debayan.02.jpeg'] },
     { name: 'Ecommerce', title: 'ECOMMERCE', description: 'AI powered ecommerce visual content generation.', coverVideo: 'content/Gen-AI/Ecommerce/media1.mp4', images: ['content/Gen-AI/Ecommerce/Portfolio_debayan.001.jpeg', 'content/Gen-AI/Ecommerce/Portfolio_debayan.002.jpeg'] },
-    { name: 'Fashion_video', title: 'EDITORIAL', description: 'Generative AI fashion video production and styling.', coverVideo: 'content/Gen-AI/Fashion_video/media1.mp4', images: ['content/Gen-AI/Fashion_video/Portfolio_debayan.001.jpeg', 'content/Gen-AI/Fashion_video/Portfolio_debayan.002.jpeg'] },
+    { name: 'Fashion_video', title: 'EDITORIAL', description: 'Generative AI fashion video production and styling.', coverVideo: 'content/Gen-AI/Editorial/media1.mp4', images: ['content/Gen-AI/Editorial/Portfolio_debayan.001.jpeg', 'content/Gen-AI/Editorial/Portfolio_debayan.002.jpeg'] },
     { name: 'Home', title: 'HOME', description: 'AI generated home and interior design visualizations.', coverVideo: 'content/Gen-AI/Home/media1.mp4', images: ['content/Gen-AI/Home/port_1.jpeg', 'content/Gen-AI/Home/port_2.jpeg'] },
     { name: 'Imaginative', title: 'IMAGINATIVE', description: 'Experimental generative AI art and creative explorations.', coverVideo: 'content/Gen-AI/Imaginative/media1.mp4', images: ['content/Gen-AI/Imaginative/Portfolio_debayan.01.jpeg', 'content/Gen-AI/Imaginative/Portfolio_debayan.02.jpeg'] }
   ],
@@ -46,7 +46,6 @@ const projectsData = {
     { name: 'Usdz', title: 'USDZ AR EXPERIENCES', description: '3D augmented reality content creation for mobile platforms.', coverImage: 'content/Visual Experience/Usdz/cover.jpg', newMedia: ['content/Visual Experience/Usdz/new_media/3.jpg'] },
     { name: 'SnipeZone', title: 'SNIPEZONE', description: 'Unity FPS Game that combines game play with intelligent Enemy AI and facetracking to control player.', coverImage: 'content/Visual Experience/SnipeZone/cover.jpg', github: 'https://github.com/debayanmkrj/Snipezone', newMedia: ['content/Visual Experience/SnipeZone/new_media/media1.mp4', 'content/Visual Experience/SnipeZone/new_media/media2.mp4', 'content/Visual Experience/SnipeZone/new_media/media3.mp4', 'content/Visual Experience/SnipeZone/new_media/media4.mp4'] },
     { name: 'Reverse_Mirror', title: 'REVERSE MIRROR', description: 'Interaction design based on user persona and generative art.', coverImage: 'content/Visual Experience/Reverse_Mirror/cover.jpg', newMedia: ['content/Visual Experience/Reverse_Mirror/new_media/media1.mp4', 'content/Visual Experience/Reverse_Mirror/new_media/media2.mp4', 'content/Visual Experience/Reverse_Mirror/new_media/media3.mp4', 'content/Visual Experience/Reverse_Mirror/new_media/media4.mp4'] },
-    { name: 'Interactive_Media_2', title: 'INTERACTIVE MEDIA II', description: 'The Max/MSP patch processes real-time gyroscopic input (pitch, roll, and yaw data) from a smartphone, which users manipulate to control RGB color channels on a monochrome source image. The system employs sophisticated data smoothing algorithms using mathematical modules and ranger objects to filter noise and scale the gyroscopic movements to precise RGB multiplier values (0-8 range) within the MUTIL8R module. The color matching system utilizes Jit matrix objects to extract RGB channel mean values from both the user-controlled image and a randomly generated source image processed through the Kaleidr module. A threshold-based comparison algorithm evaluates color accuracy across all three channels, triggering audio feedback when successful matches occur. This gamified approach makes color vision testing engaging for children, as they use natural phone movements to recreate target colors while receiving immediate auditory confirmation of their progress. This innovative approach transforms traditional color blindness screening into an interactive experience that can identify color perception deficiencies in young patients who might struggle with conventional testing methods.', coverImage: 'content/Visual Experience/Interactive_Media_2/cover.jpg', newMedia: ['content/Visual Experience/Interactive_Media_2/new_media/1.jpg', 'content/Visual Experience/Interactive_Media_2/new_media/2.jpg', 'content/Visual Experience/Interactive_Media_2/new_media/3.jpg', 'content/Visual Experience/Interactive_Media_2/new_media/4.jpg', 'content/Visual Experience/Interactive_Media_2/new_media/5.jpg'] },
     { name: 'Interactive_Media', title: 'INTERACTIVE MEDIA I', description: 'The Max/MSP patches demonstrates a hand tracking system that captures finger positions and gestures in real-time. The first patch shows the core hand detection module (jit.fill #0hand) processing skeletal data through matrix operations, converting raw hand coordinates into usable control parameters for the racing game. The project uses a pre-trained hand tracking model using Wekinator. The hand tracking gestures are illustrated in the images below. The intent of using both hands to control the car is to allow the user to use both hands to control the car was to provide an easy and intuitive way to control the car.', coverImage: 'content/Visual Experience/Interactive_Media/cover.jpg', newMedia: ['content/Visual Experience/Interactive_Media/new_media/media1.mp4'] },
     { name: 'Groove_it', title: 'GROOVE IT', description: 'An immersive music player iOS app developed with Swift, RealityKit, AR Kit that combines audio playback with real time 3D experience.', coverImage: 'content/Visual Experience/Groove_it/cover.jpg', github: 'https://github.com/debayanmkrj/GROO-V-IT', newMedia: ['content/Visual Experience/Groove_it/new_media/media1.mp4', 'content/Visual Experience/Groove_it/new_media/media2.mp4'] },
     { name: 'Gan', title: 'GAN EXPLORATIONS', description: 'Generative Adversarial Network experiments in visual style transfer and creation.', coverImage: 'content/Visual Experience/Gan/cover.jpg', newMedia: ['content/Visual Experience/Gan/new_media/2.jpg', 'content/Visual Experience/Gan/new_media/3.jpg'] },
@@ -160,16 +159,31 @@ function createCarouselItem(section, index, position) {
 
   // Special handling for photography section - no title/description overlay
   if (section === 'photography' && project.coverVideo) {
+    // Photography VIDEO item
     item.innerHTML = `
       <div class="carousel-image-container">
-      <video src="${project.coverVideo}" muted autoplay loop playsinline class="carousel-image" style="object-fit: cover; width:100%; height:100%;"></video>  
-      <img src="${project.coverImage}" alt="Photography ${index + 1}" class="carousel-image" style="object-fit: contain;">
+        <video src="${project.coverVideo}" muted autoplay loop playsinline class="carousel-image" style="object-fit: cover; width:100%; height:100%;"></video>
       </div>
     `;
 
     item.addEventListener('click', function () {
       if (position === 'center') {
-        // Open fullscreen without navigation (single image only)
+        openFullVideo(project.coverVideo);
+      } else {
+        carouselStates[section].currentIndex = index;
+        setupCarousel(section);
+      }
+    });
+  } else if (section === 'photography' && project.coverImage) {
+    // Photography IMAGE item — open ONLY this single image fullscreen
+    item.innerHTML = `
+      <div class="carousel-image-container">
+        <img src="${project.coverImage}" alt="Photography ${index + 1}" class="carousel-image" style="object-fit: cover; width:100%; height:100%;">
+      </div>
+    `;
+
+    item.addEventListener('click', function () {
+      if (position === 'center') {
         openFullImage(project.coverImage, [project.coverImage], 0);
       } else {
         carouselStates[section].currentIndex = index;
@@ -471,10 +485,11 @@ function openGenAIOverlay(index) {
   overlay.classList.add('active');
 }
 
-// Close project overlay
+// Close project overlay — stop all videos before hiding
 function closeProjectOverlay(section, index) {
   const overlay = document.getElementById(`overlay-${section}-${index}`);
   if (overlay) {
+    overlay.querySelectorAll('video').forEach(v => { v.pause(); v.src = ''; v.load(); });
     overlay.classList.remove('active');
   }
 }
@@ -513,6 +528,66 @@ function closeFullImage() {
   fullsizeImage.src = '';
   currentImageGallery = [];
   currentImageIndex = 0;
+}
+
+// ── Full-screen VIDEO viewer for photography videos ──
+function openFullVideo(src) {
+  // Lazily create the overlay once
+  let ovl = document.getElementById('fullvideo-overlay');
+  if (!ovl) {
+    ovl = document.createElement('div');
+    ovl.id = 'fullvideo-overlay';
+    ovl.style.cssText = [
+      'position:fixed','inset:0','z-index:2100',
+      'background:rgba(11,11,11,0.98)',
+      'display:flex','align-items:center','justify-content:center',
+      'opacity:0','pointer-events:none',
+      'transition:opacity .3s ease'
+    ].join(';');
+
+    const vid = document.createElement('video');
+    vid.id = 'fullvideo-player';
+    vid.controls = true;
+    vid.playsInline = true;
+    vid.style.cssText = 'max-width:92vw;max-height:88vh;outline:none;';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '✕';
+    closeBtn.style.cssText = [
+      'position:absolute','top:20px','right:24px',
+      'background:transparent','border:1px solid rgba(237,233,224,0.2)',
+      'color:rgba(237,233,224,0.6)','font-size:1rem',
+      'width:42px','height:42px','cursor:pointer',
+      'display:flex','align-items:center','justify-content:center',
+      'transition:color .2s,border-color .2s'
+    ].join(';');
+    closeBtn.addEventListener('mouseover',  () => { closeBtn.style.color = '#ede9e0'; closeBtn.style.borderColor = '#ede9e0'; });
+    closeBtn.addEventListener('mouseout',   () => { closeBtn.style.color = 'rgba(237,233,224,0.6)'; closeBtn.style.borderColor = 'rgba(237,233,224,0.2)'; });
+    closeBtn.addEventListener('click', closeFullVideo);
+
+    ovl.appendChild(vid);
+    ovl.appendChild(closeBtn);
+    // Click backdrop to close
+    ovl.addEventListener('click', (e) => { if (e.target === ovl) closeFullVideo(); });
+    document.body.appendChild(ovl);
+  }
+
+  const vid = document.getElementById('fullvideo-player');
+  vid.src = src;
+  ovl.style.opacity = '1';
+  ovl.style.pointerEvents = 'all';
+  vid.play().catch(() => {});
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFullVideo() {
+  const ovl = document.getElementById('fullvideo-overlay');
+  const vid = document.getElementById('fullvideo-player');
+  if (!ovl) return;
+  if (vid) { vid.pause(); vid.src = ''; vid.load(); }
+  ovl.style.opacity = '0';
+  ovl.style.pointerEvents = 'none';
+  document.body.style.overflow = '';
 }
 
 function navigateFullImage(direction) {
@@ -598,20 +673,32 @@ async function loadPhotographyImages() {
 function buildMediaMosaic(mediaList, itemClass, mosaicClass) {
   const mosaic = document.createElement('div');
   mosaic.className = mosaicClass;
-  // Always 2 columns — landscape items will span both
-  mosaic.style.gridTemplateColumns = mediaList.length === 1 ? '1fr' : 'repeat(2, 1fr)';
-  mosaic.style.gap = '0.75rem';
+
+  if (mediaList.length === 1) {
+    // Single item — fill the panel absolutely and flex-center
+    mosaic.style.position = 'absolute';
+    mosaic.style.inset = '0';
+    mosaic.style.display = 'flex';
+    mosaic.style.alignItems = 'center';
+    mosaic.style.justifyContent = 'center';
+    mosaic.style.padding = '36px';
+  } else {
+    // Multiple items — 2-column grid, landscape spans both columns
+    mosaic.style.display = 'grid';
+    mosaic.style.gridTemplateColumns = 'repeat(2, 1fr)';
+    mosaic.style.gap = '0.75rem';
+  }
 
   mediaList.forEach(({ src, type, alt }) => {
     const item = document.createElement('div');
     item.className = itemClass;
 
     if (mediaList.length === 1) {
-      // Single item: centered with comfortable max-width
-      item.style.gridColumn = '1 / -1';
-      item.style.justifySelf = 'center';
-      item.style.width = '100%';
-      item.style.maxWidth = '720px';
+      item.style.maxWidth = '100%';
+      item.style.maxHeight = '80vh';
+      item.style.display = 'flex';
+      item.style.alignItems = 'center';
+      item.style.justifyContent = 'center';
     }
 
     if (type === 'video') {
@@ -620,7 +707,12 @@ function buildMediaMosaic(mediaList, itemClass, mosaicClass) {
       vid.controls = true;
       vid.muted = true;
       vid.playsInline = true;
-
+      if (mediaList.length === 1) {
+        vid.style.maxWidth = '100%';
+        vid.style.maxHeight = '80vh';
+        vid.style.width = 'auto';
+        vid.style.height = 'auto';
+      }
       vid.addEventListener('loadedmetadata', () => {
         if (mediaList.length > 1) {
           const isLandscape = vid.videoWidth >= vid.videoHeight;
@@ -633,7 +725,13 @@ function buildMediaMosaic(mediaList, itemClass, mosaicClass) {
       img.src = src;
       img.alt = alt || '';
       img.loading = 'lazy';
-
+      if (mediaList.length === 1) {
+        img.style.maxWidth = '100%';
+        img.style.maxHeight = '80vh';
+        img.style.width = 'auto';
+        img.style.height = 'auto';
+        img.style.objectFit = 'contain';
+      }
       img.addEventListener('load', () => {
         if (mediaList.length > 1) {
           const isLandscape = img.naturalWidth >= img.naturalHeight;
@@ -1051,6 +1149,8 @@ async function initializeProjects() {
   // Keyboard navigation
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
+      const fvOverlay = document.getElementById('fullvideo-overlay');
+      if (fvOverlay && fvOverlay.style.pointerEvents === 'all') { closeFullVideo(); return; }
       const mlOverlay = document.getElementById('ml-project-overlay');
       if (mlOverlay && mlOverlay.classList.contains('active')) { closeMLProjectOverlay(); return; }
       const deOverlay = document.getElementById('de-project-overlay');
@@ -1075,6 +1175,8 @@ window.closeFullImage = closeFullImage;
 window.navigateFullImage = navigateFullImage;
 window.closeMLProjectOverlay = closeMLProjectOverlay;
 window.closeDEProjectOverlay = closeDEProjectOverlay;
+window.openFullVideo = openFullVideo;
+window.closeFullVideo = closeFullVideo;
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
