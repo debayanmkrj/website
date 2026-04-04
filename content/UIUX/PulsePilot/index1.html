@@ -1,0 +1,1523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PulsePilot — UX Case Study · Debayan Mukherjee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Epilogue:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────── */
+:root{
+  --paper:     #f5f1ea;
+  --canvas:    #ede9e1;
+  --card:      #fefcf9;
+  --ink:       #1a1510;
+  --ink2:      #3d3830;
+  --muted:     #7a7570;
+  --teal:      #145c4a;
+  --teal-dim:  rgba(20,92,74,.1);
+  --amber:     #b8720a;
+  --amber-dim: rgba(184,114,10,.13);
+  --red:       #8c3525;
+  --border:    rgba(26,21,16,.11);
+  --border2:   rgba(26,21,16,.06);
+  --dk:        #0e1118;
+  --dk-card:   rgba(255,255,255,.055);
+  --dk-border: rgba(255,255,255,.09);
+  --dk-text:   #e8e2d8;
+  --dk-muted:  rgba(232,226,216,.52);
+  --dk-green:  #65d3a5;
+  --dk-blue:   #8ebcff;
+  --dk-coral:  #ff8f72;
+  --display: 'Cormorant Garamond',Georgia,serif;
+  --body:    'Epilogue',system-ui,sans-serif;
+  --mono:    'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+button,input{font:inherit}
+
+/* ── LAYOUT ─────────────────────────────────────── */
+.wrap{width:min(1240px,calc(100vw - 48px));margin-inline:auto}
+
+/* ── NAV ────────────────────────────────────────── */
+.nav{
+  position:sticky;top:0;z-index:200;
+  height:52px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:0 clamp(20px,4vw,52px);
+  background:rgba(245,241,234,.93);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-back{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--mono);font-size:12px;color:var(--muted);
+  text-decoration:none;letter-spacing:.04em;transition:color .18s;
+}
+.nav-back:hover{color:var(--teal)}
+.nav-id{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
+.nav-id strong{color:var(--ink);font-weight:500}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .18s;
+}
+.nav-links a:hover{color:var(--teal)}
+
+/* ── SECTION LABEL ──────────────────────────────── */
+.lbl{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:36px;
+}
+.lbl-n{
+  width:26px;height:26px;border-radius:50%;
+  border:1px solid var(--border);
+  display:grid;place-items:center;
+  font-size:11px;color:var(--teal);font-weight:500;flex-shrink:0;
+}
+
+/* ── REVEAL ─────────────────────────────────────── */
+.r{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.r.in{opacity:1;transform:none}
+
+hr{border:none;height:1px;background:var(--border)}
+
+/* ═══ HERO ══════════════════════════════════════ */
+.hero{padding:80px 0 72px}
+.hero-inner{
+  display:grid;grid-template-columns:1fr 400px;
+  gap:56px;align-items:center;
+}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.tag{
+  padding:5px 12px;border-radius:999px;
+  border:1px solid var(--border);background:var(--card);
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.08em;color:var(--muted);
+}
+.tag.hi{border-color:rgba(20,92,74,.28);background:var(--teal-dim);color:var(--teal)}
+h1{
+  font-family:var(--display);font-size:clamp(64px,8vw,106px);
+  font-weight:400;line-height:.9;letter-spacing:-.02em;
+  color:var(--ink);margin-bottom:24px;
+}
+h1 em{font-style:italic;color:var(--teal)}
+.hero-sub{
+  font-size:18px;line-height:1.72;
+  color:var(--muted);max-width:52ch;margin-bottom:36px;
+}
+.hero-stats{
+  display:flex;gap:0;
+  border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;background:var(--card);
+}
+.stat{
+  flex:1;padding:18px 16px;
+  border-right:1px solid var(--border);display:grid;gap:4px;
+}
+.stat:last-child{border-right:none}
+.stat-v{
+  font-family:var(--display);font-size:30px;
+  font-weight:500;line-height:1;color:var(--ink);
+}
+.stat-k{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
+/* hero viz */
+.hviz{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:24px;padding:28px;display:grid;gap:18px;
+}
+.hviz-top{display:flex;justify-content:space-between;align-items:center}
+.hviz-brand{font-family:var(--display);font-size:22px;font-weight:500;color:var(--ink)}
+.hviz-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:6px 12px;border-radius:999px;
+  background:var(--teal-dim);border:1px solid rgba(20,92,74,.2);
+  font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:.06em;
+}
+.vdot{
+  width:7px;height:7px;border-radius:50%;background:var(--teal);
+  animation:vDot 2.4s infinite;
+}
+@keyframes vDot{
+  0%{box-shadow:0 0 0 0 rgba(20,92,74,.4)}
+  70%{box-shadow:0 0 0 9px transparent}
+  100%{box-shadow:0 0 0 0 transparent}
+}
+.hviz-ms{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hvm{
+  padding:14px 12px;border-radius:14px;
+  border:1px solid var(--border);background:var(--paper);
+}
+.hvm small{
+  display:block;font-family:var(--mono);
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:7px;
+}
+.hvm strong{
+  font-family:var(--display);font-size:34px;
+  font-weight:500;line-height:1;color:var(--ink);
+}
+.hvm em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:2px}
+.hviz-rec{
+  padding:18px;border-radius:16px;
+  border:1px solid rgba(20,92,74,.2);background:var(--teal-dim);
+}
+.hviz-rec-lbl{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;
+}
+.hviz-rec-h{
+  font-family:var(--display);font-size:18px;
+  font-weight:500;color:var(--ink);margin-bottom:7px;line-height:1.2;
+}
+.hviz-rec-p{font-size:13px;line-height:1.6;color:var(--ink2)}
+.hviz-foot{
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+  line-height:1.5;padding-top:4px;border-top:1px solid var(--border);
+}
+
+/* ═══ GENERIC CARD ══════════════════════════════ */
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:26px;
+}
+.card h3{
+  font-family:var(--display);font-size:24px;
+  font-weight:500;color:var(--ink);margin-bottom:9px;line-height:1.1;
+}
+.card p{font-size:15px;line-height:1.72;color:var(--muted)}
+.card ul{list-style:none;display:grid;gap:8px;margin-top:12px}
+.card li{
+  display:flex;gap:9px;font-size:14px;
+  line-height:1.6;color:var(--ink2);
+}
+.card li::before{
+  content:'→';font-family:var(--mono);
+  color:var(--teal);flex-shrink:0;margin-top:1px;
+}
+
+/* ═══ BRIEF ══════════════════════════════════════ */
+.brief{padding:72px 0}
+.brief-grid{
+  display:grid;grid-template-columns:1.1fr .9fr;
+  gap:clamp(28px,5vw,68px);align-items:start;
+}
+.brief-body h2{
+  font-family:var(--display);font-size:clamp(36px,4.5vw,56px);
+  font-weight:400;line-height:1.05;letter-spacing:-.02em;
+  color:var(--ink);margin-bottom:20px;
+}
+.brief-body h2 em{font-style:italic;color:var(--teal)}
+.brief-body p{font-size:16px;line-height:1.78;color:var(--ink2);margin-bottom:13px}
+.brief-body p strong{color:var(--ink);font-weight:600}
+.brief-aside{display:grid;gap:12px}
+
+/* ═══ PERSONA ════════════════════════════════════ */
+.persona{padding:72px 0}
+.persona-hd{
+  display:grid;grid-template-columns:auto 1fr;
+  gap:24px;align-items:start;margin-bottom:24px;
+}
+.pavi{
+  width:90px;height:90px;border-radius:18px;
+  border:1px solid var(--border);background:var(--canvas);
+  display:grid;place-items:center;
+}
+.pavi svg{opacity:.3;width:44px;height:44px}
+.pname{
+  font-family:var(--display);font-size:34px;
+  font-weight:400;color:var(--ink);line-height:1;margin-bottom:6px;
+}
+.prole{
+  font-family:var(--mono);font-size:12px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;
+}
+.pquote{
+  font-family:var(--display);font-style:italic;
+  font-size:19px;line-height:1.45;color:var(--ink2);
+  border-left:2px solid var(--teal);padding-left:16px;
+}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.trait{
+  padding:18px 20px;border-radius:16px;
+  border:1px solid var(--border);background:var(--card);
+}
+.trait h5{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:7px;
+}
+.trait p{font-size:14px;line-height:1.65;color:var(--ink2)}
+.trait.neg{border-color:rgba(140,53,37,.2);background:rgba(140,53,37,.04)}
+.trait.neg h5{color:var(--red)}
+.trait.pos{border-color:rgba(20,92,74,.2);background:var(--teal-dim)}
+.trait.pos h5{color:var(--teal)}
+
+/* ═══ WIREFRAME FLOW ═════════════════════════════ */
+.flow{padding:72px 0}
+.flow-hd{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:40px;align-items:end;margin-bottom:36px;
+}
+.flow-hd h2{
+  font-family:var(--display);font-size:clamp(34px,4vw,50px);
+  font-weight:400;line-height:1.05;letter-spacing:-.02em;color:var(--ink);
+}
+.flow-hd p{font-size:15px;line-height:1.72;color:var(--muted)}
+
+.wfc{
+  position:relative;background:var(--card);
+  border:1px solid var(--border);border-radius:22px;
+  padding:32px;overflow-x:auto;
+}
+.wfc::before{
+  content:'';position:absolute;inset:0;border-radius:22px;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(26,21,16,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(26,21,16,.04) 1px,transparent 1px);
+  background-size:20px 20px;
+}
+.wfb{margin-bottom:44px;position:relative;z-index:1}
+.wfb:last-child{margin-bottom:0}
+.wfbl{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);background:rgba(254,252,249,.9);
+  border:1px solid var(--border);border-radius:999px;
+  padding:5px 13px;margin-bottom:18px;
+}
+.wfbl-n{
+  width:17px;height:17px;border-radius:50%;
+  background:var(--teal);color:#fff;
+  display:grid;place-items:center;font-size:10px;
+}
+
+/* screen row */
+.wfrow{
+  display:flex;align-items:flex-start;gap:20;
+  justify-content: space-between;
+  min-width:920px;
+}
+.wfrow.spread{
+  justify-content:space-between;gap:25px;
+}
+
+/* single wireframe screen */
+.wfs{
+  width:196px;flex-shrink:0;
+  background:#fff;border-radius:12px;
+  border:1.5px solid rgba(26,21,16,.13);
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
+}
+.wfrow.spread .wfs{
+  width:calc(33.33% - 10px);min-width:172px;
+}
+.wfch{
+  height:28px;background:rgba(26,21,16,.04);
+  border-bottom:1px solid rgba(26,21,16,.07);
+  display:flex;align-items:center;padding:0 9px;gap:4px;
+}
+.wfcd{width:6px;height:6px;border-radius:50%;background:rgba(26,21,16,.11)}
+.wfurl{flex:1;height:6px;border-radius:3px;background:rgba(26,21,16,.06);margin-left:5px}
+.wfbd{padding:11px}
+.wb{height:7px;border-radius:3px;background:rgba(26,21,16,.1);margin-bottom:7px}
+.wb.w90{width:90%}.wb.w75{width:75%}.wb.w60{width:60%}.wb.w45{width:45%}
+.wb.blk{height:34px;border-radius:8px;background:rgba(26,21,16,.06);margin-bottom:8px}
+.wb.blk.g{background:rgba(20,92,74,.14);border:1px solid rgba(20,92,74,.2)}
+.wb.blk.a{background:rgba(184,114,10,.12);border:1px solid rgba(184,114,10,.2)}
+.wb.blk.r{background:rgba(140,53,37,.12);border:1px solid rgba(140,53,37,.2)}
+.wb.blk.b{background:rgba(91,143,194,.14);border:1px solid rgba(91,143,194,.2)}
+.wb.btn{height:22px;border-radius:6px;background:rgba(26,21,16,.1);margin-top:9px}
+.wb.btn.g{background:rgba(20,92,74,.24)}.wb.btn.a{background:rgba(184,114,10,.22)}
+.wbr{display:flex;gap:4px;margin-bottom:7px}
+.wbr .wb{flex:1;margin-bottom:0}
+.wstag{
+  display:inline-flex;align-items:center;
+  padding:3px 8px;border-radius:999px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.07em;font-weight:500;
+  margin:0 11px 7px;
+}
+.tg{background:rgba(20,92,74,.09);color:#145c4a;border:1px solid rgba(20,92,74,.18)}
+.ta{background:rgba(184,114,10,.09);color:#8a5808;border:1px solid rgba(184,114,10,.18)}
+.tr{background:rgba(140,53,37,.09);color:#8c3525;border:1px solid rgba(140,53,37,.18)}
+.wslbl{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.05em;color:var(--muted);
+  text-align:center;margin-top:8px;line-height:1.4;
+}
+
+/* arrow */
+.wfa{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:150px;flex-shrink:0;padding-top:44px;
+}
+.wfal{width:100%;height:1.5px;background:var(--amber);position:relative}
+.wfal::after{
+  content:'';position:absolute;right:-7px;top:-2px;
+  border:4px solid transparent;border-left:6px solid var(--amber);
+}
+.wfal-t{
+  font-family:var(--mono);font-size:9px;
+  letter-spacing:.05em;color:var(--amber);white-space:nowrap;margin-top:5px;
+}
+
+/* annotations */
+.wfnotes{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px;position:relative;z-index:1}
+.wfnote{
+  display:inline-flex;align-items:flex-start;gap:7px;
+  padding:8px 12px;border-radius:11px;
+  background:rgba(184,114,10,.08);border:1px solid rgba(184,114,10,.18);
+  font-family:var(--mono);font-size:11px;line-height:1.5;color:#7a5208;
+}
+.wfnote::before{content:'↑';flex-shrink:0;font-size:12px}
+
+/* permission matrix */
+.wfmat{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  border:1.5px solid rgba(26,21,16,.11);border-radius:14px;
+  overflow:hidden;margin-top:4px;
+}
+.wfmc{
+  padding:13px 15px;background:#fff;
+  border-right:1px solid rgba(26,21,16,.07);
+  border-bottom:1px solid rgba(26,21,16,.07);
+  font-size:13px;line-height:1.5;color:var(--ink2);
+}
+.wfmc:nth-child(3n){border-right:none}
+.wfmc:nth-last-child(-n+3){border-bottom:none}
+.wfmc.hd{
+  background:rgba(26,21,16,.03);
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--muted);
+}
+.wfmc.pos{background:rgba(20,92,74,.05);color:var(--teal)}
+.wfmc.wrn{background:rgba(184,114,10,.05);color:#7a5208}
+.wfmc.sub{
+  background:rgba(26,21,16,.02);
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+}
+
+/* ═══ DECISIONS ══════════════════════════════════ */
+.decisions{padding:72px 0}
+.dec-list{
+  display:grid;gap:0;
+  border:1px solid var(--border);border-radius:20px;overflow:hidden;
+}
+.dec{
+  display:grid;grid-template-columns:60px 1fr 1fr;
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+}
+.dec:last-child{border-bottom:none}
+.dec-n{
+  display:grid;place-items:center;
+  border-right:1px solid var(--border);
+  font-family:var(--display);font-size:26px;
+  font-style:italic;color:var(--teal);padding:34px 18px;
+}
+.dec-q{padding:34px 30px;border-right:1px solid var(--border)}
+.dec-q h4{
+  font-family:var(--display);font-size:21px;
+  font-weight:400;font-style:italic;color:var(--ink);
+  line-height:1.2;margin-bottom:9px;
+}
+.dec-q p{font-size:14px;line-height:1.7;color:var(--muted)}
+.dec-a{padding:34px 30px}
+.dec-a h5{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--teal);margin-bottom:9px;
+}
+.dec-a p{font-size:14px;line-height:1.7;color:var(--ink2)}
+
+/* ═══ TOKENS ══════════════════════════════════════ */
+.tokens{padding:72px 0}
+.tok-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:2px;border:1px solid var(--border);border-radius:20px;overflow:hidden;
+  margin-bottom:2px;
+}
+.tok{background:var(--card);padding:22px 20px;display:grid;gap:9px}
+.tok-sw{
+  width:100%;height:50px;border-radius:11px;
+  border:1px solid rgba(26,21,16,.07);
+}
+.tok-n{font-family:var(--mono);font-size:11px;color:var(--ink2);font-weight:500}
+.tok-h{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.tok-d{font-size:13px;line-height:1.5;color:var(--muted)}
+
+.sm-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:2px;border:1px solid var(--border);border-radius:20px;overflow:hidden;
+}
+.smp{background:var(--card);padding:30px 26px}
+.smp h4{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:20px;
+}
+.spr{
+  display:grid;grid-template-columns:40px 1fr 44px;
+  gap:11px;align-items:center;margin-bottom:11px;
+}
+.spv,.spn{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.spn{text-align:right}
+.spb{height:6px;border-radius:3px;background:var(--teal)}
+.mitem{
+  display:flex;align-items:center;gap:13px;
+  padding:12px 13px;border-radius:12px;
+  border:1px solid var(--border);margin-bottom:9px;
+}
+.mitem:last-child{margin-bottom:0}
+.mvis{
+  width:46px;height:30px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--paper);border:1px solid var(--border);overflow:hidden;position:relative;
+}
+.mlbl{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;
+}
+.mdesc{font-size:13px;color:var(--ink2);line-height:1.4}
+.adot{width:11px;height:11px;border-radius:50%;background:var(--teal);animation:aDot 2.2s infinite}
+@keyframes aDot{
+  0%{box-shadow:0 0 0 0 rgba(20,92,74,.4)}
+  70%{box-shadow:0 0 0 9px transparent}
+  100%{box-shadow:0 0 0 0 transparent}
+}
+.afloat{
+  width:30px;height:7px;border-radius:3px;
+  background:linear-gradient(90deg,var(--teal),var(--amber));
+  animation:aFloat 3s ease-in-out infinite;
+}
+@keyframes aFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.abar{
+  width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(20,92,74,.28),transparent);
+  animation:aBar 1.8s infinite;
+}
+@keyframes aBar{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+.aring{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--teal);animation:aRing 2.8s ease-in-out infinite;
+}
+@keyframes aRing{0%,100%{transform:scale(.8);opacity:.6}50%{transform:scale(1.1);opacity:1}}
+
+/* ═══ PROTOTYPE ISLAND ═══════════════════════════ */
+.proto-sec{background:var(--dk);padding:72px 0 80px}
+.proto-hd{
+  display:flex;justify-content:space-between;
+  align-items:flex-end;gap:22px;margin-bottom:30px;
+}
+.proto-hd h2{
+  font-family:var(--display);
+  font-size:clamp(28px,4vw,46px);
+  font-weight:400;color:var(--dk-text);letter-spacing:-.02em;
+}
+.proto-hd p{
+  max-width:40ch;font-size:14px;
+  color:var(--dk-muted);line-height:1.7;text-align:right;
+}
+.proto-lbl-dk{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(232,226,216,.34);margin-bottom:26px;
+  display:flex;align-items:center;gap:11px;
+}
+.proto-lbl-dk::before{content:'';display:block;width:18px;height:1px;background:rgba(232,226,216,.18)}
+
+/* TABS */
+.ptabs{
+  display:inline-flex;gap:2px;padding:4px;
+  border-radius:13px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);margin-bottom:26px;
+}
+.ptab{
+  padding:9px 22px;border-radius:9px;border:none;
+  background:transparent;
+  font-family:var(--mono);font-size:12px;
+  letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(232,226,216,.46);cursor:pointer;
+  transition:background .2s,color .2s;
+}
+.ptab.on{background:rgba(255,255,255,.1);color:var(--dk-text)}
+.ppanel{display:none}
+.ppanel.on{display:block}
+
+/* ── HEALTH APP ─────────────────────────────────── */
+.hshell{
+  border-radius:18px;border:1px solid rgba(255,255,255,.08);
+  overflow:hidden;box-shadow:0 18px 56px rgba(0,0,0,.35);
+}
+.happ{
+  padding:22px;
+  background:
+    radial-gradient(circle at 80% 10%,rgba(101,211,165,.15),transparent 28%),
+    radial-gradient(circle at 18% 10%,rgba(142,188,255,.15),transparent 26%),
+    linear-gradient(180deg,#0d161c,#111e26);
+  display:grid;gap:15px;color:var(--dk-text);
+}
+.hnav{display:flex;justify-content:space-between;align-items:center}
+.hbrand{
+  font-family:var(--display);font-size:22px;font-weight:500;letter-spacing:-.02em;
+}
+.hbrand span{
+  display:block;font-family:var(--mono);font-size:10px;
+  font-weight:400;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dk-muted);margin-top:3px;
+}
+.hstat{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 13px;border-radius:999px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--dk-muted);
+}
+.ldot{
+  width:7px;height:7px;border-radius:50%;background:var(--dk-green);
+  animation:ldp 2.2s infinite;
+}
+@keyframes ldp{
+  0%{box-shadow:0 0 0 0 rgba(101,211,165,.4)}
+  70%{box-shadow:0 0 0 11px transparent}
+  100%{box-shadow:0 0 0 0 transparent}
+}
+.hgrid{
+  display:grid;grid-template-columns:264px 1fr;
+  gap:15px;align-items:start;
+}
+.hside,.hmain{display:grid;gap:13px}
+.hmet{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mc{
+  padding:14px 12px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+}
+.mc small{
+  display:block;font-family:var(--mono);font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dk-muted);margin-bottom:7px;
+}
+.mc strong{
+  display:flex;align-items:baseline;gap:4px;
+  font-family:var(--display);font-size:32px;
+  font-weight:400;line-height:1;
+}
+.mc em{font-style:normal;font-size:13px;color:var(--dk-muted)}
+.ctrl{
+  padding:16px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  display:grid;gap:13px;
+}
+.ctrl-h{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--dk-muted);
+}
+.hsl{display:grid;gap:6px}
+.hsl span{font-size:13px;color:var(--dk-muted)}
+.hsl input{width:100%;accent-color:var(--dk-green)}
+.seg{
+  display:flex;gap:5px;padding:5px;
+  border-radius:12px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+}
+.seg button{
+  flex:1;min-height:36px;border:none;border-radius:8px;
+  background:transparent;color:var(--dk-muted);
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+  cursor:pointer;transition:background .2s,color .2s,box-shadow .2s;
+}
+.seg button.on{
+  background:linear-gradient(135deg,rgba(101,211,165,.88),rgba(142,188,255,.88));
+  color:#0d1a15;box-shadow:0 5px 12px rgba(0,0,0,.22);
+}
+.pr{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:9px;font-size:13px;color:var(--dk-muted);
+}
+.pr input{accent-color:var(--dk-blue);width:15px;height:15px}
+.sc{
+  padding:20px;
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);
+  display:grid;gap:13px;
+}
+.st{display:flex;justify-content:space-between;align-items:flex-start;gap:13px}
+.mt{
+  display:inline-flex;padding:6px 10px;border-radius:999px;
+  background:rgba(255,255,255,.07);
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--dk-muted);
+}
+.sc h4{
+  margin:7px 0 0;font-family:var(--display);font-size:24px;
+  font-weight:400;line-height:1.06;letter-spacing:-.02em;color:var(--dk-text);
+}
+.sc > p{margin:0;font-size:14px;line-height:1.7;color:var(--dk-muted)}
+.ap,.cp,.sb{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 11px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.07);
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--dk-muted);
+}
+.cp strong{font-size:14px;color:var(--dk-text)}
+.sa{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:11px;flex-wrap:wrap;
+}
+.rb{
+  min-height:36px;padding:0 13px;border-radius:11px;
+  border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.07);
+  color:var(--dk-text);font-family:var(--mono);font-size:11px;
+  letter-spacing:.06em;cursor:pointer;transition:background .2s;
+}
+.rb:hover{background:rgba(255,255,255,.12)}
+.rp{
+  max-height:0;overflow:hidden;
+  transition:max-height .28s ease,opacity .28s ease,padding .28s ease;
+  border-radius:13px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.04);opacity:0;padding:0 15px;
+}
+.rp.on{max-height:200px;opacity:1;padding:14px 15px}
+.rp strong{
+  display:block;font-family:var(--mono);font-size:10px;
+  letter-spacing:.11em;text-transform:uppercase;
+  color:var(--dk-muted);margin-bottom:9px;
+}
+.rp ul{
+  margin:0;padding-left:15px;display:grid;gap:6px;
+  color:var(--dk-muted);font-size:13px;line-height:1.6;
+}
+.schd{
+  padding:18px;
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);
+  display:grid;gap:13px;
+}
+.scht{display:flex;justify-content:space-between;align-items:flex-start;gap:11px}
+.scht strong{
+  display:block;margin-top:5px;font-family:var(--display);
+  font-size:19px;font-weight:400;letter-spacing:-.02em;color:var(--dk-text);
+}
+.schl{display:grid;gap:9px}
+.ev{
+  display:grid;grid-template-columns:60px 1fr auto;
+  gap:11px;align-items:center;
+  padding:12px 13px;border-radius:13px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  transition:background .25s,border-color .25s;
+}
+.ev span{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.07em;color:var(--dk-muted);
+}
+.ev strong{font-size:14px;color:var(--dk-text)}
+.ev em{font-style:normal;font-size:11px;color:var(--dk-blue);font-family:var(--mono)}
+/* no translateY — use color only to avoid layout overlap */
+.ev-mt.mv{background:rgba(101,211,165,.08);border-color:rgba(101,211,165,.3)}
+.ev-gh{opacity:.22}
+.ev-gh.on{opacity:1}
+.an{
+  padding:11px 13px;border-radius:13px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.05);
+  font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--dk-muted);
+}
+#ha.strain .sc{box-shadow:0 0 0 1px rgba(255,143,114,.2)}
+#ha.strain .ap{background:rgba(255,143,114,.14);color:#ffd8cf;border-color:rgba(255,143,114,.2)}
+#ha.ad .sb{background:rgba(101,211,165,.14);color:#c0f0db;border-color:rgba(101,211,165,.2)}
+
+/* ── MOBILE PHONE ───────────────────────────────── */
+.ph-wrap{display:flex;justify-content:center;padding:6px 0}
+.ph-out{
+  width:400px;border-radius:44px;padding:9px;
+  background:linear-gradient(180deg,#13181f,#1c2330);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 30px 70px rgba(0,0,0,.4);
+}
+.ph-scr{border-radius:36px;overflow:hidden;background:#0b1016}
+.hph{
+  padding:18px 15px 26px;
+  background:
+    radial-gradient(circle at 85% 8%,rgba(101,211,165,.16),transparent 26%),
+    linear-gradient(180deg,#0d161c,#111e26);
+  display:grid;gap:12px;color:var(--dk-text);
+}
+.ph-top{display:flex;justify-content:space-between;align-items:center;padding-top:4px}
+.ph-brand{font-family:var(--display);font-size:20px;font-weight:500}
+.ph-sub{
+  font-family:var(--mono);font-size:10px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--dk-muted);margin-top:2px;
+}
+.ph-chip{
+  padding:6px 10px;border-radius:999px;
+  background:rgba(255,255,255,.09);
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.ph-met{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.phm{
+  padding:11px 9px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);
+}
+.phm small{
+  display:block;font-family:var(--mono);font-size:9px;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dk-muted);margin-bottom:5px;
+}
+.phm strong{font-family:var(--display);font-size:23px;font-weight:400;letter-spacing:-.03em}
+.ph-card{
+  padding:14px;
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);
+  display:grid;gap:9px;
+}
+.ph-card strong{
+  font-family:var(--display);font-size:19px;
+  font-weight:400;line-height:1.1;letter-spacing:-.02em;
+}
+.ph-card p{font-size:13px;line-height:1.65;color:var(--dk-muted)}
+.ph-ctrl{
+  padding:13px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+  display:grid;gap:10px;
+}
+.ph-seg{
+  display:flex;gap:4px;padding:4px;border-radius:11px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+}
+.ph-seg button{
+  flex:1;min-height:30px;border:none;border-radius:7px;
+  background:transparent;color:var(--dk-muted);
+  font-family:var(--mono);font-size:10px;letter-spacing:.05em;
+  cursor:pointer;transition:background .2s,color .2s;
+}
+.ph-seg button.on{
+  background:linear-gradient(135deg,rgba(101,211,165,.85),rgba(142,188,255,.85));
+  color:#0d1a15;
+}
+.ph-perms{display:flex;gap:6px;flex-wrap:wrap}
+.php{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 9px;border-radius:999px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);
+  font-size:12px;color:var(--dk-muted);
+}
+.php input{accent-color:var(--dk-blue)}
+.ph-ev{
+  padding:11px 12px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);
+  transition:background .25s,border-color .25s;
+}
+.ph-ev strong{font-size:15px;color:var(--dk-text)}
+.ph-ev span{
+  display:block;font-family:var(--mono);
+  font-size:11px;color:var(--dk-blue);margin-top:4px;
+}
+.ph-ev.mv{background:rgba(101,211,165,.08);border-color:rgba(101,211,165,.3)}
+.ph-note{font-family:var(--mono);font-size:11px;color:var(--dk-muted);line-height:1.6}
+
+/* ═══ REFLECTION ══════════════════════════════════ */
+.reflection{padding:72px 0}
+.ref-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;border:1px solid var(--border);border-radius:20px;overflow:hidden;
+}
+.refc{background:var(--card);padding:34px 28px}
+.refc h4{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:14px;
+}
+.refc p{font-size:15px;line-height:1.72;color:var(--ink2)}
+.refc p+p{margin-top:11px;color:var(--muted);font-size:14px}
+
+/* ═══ FOOTER ══════════════════════════════════════ */
+.foot{
+  border-top:1px solid var(--border);padding:46px 0 58px;
+  display:flex;align-items:center;justify-content:space-between;gap:22px;
+}
+.foot-copy{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.foot-links{display:flex;gap:9px}
+.fl{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 18px;border-radius:11px;border:1px solid var(--border);
+  background:var(--card);font-family:var(--mono);font-size:12px;
+  letter-spacing:.05em;color:var(--ink2);text-decoration:none;
+  transition:border-color .18s,background .18s;
+}
+.fl:hover{border-color:rgba(20,92,74,.28);background:var(--teal-dim)}
+.fl.pri{border-color:rgba(20,92,74,.28);background:var(--teal-dim);color:var(--teal)}
+.fl.pri:hover{background:rgba(20,92,74,.18)}
+
+/* ═══ RESPONSIVE ══════════════════════════════════ */
+@media(max-width:1100px){
+  .hero-inner{grid-template-columns:1fr}
+  .hviz{display:none}
+  .brief-grid{grid-template-columns:1fr}
+  .flow-hd{grid-template-columns:1fr}
+  .tok-grid{grid-template-columns:repeat(2,1fr)}
+  .sm-grid{grid-template-columns:1fr}
+  .proto-hd{flex-direction:column;align-items:flex-start}
+  .proto-hd p{text-align:left}
+  .ref-grid{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+  .hgrid{grid-template-columns:1fr}
+  .pgrid{grid-template-columns:1fr 1fr}
+  .dec{grid-template-columns:1fr}
+  .dec-n{display:none}
+  .nav-links{display:none}
+}
+@media(max-width:620px){
+  .pgrid{grid-template-columns:1fr}
+  .hero-stats{flex-direction:column}
+  .hero-stats .stat{border-right:none;border-bottom:1px solid var(--border)}
+  .hero-stats .stat:last-child{border-bottom:none}
+  .tok-grid{grid-template-columns:1fr}
+  .foot{flex-direction:column;align-items:flex-start}
+  .wfmat{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-back" href="/">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Portfolio
+  </a>
+  <div class="nav-id"><strong>PulsePilot</strong> — UI/UX Case Study</div>
+  <ul class="nav-links">
+    <li><a href="#brief">Brief</a></li>
+    <li><a href="#flow">User Flow</a></li>
+    <li><a href="#designdecisions">Design Decisions</a></li>
+    <li><a href="#designsystem">Design System</a></li>
+    <li><a href="#prototype">Prototype</a></li>
+    
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="r">
+        <div class="hero-tags">
+          <span class="tag hi">UI/UX Concept</span>
+          <span class="tag">Agentic Design</span>
+          <span class="tag">Health Tech</span>
+          <span class="tag">2026</span>
+        </div>
+        <h1>Pulse<em>Pilot</em></h1>
+        <p class="hero-sub">An AI health agent that converts overnight biometric data into a single, calm recommendation — with full transparency on reasoning, and full control over what it can automate.</p>
+        <div class="hero-stats">
+          <div class="stat"><div class="stat-v">3</div><div class="stat-k">Autonomy modes</div></div>
+          <div class="stat"><div class="stat-v">1</div><div class="stat-k">Rec per day</div></div>
+          <div class="stat"><div class="stat-v">XAI</div><div class="stat-k">Every action explained</div></div>
+          <div class="stat"><div class="stat-v">↩</div><div class="stat-k">Everything reversible</div></div>
+        </div>
+      </div>
+      <div class="hviz r">
+        <div class="hviz-top">
+          <div class="hviz-brand">PulsePilot</div>
+          <div class="hviz-badge"><span class="vdot"></span>Agent steady</div>
+        </div>
+        <div class="hviz-ms">
+          <div class="hvm"><small>Sleep</small><strong>7.2<em>h</em></strong></div>
+          <div class="hvm"><small>Stress</small><strong>38<em>%</em></strong></div>
+          <div class="hvm"><small>Recovery</small><strong>84</strong></div>
+        </div>
+        <div class="hviz-rec">
+          <div class="hviz-rec-lbl">Today's recommendation</div>
+          <div class="hviz-rec-h">Keep the plan. Protect deep-work.</div>
+          <div class="hviz-rec-p">Recovery is healthy. No intervention needed — the agent recommends preserving your focus block and keeping workouts as scheduled.</div>
+        </div>
+        <div class="hviz-foot">confidence 0.72 · reasoning card always visible · undo available 60 min</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- BRIEF -->
+<section class="brief" id="brief">
+  <div class="wrap">
+    <div class="lbl r"><span class="lbl-n">01</span>Brief + Origin</div>
+    <div class="brief-grid">
+      <div class="brief-body r">
+        <h2>A year of inert data<br>finally <em>made useful.</em></h2>
+        <p>I've been tracking sleep and stress data for eighteen months. The numbers were always there — they just never told me what to do about them. Every health dashboard I used gave me graphs. None gave me decisions.</p>
+        <p>The question I kept asking: <em>"OK — so what should I actually do today?"</em> That question became PulsePilot. Not another tracking layer. A single, honest recommendation, with a clear statement of how confident the AI is and exactly what it wants to touch.</p>
+        <p>The core UX bet: <strong>explain before you automate.</strong> Every suggestion comes with a reasoning card. Every automated change is reversible. The system graduates from reading → suggesting → acting — only as far as you allow it.</p>
+      </div>
+      <div class="brief-aside r">
+        <div class="card">
+          <h3>The problem</h3>
+          <p>Health AI fails when users feel surprised by automation. Trust needs transparency, and transparency can't be buried three screens deep.</p>
+          <ul>
+            <li>Dashboards optimised for data density create decision fatigue at the worst moment</li>
+            <li>Binary on/off automation controls break the moment the AI gets something wrong</li>
+            <li>Explainability is usually optional — it should be the default</li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:12px">
+          <h3>Scope</h3>
+          <ul>
+            <li>Desktop dashboard — the full decision surface</li>
+            <li>Mobile mirror — same logic, thumb-safe layout</li>
+            <li>Live interactive prototype — full state machine</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- PERSONA -->
+<section class="persona">
+  <div class="wrap">
+    <div class="lbl r"><span class="lbl-n">02</span>Primary Persona</div>
+    <div class="persona-hd r">
+      <div class="pavi">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="18" r="9" stroke="#1a1510" stroke-width="1.3"/><path d="M8 42c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="#1a1510" stroke-width="1.3"/></svg>
+      </div>
+      <div>
+        <div class="pname">Ryo Watanabe</div>
+        <div class="prole">Startup Founder · Remote · 34 · Tokyo / Berlin</div>
+        <div class="pquote">"I know I'm burning out. I just can't afford to stop until the sprint ends."</div>
+      </div>
+    </div>
+    <div class="pgrid r">
+      <div class="trait"><h5>Relationship with data</h5><p>Trusts quantified metrics. Has tracked sleep since 2022. But raw biometric numbers make him anxious — he needs context, not just values.</p></div>
+      <div class="trait"><h5>Tolerance for AI</h5><p>Will accept AI recommendations if they're explained and reversible. Turns off any automation that acts without warning. Once bitten, twice locked.</p></div>
+      <div class="trait"><h5>Decision window</h5><p>Checks phone at 7am. Back-to-back calls 9–1pm. The 8–9am gap before the calendar locks is the only viable moment to adjust the day.</p></div>
+      <div class="trait neg"><h5>Frustration</h5><p>Spends 20 minutes piecing together what his health data means. Gets the charts, never the "so what." Leaves apps after three days of not acting on anything.</p></div>
+      <div class="trait pos"><h5>Goal</h5><p>One reliable signal each morning — is today a push day or a protect day? And a clear path to act on it without disrupting his calendar structure.</p></div>
+      <div class="trait neg"><h5>Fear</h5><p>An AI that moves meetings without telling him. Or one he can't undo. Losing control is, to him, worse than being tired.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- FLOW -->
+<section class="flow" id="flow">
+  <div class="wrap">
+    <div class="lbl r"><span class="lbl-n">03</span>User Flow + Screen States</div>
+    <div class="flow-hd r">
+      <h2>Three layers govern<br>the experience.</h2>
+      <p>The biometric state that surfaces each morning, the autonomy mode Ryo sets, and the permission boundaries he chose once at setup. Every outcome is a function of all three.</p>
+    </div>
+
+    <div class="wfc r">
+
+      <!-- Block 1 -->
+      <div class="wfb">
+        <div class="wfbl"><span class="wfbl-n">1</span>Dashboard states — driven by biometrics</div>
+        <div class="wfrow">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="wfs">
+              <div class="wfch"><div class="wfcd"></div><div class="wfcd"></div><div class="wfcd"></div><div class="wfurl"></div></div>
+              <div class="wstag tg">Agent Steady</div>
+              <div class="wfbd">
+                <div class="wbr"><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
+                <div class="wb blk g"></div>
+                <div class="wb w90"></div><div class="wb w75"></div>
+                <div class="wb btn g"></div>
+              </div>
+            </div>
+            <div class="wslbl">Sleep ≥7h · Stress &lt;58%<br>Recovery healthy</div>
+          </div>
+          <div class="wfa"><div class="wfal"></div><div class="wfal-t">stress ↑</div></div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="wfs">
+              <div class="wfch"><div class="wfcd"></div><div class="wfcd"></div><div class="wfcd"></div><div class="wfurl"></div></div>
+              <div class="wstag ta">Watch Load</div>
+              <div class="wfbd">
+                <div class="wbr"><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
+                <div class="wb blk a"></div>
+                <div class="wb w90"></div><div class="wb w75"></div>
+                <div class="wb btn a"></div>
+              </div>
+            </div>
+            <div class="wslbl">Stress 58–72%<br>Light intervention</div>
+          </div>
+          <div class="wfa"><div class="wfal"></div><div class="wfal-t">sleep ↓ + stress ↑</div></div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="wfs">
+              <div class="wfch"><div class="wfcd"></div><div class="wfcd"></div><div class="wfcd"></div><div class="wfurl"></div></div>
+              <div class="wstag tr">High Strain</div>
+              <div class="wfbd">
+                <div class="wbr"><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
+                <div class="wb blk r"></div>
+                <div class="wb w90"></div><div class="wb w75"></div>
+                <div class="wb btn"></div>
+              </div>
+            </div>
+            <div class="wslbl">Stress ≥72% + Sleep &lt;6h<br>Intervention ready</div>
+          </div>
+          
+        </div>
+        <div class="wfnotes">
+          <div class="wfnote">Recovery score is computed from sleep debt + stress — raw biometrics not shown to avoid anxiety</div>
+          <div class="wfnote">State badge updates live as sliders change — instant feedback on the prototype</div>
+          <div class="wfnote">High Strain adds a coral border glow — peripheral vision catches it without a modal</div>
+        </div>
+      </div>
+
+      <!-- Block 2 -->
+      <div class="wfb">
+        <div class="wfbl"><span class="wfbl-n">2</span>Autonomy filter — set by user each session</div>
+        <div class="wfrow spread">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="wfs" style="width:100%">
+              <div class="wfch"><div class="wfcd"></div><div class="wfcd"></div><div class="wfcd"></div><div class="wfurl"></div></div>
+              <div class="wfbd">
+                <div class="wb w45" style="margin-bottom:8px"></div>
+                <div class="wb blk"></div>
+                <div class="wb w90"></div><div class="wb w75"></div>
+                <div style="display:flex;gap:4px;margin-top:8px">
+                  <div style="flex:1;height:16px;border-radius:4px;background:rgba(26,21,16,.16)"></div>
+                  <div style="flex:1;height:16px;border-radius:4px;background:rgba(26,21,16,.06)"></div>
+                  <div style="flex:1;height:16px;border-radius:4px;background:rgba(26,21,16,.06)"></div>
+                </div>
+              </div>
+            </div>
+            <div class="wslbl">Manual<br>Insights only, no action</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="wfs" style="width:100%;border-color:rgba(20,92,74,.32)">
+              <div class="wfch"><div class="wfcd"></div><div class="wfcd"></div><div class="wfcd"></div><div class="wfurl"></div></div>
+              <div class="wstag tg" style="margin-top:8px">Default</div>
+              <div class="wfbd" style="padding-top:4px">
+                <div class="wb blk g"></div>
+                <div class="wb w90"></div><div class="wb w75"></div>
+                <div style="display:flex;gap:4px;margin-top:8px">
+                  <div style="flex:1;height:16px;border-radius:4px;background:rgba(26,21,16,.06)"></div>
+                  <div style="flex:1;height:16px;border-radius:4px;background:rgba(20,92,74,.28)"></div>
+                  <div style="flex:1;height:16px;border-radius:4px;background:rgba(26,21,16,.06)"></div>
+                </div>
+                <div class="wb btn g"></div>
+              </div>
+            </div>
+            <div class="wslbl">Copilot (default)<br>Suggest + one-tap approve</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="wfs" style="width:100%">
+              <div class="wfch"><div class="wfcd"></div><div class="wfcd"></div><div class="wfcd"></div><div class="wfurl"></div></div>
+              <div class="wfbd">
+                <div class="wb blk b" style="margin-top:6px"></div>
+                <div class="wb w90" style="background:rgba(20,92,74,.2)"></div><div class="wb w75"></div>
+                <div style="display:flex;gap:4px;margin-top:8px">
+                  <div style="flex:1;height:16px;border-radius:4px;background:rgba(26,21,16,.06)"></div>
+                  <div style="flex:1;height:16px;border-radius:4px;background:rgba(26,21,16,.06)"></div>
+                  <div style="flex:1;height:16px;border-radius:4px;background:rgba(91,143,194,.28)"></div>
+                </div>
+                <div class="wb btn" style="background:rgba(91,143,194,.22);margin-top:8px"></div>
+              </div>
+            </div>
+            <div class="wslbl">Agent<br>Full automation within permissions</div>
+          </div>
+        </div>
+        <div class="wfnotes">
+          <div class="wfnote">Copilot is the default — users start with suggestions, graduate to Agent at their own pace</div>
+          <div class="wfnote">Mode persists until changed — session-level preference, not per-recommendation toggle</div>
+        </div>
+      </div>
+
+      <!-- Block 3 -->
+      <div class="wfb">
+        <div class="wfbl"><span class="wfbl-n">3</span>Permission × Autonomy outcome matrix</div>
+        <div class="wfmat">
+          <div class="wfmc hd">Condition</div>
+          <div class="wfmc hd">Copilot mode</div>
+          <div class="wfmc hd">Agent mode</div>
+          <div class="wfmc sub">Calendar ON + High Strain</div>
+          <div class="wfmc wrn">Suggests moving meeting → awaits one-tap approval</div>
+          <div class="wfmc pos">Moves meeting automatically → shows undo banner</div>
+          <div class="wfmc sub">Calendar OFF + any mode</div>
+          <div class="wfmc">Suggests move → locked, explains why unavailable</div>
+          <div class="wfmc">Same — permissions gate Agent equally</div>
+          <div class="wfmc sub">Focus Mode ON + any strain</div>
+          <div class="wfmc wrn">Recommends focus shield → awaits approval</div>
+          <div class="wfmc pos">Silences non-essential notifications → banner + undo</div>
+          <div class="wfmc sub">All permissions OFF</div>
+          <div class="wfmc">Full insight view — no action path shown</div>
+          <div class="wfmc">Same — advisory only, no automation surface</div>
+        </div>
+        <div class="wfnotes">
+          <div class="wfnote">Permissions editable inline in the control panel — never buried in settings</div>
+          <div class="wfnote">Every automated action shows undo for 60 minutes after it runs</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- DECISIONS -->
+<section class="decisions" id="designdecisions">
+  <div class="wrap">
+    <div class="lbl r"><span class="lbl-n">04</span>Design Decisions</div>
+    <div class="dec-list r">
+      <div class="dec">
+        <div class="dec-n">1</div>
+        <div class="dec-q">
+          <h4>Why three autonomy modes instead of a simple on/off toggle?</h4>
+          <p>Binary controls collapse under failure. When an AI acts wrong once, a toggle means users turn off the whole feature and trust evaporates all at once. There's no middle ground to retreat to.</p>
+        </div>
+        <div class="dec-a">
+          <h5>The reasoning</h5>
+          <p>Graduated modes give users a landing zone. Copilot is the critical one: it delivers the recommendation and makes the approval path obvious, so the AI stays useful even when the user isn't ready to delegate. Trust builds incrementally. Moving from Copilot to Agent is something users self-select into, never prompted.</p>
+        </div>
+      </div>
+      <div class="dec">
+        <div class="dec-n">2</div>
+        <div class="dec-q">
+          <h4>Why is the reasoning card visible by default, not behind a toggle?</h4>
+          <p>The instinct was to hide it — it felt like clutter. Three founders I tested with dismissed AI recommendations they didn't understand, even when they were correct.</p>
+        </div>
+        <div class="dec-a">
+          <h5>The reasoning</h5>
+          <p>Legibility is the feature. When Ryo sees "sleep debt: 2.1h · stress trending up · meeting lands in your low-recovery window" he acts. When he just sees "we suggest moving your meeting" he ignores it. The reasoning card is the trust mechanism. Hiding it optimises for cleanliness at the cost of adoption.</p>
+        </div>
+      </div>
+      <div class="dec">
+        <div class="dec-n">3</div>
+        <div class="dec-q">
+          <h4>Why a computed recovery score (0–100) rather than raw biometric values?</h4>
+          <p>Prototype v1 showed HRV, resting HR, temperature deviation, and sleep stages simultaneously. Three out of three users said some version of "this makes me feel worse."</p>
+        </div>
+        <div class="dec-a">
+          <h5>The reasoning</h5>
+          <p>Context collapses anxiety. A single recovery score answers the only question Ryo actually has: "Am I OK today?" Raw values invite obsessive comparison. The score invites a decision. The detail is still accessible — one tap expands it — for users who want to audit the model.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- TOKENS -->
+<section class="tokens" id="designsystem">
+  <div class="wrap">
+    <div class="lbl r"><span class="lbl-n">05</span>Design System · Foundations</div>
+    <div class="tok-grid r">
+      <div class="tok"><div class="tok-sw" style="background:#65D3A5"></div><div class="tok-n">Recovery Mint</div><div class="tok-h">#65D3A5</div><div class="tok-d">Positive states + safe automations</div></div>
+      <div class="tok"><div class="tok-sw" style="background:#8EBCFF"></div><div class="tok-n">Trust Blue</div><div class="tok-h">#8EBCFF</div><div class="tok-d">Data states + permission indicators</div></div>
+      <div class="tok"><div class="tok-sw" style="background:#FF8F72"></div><div class="tok-n">Signal Coral</div><div class="tok-h">#FF8F72</div><div class="tok-d">High strain / urgent caution alerts</div></div>
+      <div class="tok"><div class="tok-sw" style="background:linear-gradient(135deg,#0d161c,#111e26)"></div><div class="tok-n">Night Canvas</div><div class="tok-h">#0D161C → #111E26</div><div class="tok-d">App background — restful dark</div></div>
+    </div>
+    <div class="sm-grid r" style="margin-top:2px">
+      <div class="smp">
+        <h4>Spacing scale</h4>
+        <div class="spr"><div class="spv">4px</div><div class="spb" style="width:6%;opacity:.3"></div><div class="spn">xs</div></div>
+        <div class="spr"><div class="spv">8px</div><div class="spb" style="width:14%;opacity:.42"></div><div class="spn">sm</div></div>
+        <div class="spr"><div class="spv">16px</div><div class="spb" style="width:28%;opacity:.56"></div><div class="spn">md</div></div>
+        <div class="spr"><div class="spv">24px</div><div class="spb" style="width:44%;opacity:.7"></div><div class="spn">lg</div></div>
+        <div class="spr"><div class="spv">32px</div><div class="spb" style="width:64%;opacity:.84"></div><div class="spn">xl</div></div>
+        <div class="spr"><div class="spv">48px</div><div class="spb" style="width:100%"></div><div class="spn">2xl</div></div>
+      </div>
+      <div class="smp">
+        <h4>Motion principles</h4>
+        <div class="mitem"><div class="mvis"><div class="adot"></div></div><div><div class="mlbl">Status pulse</div><div class="mdesc">Ambient dot signals agent is running — never alarming</div></div></div>
+        <div class="mitem"><div class="mvis"><div class="afloat"></div></div><div><div class="mlbl">Breathing drift</div><div class="mdesc">Cards float subtly — interface feels alive, not static</div></div></div>
+        <div class="mitem"><div class="mvis"><div class="abar"></div></div><div><div class="mlbl">Reveal shimmer</div><div class="mdesc">Loading uses shimmer not spinners — calmer affect</div></div></div>
+        <div class="mitem"><div class="mvis"><div class="aring"></div></div><div><div class="mlbl">State transition</div><div class="mdesc">300ms ease on all recommendation changes — no snaps</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROTOTYPE ISLAND -->
+<section class="proto-sec" id="prototype">
+  <div class="wrap">
+    <div class="proto-hd r">
+      <div>
+        <div class="proto-lbl-dk">06 — Interactive prototype</div>
+        <h2 style="font-family:var(--display);font-size:clamp(28px,4vw,46px);font-weight:400;color:var(--dk-text);letter-spacing:-.02em">Try the decision model live</h2>
+      </div>
+      <p>Adjust sleep, stress, autonomy, and permissions. Desktop and mobile share one state machine — every change propagates across both.</p>
+    </div>
+    <div class="r">
+      <div class="ptabs">
+        <button class="ptab on" onclick="switchTab('desktop',this)">Desktop view</button>
+        <button class="ptab" onclick="switchTab('mobile',this)">Mobile view</button>
+      </div>
+    </div>
+
+    <!-- DESKTOP -->
+    <div class="ppanel on" id="tab-desktop">
+      <div class="hshell r">
+        <div class="happ" id="ha">
+          <div class="hnav">
+            <div class="hbrand">PulsePilot<span>AI health agent</span></div>
+            <div class="hstat"><span class="ldot"></span><span data-hs>Agent steady</span></div>
+          </div>
+          <div class="hgrid">
+            <div class="hside">
+              <div class="hmet">
+                <div class="mc"><small>Sleep</small><strong><span data-sl>6.4</span><em>h</em></strong></div>
+                <div class="mc"><small>Stress</small><strong><span data-st>54</span><em>%</em></strong></div>
+                <div class="mc"><small>Recovery</small><strong><span data-rv>71</span><em style="font-size:11px">/100</em></strong></div>
+              </div>
+              <div class="ctrl">
+                <div class="ctrl-h">Simulate today</div>
+                <label class="hsl"><span>Sleep debt</span><input type="range" min="40" max="90" value="64" data-si></label>
+                <label class="hsl"><span>Stress load</span><input type="range" min="0" max="100" value="54" data-sti></label>
+              </div>
+              <div class="ctrl">
+                <div class="ctrl-h">Autonomy</div>
+                <div class="seg" data-ag>
+                  <button data-au="manual">Manual</button>
+                  <button class="on" data-au="copilot">Copilot</button>
+                  <button data-au="agent">Agent</button>
+                </div>
+              </div>
+              <div class="ctrl">
+                <div class="ctrl-h">Permissions</div>
+                <label class="pr"><span>Calendar write access</span><input type="checkbox" data-pm="calendar" checked></label>
+                <label class="pr"><span>Focus mode control</span><input type="checkbox" data-pm="focus" checked></label>
+                <label class="pr"><span>Workout reschedule</span><input type="checkbox" data-pm="workout"></label>
+              </div>
+            </div>
+            <div class="hmain">
+              <div class="sc">
+                <div class="st">
+                  <div>
+                    <div class="mt">Today's recommendation</div>
+                    <h4 data-ht>Protect your morning energy</h4>
+                  </div>
+                  <div class="ap" data-hp>Copilot</div>
+                </div>
+                <p data-hb>The agent is ready to protect a deep-work block and silence non-essential notifications if you approve.</p>
+                <div class="sa">
+                  <button class="rb" data-rt>Show reasoning</button>
+                  <div class="cp"><span>Confidence</span><strong data-hc>0.74</strong></div>
+                </div>
+                <div class="rp" data-rp>
+                  <strong>Why this surfaced</strong>
+                  <ul data-rl></ul>
+                </div>
+              </div>
+              <div class="schd">
+                <div class="scht">
+                  <div><div class="mt">Calendar impact</div><strong>Stress-aware schedule</strong></div>
+                  <span class="sb" data-mb>Needs approval</span>
+                </div>
+                <div class="schl">
+                  <div class="ev"><span>09:00</span><strong>Deep work / no notifications</strong></div>
+                  <div class="ev ev-mt" data-mc><span>11:00</span><strong>Strategy sync</strong><em data-ms>Queued for approval</em></div>
+                  <div class="ev"><span>13:00</span><strong>Reset walk + lunch buffer</strong></div>
+                  <div class="ev ev-gh" data-mt><span>14:30</span><strong>Strategy sync (moved)</strong></div>
+                </div>
+                <div class="an" data-an>The AI can move the meeting once you switch to Agent mode.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOBILE -->
+    <div class="ppanel" id="tab-mobile">
+      <div class="ph-wrap r">
+        <div class="ph-out">
+          <div class="ph-scr">
+            <div class="hph">
+              <div class="ph-top">
+                <div><div class="ph-brand">PulsePilot</div><div class="ph-sub" data-hs>Agent steady</div></div>
+                <div class="ph-chip" data-hp>Copilot</div>
+              </div>
+              <div class="ph-met">
+                <div class="phm"><small>Sleep</small><strong><span data-sl>6.4</span>h</strong></div>
+                <div class="phm"><small>Stress</small><strong><span data-st>54</span>%</strong></div>
+                <div class="phm"><small>Recovery</small><strong><span data-rv>71</span></strong></div>
+              </div>
+              <div class="ph-card">
+                <strong data-ht>Protect your morning energy</strong>
+                <p data-hb>The agent is ready to protect a deep-work block if you approve.</p>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:9px;flex-wrap:wrap">
+                  <button class="rb" data-rt style="font-size:11px;min-height:32px;padding:0 11px">Why?</button>
+                  <div class="cp" style="font-size:10px"><span>Confidence</span><strong data-hc>0.74</strong></div>
+                </div>
+                <div class="rp" data-rp style="font-size:12px">
+                  <strong>Why this surfaced</strong>
+                  <ul data-rl></ul>
+                </div>
+              </div>
+              <div class="ph-ctrl">
+                <label class="hsl" style="gap:5px"><span style="font-size:12px;color:var(--dk-muted)">Sleep debt</span><input type="range" min="40" max="90" value="64" data-si></label>
+                <label class="hsl" style="gap:5px"><span style="font-size:12px;color:var(--dk-muted)">Stress load</span><input type="range" min="0" max="100" value="54" data-sti></label>
+                <div class="ph-seg" data-ag>
+                  <button data-au="manual">Manual</button>
+                  <button class="on" data-au="copilot">Copilot</button>
+                  <button data-au="agent">Agent</button>
+                </div>
+                <div class="ph-perms">
+                  <label class="php"><span>Calendar</span><input type="checkbox" data-pm="calendar" checked></label>
+                  <label class="php"><span>Focus</span><input type="checkbox" data-pm="focus" checked></label>
+                  <label class="php"><span>Workout</span><input type="checkbox" data-pm="workout"></label>
+                </div>
+              </div>
+              <div>
+                <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dk-muted);margin-bottom:8px">Schedule</div>
+                <div class="ph-ev" data-mc style="margin-bottom:8px"><strong>Strategy sync — 11:00</strong><span data-ms>Queued for approval</span></div>
+                <div class="ph-note" data-an>The AI can move the meeting once you switch to Agent mode.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<script>
+/* ── TAB SWITCHER ──────────────────────────────── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.ppanel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('on'));
+  document.getElementById('tab-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+/* ── PROTOTYPE STATE MACHINE ───────────────────── */
+(() => {
+  const S = {
+    sleep: 6.4, stress: 54, auto: 'copilot',
+    perms: { calendar: true, focus: true, workout: false },
+    open: false
+  };
+  const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+
+  function compute() {
+    const deficit = Math.max(0, 7.5 - S.sleep);
+    const rv = clamp(Math.round(92 - deficit * 12 - S.stress * 0.48 + (S.perms.workout ? 4 : 0)), 18, 95);
+    let status = 'Agent steady', title = 'Protect your morning energy';
+    let body = 'The agent is ready to protect a deep-work block and silence non-essential notifications if you approve.';
+    let reasons = [
+      'Sleep debt is present but not severe.',
+      'Stress is elevated enough to justify focus protection.',
+      S.perms.focus ? 'Focus mode can suppress non-essential notifications.' : 'Focus mode automation is disabled — plan stays advisory.'
+    ];
+    let conf = '0.74', ms = 'Queued for approval', mb = 'Needs approval';
+    let note = 'The AI can move the meeting once you switch to Agent mode.';
+    let appClass = '', moved = false;
+
+    if (S.stress >= 72 && S.sleep < 6) {
+      status = 'High strain'; conf = S.auto === 'manual' ? '0.78' : '0.82';
+      title = 'Reduce decision load before noon';
+      reasons = [
+        'Sleep dropped below 6h and stress crossed the intervention threshold.',
+        'The next cognitively heavy meeting lands inside a low-recovery window.',
+        S.perms.calendar ? 'Calendar access is available for a schedule change.' : 'Calendar write access is off — action stays suggest-only.'
+      ];
+      if (S.perms.calendar && S.auto === 'agent') {
+        body = 'PulsePilot moved Strategy Sync to 14:30, protected your morning focus block, and kept only inner-circle calls active until lunch.';
+        ms = 'Moved to 14:30'; mb = 'Applied';
+        note = 'Automation happened because high strain was detected and you granted calendar write in Agent mode.';
+        moved = true; appClass = 'strain ad';
+      } else if (S.perms.calendar && S.auto === 'copilot') {
+        body = 'PulsePilot is ready to move Strategy Sync to 14:30 and silence non-essential alerts as soon as you approve.';
+        ms = 'Ready to apply'; mb = 'Ready'; note = 'One-tap approval keeps you in control while the recommendation stays actionable.'; appClass = 'strain';
+      } else if (!S.perms.calendar) {
+        body = 'High strain detected. The agent suggests moving Strategy Sync to 14:30, but calendar automation is currently locked.';
+        ms = 'Suggestion only'; mb = 'Locked'; note = 'The recommendation stays visible, but the AI cannot edit the schedule until write access is granted.'; appClass = 'strain';
+      } else {
+        body = 'High strain detected. The agent recommends moving Strategy Sync to 14:30, but will not act — autonomy is set to Manual.';
+        ms = 'Suggestion only'; mb = 'Manual'; note = 'Manual mode preserves the insight while removing automation entirely.'; appClass = 'strain';
+      }
+    } else if (S.stress >= 58) {
+      status = 'Watch load'; conf = '0.76'; title = 'Shield the next 90 minutes';
+      body = S.perms.focus ? 'The agent recommends a focus shield through your next work block and a short reset walk before lunch.' : 'The agent suggests a lighter morning but cannot silence notifications — Focus Mode access is disabled.';
+      reasons = ['Stress is trending up while sleep is only partially recovered.', 'A soft intervention is enough — no schedule move needed yet.', S.perms.focus ? 'Focus Mode is available for a notification shield.' : 'Focus Mode access is disabled.'];
+      ms = 'Kept in place'; mb = S.auto === 'agent' ? 'Monitoring' : 'Advisory'; note = 'Non-disruptive intervention: no calendar edits, just lighter environmental control.';
+    } else {
+      status = 'Agent steady'; conf = '0.72'; title = 'Keep the plan, protect deep-work';
+      body = 'No hard intervention needed. The agent recommends preserving quiet time before your first meeting and keeping workouts as scheduled.';
+      reasons = ['Recovery is healthy enough to keep the current schedule.', 'Stress is moderate — does not justify moving meetings.', S.perms.workout ? 'Workout automation is available if energy drops later.' : 'Workout rescheduling is disabled — exercise stays untouched.'];
+      ms = 'Kept in place'; mb = 'Stable'; note = 'The AI stays useful even when it does nothing dramatic: it explains why the schedule stays unchanged.';
+    }
+    return { rv, status, title, body, reasons, conf, ms, mb, note, moved, appClass };
+  }
+
+  function render() {
+    document.querySelectorAll('[data-si]').forEach(el => { if (+el.value !== Math.round(S.sleep * 10)) el.value = Math.round(S.sleep * 10); });
+    document.querySelectorAll('[data-sti]').forEach(el => { if (+el.value !== S.stress) el.value = S.stress; });
+    Object.entries(S.perms).forEach(([k, v]) => document.querySelectorAll(`[data-pm="${k}"]`).forEach(el => el.checked = v));
+    document.querySelectorAll('[data-ag]').forEach(grp => {
+      grp.querySelectorAll('[data-au]').forEach(btn => btn.classList.toggle('on', btn.dataset.au === S.auto));
+    });
+    const m = compute();
+    const set = (sel, val) => document.querySelectorAll(sel).forEach(el => el.textContent = val);
+    set('[data-sl]', S.sleep.toFixed(1));
+    set('[data-st]', String(S.stress));
+    set('[data-rv]', String(m.rv));
+    set('[data-hs]', m.status);
+    set('[data-ht]', m.title);
+    set('[data-hb]', m.body);
+    set('[data-hp]', S.auto === 'manual' ? 'Manual' : S.auto === 'copilot' ? 'Copilot' : 'Agent');
+    set('[data-hc]', m.conf);
+    set('[data-mb]', m.mb);
+    set('[data-ms]', m.ms);
+    set('[data-an]', m.note);
+    document.querySelectorAll('[data-rl]').forEach(ul => { ul.innerHTML = m.reasons.map(r => `<li>${r}</li>`).join(''); });
+    document.querySelectorAll('[data-rp]').forEach(p => p.classList.toggle('on', S.open));
+    document.querySelectorAll('[data-rt]').forEach(b => { b.textContent = S.open ? 'Hide reasoning' : (b.style.minHeight === '32px' ? 'Why?' : 'Show reasoning'); });
+    document.querySelectorAll('[data-mc]').forEach(el => el.classList.toggle('mv', m.moved));
+    document.querySelectorAll('[data-mt]').forEach(el => el.classList.toggle('on', m.moved));
+    const app = document.getElementById('ha');
+    if (app) app.className = 'happ ' + m.appClass;
+  }
+
+  document.querySelectorAll('[data-si]').forEach(el => el.addEventListener('input', e => { S.sleep = +e.target.value / 10; render(); }));
+  document.querySelectorAll('[data-sti]').forEach(el => el.addEventListener('input', e => { S.stress = +e.target.value; render(); }));
+  document.querySelectorAll('[data-au]').forEach(btn => btn.addEventListener('click', () => { S.auto = btn.dataset.au; render(); }));
+  document.querySelectorAll('[data-pm]').forEach(el => el.addEventListener('change', e => { S.perms[e.target.dataset.pm] = e.target.checked; render(); }));
+  document.querySelectorAll('[data-rt]').forEach(btn => btn.addEventListener('click', () => { S.open = !S.open; render(); }));
+  render();
+})();
+
+/* ── SCROLL REVEAL ─────────────────────────────── */
+(() => {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const siblings = [...entry.target.parentElement.querySelectorAll('.r')];
+      entry.target.style.transitionDelay = (siblings.indexOf(entry.target) * 65) + 'ms';
+      entry.target.classList.add('in');
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.r').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>

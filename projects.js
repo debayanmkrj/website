@@ -51,7 +51,14 @@ const projectsData = {
     { name: 'Gan', title: 'GAN EXPLORATIONS', description: 'Generative Adversarial Network experiments in visual style transfer and creation.', coverImage: 'content/Visual Experience/Gan/cover.jpg', newMedia: ['content/Visual Experience/Gan/new_media/2.jpg', 'content/Visual Experience/Gan/new_media/3.jpg'] },
     { name: 'Designing_for_consumers', title: 'DESIGNING FOR CONSUMERS', description: 'User-centered design methodologies for consumer products.', coverImage: 'content/Visual Experience/Designing_for_consumers/cover.jpg', newMedia: ['content/Visual Experience/Designing_for_consumers/new_media/6.jpg', 'content/Visual Experience/Designing_for_consumers/new_media/7.jpg'] }
   ],
-  photography: [] // Will be populated dynamically
+  photography: [], // Will be populated dynamically
+  uiux: [
+    { title: 'ANTI-DOOMSCROLL', description: 'Ethical design concept board exploring calm-tech patterns to combat doomscrolling.',         coverImage: 'content/UIUX/AntiDoomScroll/cover.jpeg', htmlPage: 'content/UIUX/AntiDoomScroll/index.html' },
+    { title: 'AURA G1',         description: 'Interactive product UI/UX case study for a next-gen spatial audio headphone.',               coverImage: 'content/UIUX/Aurag1/cover.jpeg',         htmlPage: 'content/UIUX/Aurag1/index.html' },
+    { title: 'GHOST RETAIL',    description: 'AR/Spatial UI concept board for ambient, ghost-layer retail shopping experiences.',          coverImage: 'content/UIUX/Ghostretail/cover.jpeg',    htmlPage: 'content/UIUX/Ghostretail/index.html' },
+    { title: 'KINSHIP',         description: 'Accessible FinTech concept board — voice-first banking designed for inclusive finance.',     coverImage: 'content/UIUX/Kingship/cover.jpeg',       htmlPage: 'content/UIUX/Kingship/index.html' },
+    { title: 'AGENTIC HEALTH',  description: 'Agentic health dashboard — AI-driven UI/UX concept for proactive personal health tracking.', coverImage: 'content/UIUX/PulsePilot/cover.jpeg',     htmlPage: 'content/UIUX/PulsePilot/index1.html' }
+  ]
 };
 
 // Carousel state management
@@ -59,7 +66,8 @@ const carouselStates = {
   llms: { currentIndex: 0, projectContent: {} },
   creative: { currentIndex: 0, projectContent: {} },
   visual: { currentIndex: 0, projectContent: {} },
-  photography: { currentIndex: 0, projectContent: {} }
+  photography: { currentIndex: 0, projectContent: {} },
+  uiux: { currentIndex: 0, projectContent: {} }
 };
 
 // Load project content from manifest.json
@@ -205,6 +213,26 @@ function createCarouselItem(section, index, position) {
     item.addEventListener('click', function () {
       if (position === 'center') {
         openGenAIOverlay(index);
+      } else {
+        carouselStates[section].currentIndex = index;
+        setupCarousel(section);
+      }
+    });
+  } else if (section === 'uiux') {
+    // UI/UX projects — image cover, opens iframe overlay
+    item.innerHTML = `
+      <div class="carousel-image-container">
+        <img src="${project.coverImage}" alt="${project.title}" class="carousel-image">
+        <div class="project-info">
+          <div class="project-title">${project.title}</div>
+          <div class="project-description">${project.description}</div>
+        </div>
+      </div>
+    `;
+
+    item.addEventListener('click', function () {
+      if (position === 'center') {
+        openUIUXProjectOverlay(project.htmlPage);
       } else {
         carouselStates[section].currentIndex = index;
         setupCarousel(section);
@@ -1113,6 +1141,31 @@ function closeDEProjectOverlay() {
   }
 }
 
+// =====================================================
+// UI/UX RESEARCH IFRAME OVERLAY
+// =====================================================
+
+function openUIUXProjectOverlay(htmlPage) {
+  const overlay = document.getElementById('uiux-iframe-overlay');
+  const iframe  = document.getElementById('uiux-iframe');
+  if (!overlay || !iframe) return;
+
+  iframe.src = htmlPage;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeUIUXProjectOverlay() {
+  const overlay = document.getElementById('uiux-iframe-overlay');
+  const iframe  = document.getElementById('uiux-iframe');
+  if (!overlay) return;
+
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  // Clear iframe src so content stops
+  if (iframe) { iframe.onload = null; iframe.src = ''; }
+}
+
 // Initialize all carousels on page load
 async function initializeProjects() {
   // Load photography images first
@@ -1122,8 +1175,8 @@ async function initializeProjects() {
   buildMLTileGrid();
   buildDETileGrid();
 
-  // Setup remaining carousels (llms, photography — skip creative and visual)
-  ['llms', 'photography'].forEach(section => {
+  // Setup remaining carousels (llms, uiux, photography — skip creative and visual)
+  ['llms', 'uiux', 'photography'].forEach(section => {
     setupCarousel(section);
   });
 
@@ -1155,6 +1208,8 @@ async function initializeProjects() {
       if (mlOverlay && mlOverlay.classList.contains('active')) { closeMLProjectOverlay(); return; }
       const deOverlay = document.getElementById('de-project-overlay');
       if (deOverlay && deOverlay.classList.contains('active')) { closeDEProjectOverlay(); return; }
+      const uiuxOverlay = document.getElementById('uiux-iframe-overlay');
+      if (uiuxOverlay && uiuxOverlay.classList.contains('active')) { closeUIUXProjectOverlay(); return; }
       const fsOverlay = document.getElementById('fullsize-overlay');
       if (fsOverlay && fsOverlay.classList.contains('active')) { closeFullImage(); }
     } else {
@@ -1175,6 +1230,7 @@ window.closeFullImage = closeFullImage;
 window.navigateFullImage = navigateFullImage;
 window.closeMLProjectOverlay = closeMLProjectOverlay;
 window.closeDEProjectOverlay = closeDEProjectOverlay;
+window.closeUIUXProjectOverlay = closeUIUXProjectOverlay;
 window.openFullVideo = openFullVideo;
 window.closeFullVideo = closeFullVideo;
 

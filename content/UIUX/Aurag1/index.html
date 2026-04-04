@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura G1 — UI/UX · Debayan Mukherjee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+/* ── TOKENS ──────────────────────────────────── */
+:root{
+  --bg:#090d18;--surface:#0e1423;
+  --stroke:rgba(255,255,255,.09);
+  --text:#f0ece4;--muted:rgba(240,236,228,.52);
+  --moss:#697355;--tangerine:#ef6d45;--vapor:#6bc7ff;
+  --accent:#9dc3ff;
+  --plate-fill:rgba(238,242,255,.64);--plate-stroke:rgba(255,255,255,.55);
+  --mood-accent:#8ce0bc;--vent-ratio:.62;
+  --f:'Space Grotesk',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-snap:cubic-bezier(.34,1.56,.64,1);
+  --headband-glow:rgba(157,195,255,.18);
+}
+body[data-plate="coral"]{--plate-fill:#ef6d45;--plate-stroke:rgba(255,232,225,.7);--accent:#ff9b78;--headband-glow:rgba(239,109,69,.18)}
+body[data-plate="graffiti"]{--plate-fill:#8d8f94;--plate-stroke:rgba(245,245,247,.58);--accent:#d5d8e0;--headband-glow:rgba(208,214,234,.18)}
+body[data-plate="clear"]{--plate-fill:rgba(223,236,242,.18);--plate-stroke:rgba(255,255,255,.35);--accent:#8ad8ff;--headband-glow:rgba(108,205,255,.18)}
+body[data-plate="frost"]{--plate-fill:rgba(238,242,255,.64);--plate-stroke:rgba(255,255,255,.55);--accent:#a3c2ff;--headband-glow:rgba(163,194,255,.18)}
+body[data-mood="amped"]{--mood-accent:#ff9b78}
+body[data-mood="grounded"]{--mood-accent:#8ce0bc}
+body[data-mood="reset"]{--mood-accent:#9fd7ff}
+body[data-cable="false"] .cable-path{opacity:0;transition:opacity .36s ease}
+body[data-cable="true"] .cable-path{opacity:1;transition:opacity .36s ease}
+body[data-plate="graffiti"] .plate-graffiti{display:block}
+.plate-graffiti{display:none}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--f);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+button,input{font:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+/* ── AMBIENT ─────────────────────────────────── */
+.amb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.15;pointer-events:none;z-index:0}
+.amb.a{top:-10vw;left:-10vw;width:38vw;height:38vw;background:rgba(107,199,255,.42)}
+.amb.b{top:34vh;right:-14vw;width:38vw;height:38vw;background:rgba(239,109,69,.36)}
+.amb.c{bottom:-12vw;left:30vw;width:38vw;height:38vw;background:rgba(122,208,173,.32)}
+
+/* ── NAV ─────────────────────────────────────── */
+.top-nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:52px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;
+  background:rgba(9,13,24,.92);border-bottom:1px solid var(--stroke);
+  backdrop-filter:blur(16px);
+}
+.nav-brand{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:700;letter-spacing:-.04em}
+.nav-brand a{color:var(--muted);font-size:12px;font-family:var(--mono);letter-spacing:.06em;transition:color .18s}
+.nav-brand a:hover{color:var(--text)}
+.nav-sep{color:rgba(255,255,255,.18);font-size:18px;line-height:1}
+.nav-screens{display:flex;gap:0}
+.ns-btn{
+  padding:0 20px;height:52px;background:transparent;
+  color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  border:none;border-right:1px solid var(--stroke);border-bottom:2px solid transparent;
+  transition:color .18s,background .18s,border-color .18s;
+}
+.ns-btn:first-of-type{border-left:1px solid var(--stroke)}
+.ns-btn.active{color:var(--text);background:rgba(255,255,255,.06);border-bottom-color:var(--accent)}
+.ns-btn:hover{color:var(--text)}
+.nav-meta{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+
+.app{padding-top:52px;min-height:100vh;position:relative;z-index:1}
+
+/* ── SCREEN FADE ─────────────────────────────── */
+.sf{animation:sf .25s ease}
+@keyframes sf{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ── DISCOVER ────────────────────────────────── */
+.disc{display:grid}
+.hero-split{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--stroke)}
+.hero-left{
+  padding:64px 48px;border-right:1px solid var(--stroke);
+  display:grid;align-content:space-between;gap:0;
+}
+.eyebrow-tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:32px;
+  display:flex;align-items:center;gap:12px;
+}
+.eyebrow-tag::before{content:'';width:32px;height:1px;background:var(--accent)}
+.h1{
+  font-size:clamp(56px,7vw,96px);font-weight:700;line-height:.9;
+  letter-spacing:-.07em;margin-bottom:24px;
+}
+.lede{font-size:17px;line-height:1.7;color:var(--muted);max-width:52ch;margin-bottom:36px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px}
+.chip{
+  padding:8px 14px;border:1px solid var(--stroke);background:rgba(255,255,255,.04);
+  font-size:12px;font-family:var(--mono);letter-spacing:.06em;color:var(--muted);
+}
+.chip strong{color:var(--text)}
+.cta-row{display:flex;gap:10px}
+.btn-p{
+  padding:13px 24px;background:var(--text);color:#090d18;
+  font-weight:700;font-size:14px;letter-spacing:-.02em;
+  border:none;transition:opacity .18s,transform .18s;
+}
+.btn-p:hover{opacity:.88;transform:translateY(-1px)}
+.btn-s{
+  padding:13px 24px;background:transparent;color:var(--text);
+  border:1px solid var(--stroke);font-size:14px;letter-spacing:-.02em;
+  transition:background .18s;
+}
+.btn-s:hover{background:rgba(255,255,255,.07)}
+
+.hero-right{display:grid;grid-template-rows:1fr auto}
+.hero-img{position:relative;overflow:hidden;min-height:520px}
+.hero-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.1);transition:transform 8s ease}
+.hero-img:hover img{transform:scale(1.04)}
+.hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(9,13,24,.9))}
+.hero-img-cap{position:absolute;bottom:18px;left:18px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,236,228,.55)}
+.stats-bar{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--stroke)}
+.stat{padding:20px 24px;border-right:1px solid var(--stroke)}
+.stat:last-child{border-right:none}
+.stat-v{font-size:32px;font-weight:700;letter-spacing:-.05em;margin-bottom:4px}
+.stat-k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+.disc-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--stroke)}
+.dcell{padding:36px 32px;border-right:1px solid var(--stroke)}
+.dcell:last-child{border-right:none}
+.dcell-n{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;margin-bottom:14px}
+.dcell-h{font-size:20px;font-weight:700;letter-spacing:-.04em;margin-bottom:9px}
+.dcell-p{font-size:14px;line-height:1.7;color:var(--muted)}
+
+.lb-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--stroke)}
+.lb-cell{position:relative;overflow:hidden;height:280px;border-right:1px solid var(--stroke)}
+.lb-cell:last-child{border-right:none}
+.lb-cell img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease-out)}
+.lb-cell:hover img{transform:scale(1.06)}
+.lb-cell::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(9,13,24,.9))}
+.lb-lbl{position:absolute;bottom:14px;left:16px;z-index:1;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,236,228,.65)}
+
+/* ── SUB NAV ─────────────────────────────────── */
+.sub-nav{
+  display:flex;align-items:center;gap:0;
+  height:44px;border-bottom:1px solid var(--stroke);
+  padding:0 32px;background:rgba(14,20,35,.6);
+}
+.sub-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:24px}
+.sub-tab{
+  padding:0 22px;height:44px;background:transparent;color:var(--muted);
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:none;border-right:1px solid var(--stroke);border-bottom:2px solid transparent;
+  transition:color .18s,background .18s,border-color .18s;
+}
+.sub-tab:first-of-type{border-left:1px solid var(--stroke)}
+.sub-tab.on{color:var(--text);background:rgba(255,255,255,.06);border-bottom-color:var(--accent)}
+.sub-tab:hover{color:var(--text)}
+
+/* ── DESKTOP SCREENS ─────────────────────────── */
+
+/* Home screen */
+.ds-home{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 52px - 44px)}
+.ds-home-left{position:relative;overflow:hidden;border-right:1px solid var(--stroke)}
+.ds-home-left img{width:100%;height:100%;object-fit:cover}
+.ds-home-left::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,13,24,.65),transparent 60%)}
+.ds-hl-copy{position:absolute;bottom:40px;left:40px;z-index:1}
+.ds-hl-copy h2{font-size:clamp(38px,4vw,64px);font-weight:700;letter-spacing:-.07em;line-height:.9;margin-bottom:14px}
+.ds-home-right{padding:40px;display:grid;align-content:start;gap:20px}
+.ds-grid-2{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--stroke)}
+.ds-card{
+  padding:26px 22px;border-right:1px solid var(--stroke);border-bottom:1px solid var(--stroke);
+}
+.ds-card:nth-child(2n){border-right:none}
+.ds-card:nth-last-child(-n+2){border-bottom:none}
+.ds-card-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.ds-card h4{font-size:16px;font-weight:700;letter-spacing:-.04em;margin-bottom:7px}
+.ds-card p{font-size:13px;line-height:1.65;color:var(--muted)}
+.ds-quote{padding:22px;border:1px solid var(--stroke);background:rgba(255,255,255,.025)}
+.ds-quote p{font-size:21px;font-weight:700;letter-spacing:-.05em;line-height:1.2}
+.ds-quote span{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:.04em}
+
+/* Configure screen */
+.ds-configure{display:grid;grid-template-columns:1fr 380px;min-height:calc(100vh - 52px - 44px)}
+.hstage{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px;position:relative;overflow:hidden;border-right:1px solid var(--stroke);
+}
+.hglow{
+  position:absolute;width:70%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,var(--headband-glow),transparent 66%);
+  filter:blur(50px);pointer-events:none;
+  transition:background 800ms ease;
+}
+/* ── EXACT ORIGINAL SVG STYLES ──────────── */
+.headphone-svg{
+  width:min(100%,480px);
+  filter:drop-shadow(0 36px 72px rgba(0,0,0,.48));
+  animation:floatHero 6s var(--ease-out) infinite;
+  position:relative;z-index:1;
+}
+.cable-path{stroke-dasharray:12 6;animation:cableMove 1.6s linear infinite}
+body[data-detox="true"] .headphone-svg{filter:drop-shadow(0 36px 72px rgba(0,0,0,.48)) saturate(.7)}
+.soundwave-ring{animation:echo 2.4s ease-in-out infinite}
+.soundwave-ring:nth-child(2){animation-delay:.6s}
+.soundwave-ring:nth-child(3){animation-delay:.3s}
+.soundwave-ring:nth-child(4){animation-delay:.9s}
+/* ──────────────────────────────────────── */
+.vent-info-box{
+  margin-top:22px;width:100%;max-width:440px;
+  padding:16px 20px;border:1px solid var(--stroke);background:rgba(255,255,255,.03);
+}
+.vi-pill{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.vi-head{font-size:16px;font-weight:700;letter-spacing:-.04em;margin-bottom:4px}
+.vi-body{font-size:13px;color:var(--muted);line-height:1.6}
+
+.ctrl-dock{
+  border-left:1px solid var(--stroke);display:grid;align-content:start;
+  overflow-y:auto;max-height:calc(100vh - 52px - 44px);
+}
+.cg{padding:18px 22px;border-bottom:1px solid var(--stroke)}
+.cg:last-child{border-bottom:none}
+.cg-lbl{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;
+  display:flex;justify-content:space-between;
+}
+.cg-lbl span:last-child{color:var(--text);text-transform:capitalize}
+.sw-row{display:flex;gap:10px;flex-wrap:wrap}
+.swatch{
+  width:38px;height:38px;border:2px solid transparent;
+  transition:transform .18s var(--ease-snap),border-color .18s ease;
+}
+.swatch:hover{transform:scale(1.12)}
+.swatch.active{border-color:rgba(255,255,255,.7);transform:scale(1.12)}
+.swatch[data-plate="frost"]{background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(205,218,255,.45))}
+.swatch[data-plate="coral"]{background:linear-gradient(135deg,#ff926f,#ef6d45)}
+.swatch[data-plate="graffiti"]{background:linear-gradient(135deg,#c2c5cc,#8d8f94)}
+.swatch[data-plate="clear"]{background:linear-gradient(135deg,rgba(200,220,240,.45),rgba(180,205,225,.2));outline:1px solid rgba(255,255,255,.2)}
+input[type=range]{
+  width:100%;-webkit-appearance:none;height:3px;
+  background:rgba(255,255,255,.12);cursor:pointer;outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:18px;height:18px;
+  background:#fff;cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.3);
+  transition:transform .18s var(--ease-snap);
+}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.28)}
+.gauge-track{height:3px;background:rgba(255,255,255,.1);margin-top:8px;overflow:hidden}
+.gauge-fill{height:100%;background:var(--accent);transition:width .25s ease}
+.helper-txt{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.5}
+
+.toggle-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.tinfo{display:grid;gap:3px}
+.tinfo span{font-size:14px;font-weight:500}
+.tinfo small{font-size:12px;color:var(--muted)}
+.sw-toggle{
+  position:relative;width:46px;height:26px;flex-shrink:0;
+  background:rgba(255,255,255,.1);border:1px solid var(--stroke);
+  cursor:pointer;transition:background .2s,border-color .2s;
+}
+.sw-toggle.on{background:rgba(163,194,255,.4);border-color:rgba(163,194,255,.36)}
+.sw-toggle::before{
+  content:'';position:absolute;top:3px;left:3px;
+  width:18px;height:18px;background:#fff;
+  transition:transform .22s var(--ease-snap);
+  box-shadow:0 2px 6px rgba(0,0,0,.28);
+}
+.sw-toggle.on::before{transform:translateX(20px)}
+
+.mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.mood-btn{
+  padding:13px 8px;
+  background:rgba(255,255,255,.04);border:1px solid var(--stroke);
+  color:var(--muted);font-size:13px;font-weight:600;letter-spacing:-.02em;
+  transition:background .18s,color .18s,border-color .18s;
+}
+.mood-btn.active{background:rgba(157,195,255,.14);border-color:rgba(157,195,255,.36);color:var(--accent)}
+.mood-btn:hover{background:rgba(255,255,255,.08);color:var(--text)}
+
+.avatar-row{display:flex;gap:8px;margin-bottom:8px}
+.ava{
+  width:32px;height:32px;
+  background:rgba(255,255,255,.08);border:1px solid var(--stroke);
+  position:relative;overflow:hidden;
+}
+.ava::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 40%,rgba(255,255,255,.3),transparent 60%)}
+.gpulse{position:absolute;inset:0;background:rgba(107,199,255,.2);transform:scale(0);opacity:0}
+.ghost-active .gpulse{animation:ping .98s ease-out infinite}
+.ghost-active .ava:nth-child(2) .gpulse{animation-delay:.32s}
+.ghost-active .ava:nth-child(3) .gpulse{animation-delay:.64s}
+.ghost-lbl{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.07em;margin-bottom:10px}
+.ghost-btn{
+  width:100%;padding:15px 18px;
+  background:rgba(255,255,255,.05);border:1px solid var(--stroke);
+  color:var(--text);font-size:14px;font-weight:700;letter-spacing:-.03em;
+  position:relative;overflow:hidden;
+  transition:background .18s,border-color .18s,color .18s;
+}
+.ghost-btn::after{
+  content:'';position:absolute;inset:1px;
+  background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.44) 50%,transparent 80%);
+  transform:translateX(-120%);pointer-events:none;
+}
+.ghost-btn:hover::after{animation:shimmer 800ms linear 1}
+.ghost-btn.active{background:rgba(107,199,255,.16);border-color:rgba(107,199,255,.4);color:var(--vapor)}
+
+.motion-spec{display:grid;border:1px solid var(--stroke);margin-top:4px}
+.mrow{display:grid;grid-template-columns:72px 1fr;border-bottom:1px solid var(--stroke)}
+.mrow:last-child{border-bottom:none}
+.mtime{
+  padding:13px;border-right:1px solid var(--stroke);
+  font-family:var(--mono);font-size:16px;font-weight:500;letter-spacing:-.04em;
+  color:var(--accent);display:grid;place-items:center;
+}
+.mdetail{padding:13px}
+.mdetail strong{font-size:13px;font-weight:700;letter-spacing:-.03em;display:block;margin-bottom:3px}
+.mdetail p{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* Gallery screen */
+.ds-gallery{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 52px - 44px)}
+.gal-left{border-right:1px solid var(--stroke);display:grid;grid-template-rows:auto 1fr}
+.gal-hd{padding:32px;border-bottom:1px solid var(--stroke)}
+.gal-hd h3{font-size:30px;font-weight:700;letter-spacing:-.06em;margin-bottom:8px;line-height:1}
+.gal-hd p{font-size:14px;color:var(--muted);line-height:1.7}
+.gal-img{position:relative;overflow:hidden}
+.gal-img img{width:100%;height:100%;object-fit:cover;object-position:center}
+.gal-right{display:grid;grid-template-rows:1fr 200px}
+.gal-top{position:relative;overflow:hidden;border-bottom:1px solid var(--stroke)}
+.gal-top img{width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.gal-top-cap{
+  position:absolute;bottom:0;left:0;right:0;padding:16px;z-index:1;
+  background:linear-gradient(180deg,transparent,rgba(9,13,24,.85));
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,236,228,.65);
+}
+.gal-bottom{display:grid;grid-template-columns:1fr 1fr}
+.gmini{position:relative;overflow:hidden;border-right:1px solid var(--stroke)}
+.gmini:last-child{border-right:none}
+.gmini img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s ease}
+.gmini:hover img{transform:scale(1.06)}
+.gmini::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(9,13,24,.8))}
+.gmini-lbl{position:absolute;bottom:10px;left:12px;z-index:1;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,236,228,.6)}
+
+/* ── MOBILE SECTION ──────────────────────────── */
+.mob-section{
+  padding:48px 40px;border-top:1px solid var(--stroke);
+  background:rgba(255,255,255,.012);
+  display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;
+}
+.mob-intro{padding-top:20px}
+.mob-intro-tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+.mob-intro h3{font-size:clamp(32px,4vw,52px);font-weight:700;letter-spacing:-.07em;line-height:.9;margin-bottom:16px}
+.mob-intro p{font-size:15px;line-height:1.72;color:var(--muted);margin-bottom:26px}
+.mob-snav{display:flex;gap:0;margin-bottom:28px}
+.ms-btn{
+  padding:10px 20px;background:transparent;color:var(--muted);
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--stroke);border-right:none;
+  transition:color .18s,background .18s;
+}
+.ms-btn:last-child{border-right:1px solid var(--stroke)}
+.ms-btn.on{color:var(--text);background:rgba(255,255,255,.07)}
+.ms-btn:hover{color:var(--text)}
+.mob-notes{display:grid;gap:12px}
+.mob-note{padding:16px 18px;border:1px solid var(--stroke);background:rgba(255,255,255,.022)}
+.mob-note-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.mob-note h4{font-size:15px;font-weight:700;letter-spacing:-.04em;margin-bottom:5px}
+.mob-note p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* Phone frame */
+.phone-wrap{display:flex;justify-content:center}
+.phone-frame{
+  width:310px;
+  border-radius: 30px;
+  background:linear-gradient(180deg,#0d1220,#080d18);
+  border:1px solid rgba(255,255,255,.14);padding:10px;
+  box-shadow:0 32px 80px rgba(0,0,0,.5);
+  position:relative;
+}
+.phone-frame::before{
+  content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  width:30%;height:20px;z-index:4;
+  background:#0a0f1c;border:1px solid rgba(255,255,255,.06);border-top:none;
+}
+.phone-screen{overflow:hidden;min-height:640px;background:linear-gradient(180deg,#0b1020,#07090f)}
+
+/* Mobile screens — shared */
+.ms{padding:18px 16px;display:flex;flex-direction:column;gap:12px;min-height:640px}
+.ms-topbar{display:flex;justify-content:space-between;align-items:center;padding-top:20px}
+.ms-brand{font-size:18px;font-weight:700;letter-spacing:-.05em}
+.ms-pill{
+  padding:6px 11px;background:rgba(255,255,255,.06);border:1px solid var(--stroke);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+}
+.ms-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.ms-h{font-size:18px;font-weight:500;letter-spacing:-.05em;line-height:.96;margin-bottom:6px}
+.ms-p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* Mobile SVG wrap */
+.mob-svg-wrap{
+  border:1px solid var(--stroke);background:rgba(255,255,255,.03);
+  display:grid;place-items:center;padding:14px;min-height:200px;
+}
+.mob-headphone-svg{
+  width:min(100%,280px);
+  filter:drop-shadow(0 20px 40px rgba(0,0,0,.4));
+  animation:floatHero 7s var(--ease-out) infinite;
+}
+
+/* Mobile chips */
+.ms-chips{display:flex;flex-wrap:wrap;gap:6px}
+.ms-chip{
+  padding:5px 9px;border:1px solid var(--stroke);
+  font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--muted);
+}
+.ms-info-box{padding:12px 14px;border:1px solid var(--stroke);background:rgba(255,255,255,.025);display:grid;gap:4px}
+
+/* Mobile tabs */
+.mob-tabs{display:grid;grid-template-columns:repeat(3,1fr)}
+.mob-tab{
+  padding:9px 6px;background:transparent;color:var(--muted);
+  border:1px solid var(--stroke);border-right:none;
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  transition:background .18s,color .18s;
+}
+.mob-tab:last-child{border-right:1px solid var(--stroke)}
+.mob-tab.on{background:rgba(255,255,255,.07);color:var(--text)}
+
+/* Mobile swatches */
+.mob-sw-row{display:flex;gap:8px;flex-wrap:wrap}
+.mob-swatch{
+  width:34px;height:34px;border:2px solid transparent;
+  transition:transform .18s var(--ease-snap),border-color .18s;
+}
+.mob-swatch.active{border-color:rgba(255,255,255,.7);transform:scale(1.15)}
+.mob-swatch[data-plate="frost"]{background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(205,218,255,.45))}
+.mob-swatch[data-plate="coral"]{background:linear-gradient(135deg,#ff926f,#ef6d45)}
+.mob-swatch[data-plate="graffiti"]{background:linear-gradient(135deg,#c2c5cc,#8d8f94)}
+.mob-swatch[data-plate="clear"]{background:rgba(200,218,240,.22);outline:1px solid rgba(255,255,255,.2)}
+
+.mob-toggle{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--stroke)}
+.mob-mood{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mob-mood-btn{
+  padding:11px 6px;background:rgba(255,255,255,.04);border:1px solid var(--stroke);
+  color:var(--muted);font-size:11px;font-weight:600;
+  transition:background .18s,color .18s;
+}
+.mob-mood-btn.active{background:rgba(157,195,255,.12);border-color:rgba(157,195,255,.28);color:var(--accent)}
+
+/* Mobile share */
+.mob-share-vis{
+  min-height:130px;border:1px solid var(--stroke);
+  background:radial-gradient(circle at 50%,rgba(107,199,255,.14),transparent 60%);
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  position:relative;
+}
+.mob-ava{width:32px;height:32px;background:rgba(255,255,255,.08);border:1px solid var(--stroke);position:relative}
+.mob-ring{position:absolute;inset:-9px;border:1px solid rgba(107,199,255,.32);opacity:0}
+.ghost-active .mob-ring{animation:ping .98s ease-out infinite}
+.ghost-active .mob-ava:nth-child(2) .mob-ring{animation-delay:.36s}
+.mob-share-cap{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.mob-ghost-btn{
+  width:100%;padding:14px;
+  background:rgba(255,255,255,.04);border:1px solid var(--stroke);
+  color:var(--text);font-size:13px;font-weight:700;letter-spacing:-.03em;
+  transition:background .18s,border-color .18s,color .18s;
+}
+.mob-ghost-btn.active{background:rgba(107,199,255,.12);border-color:rgba(107,199,255,.32);color:var(--vapor)}
+.mob-status-box{padding:12px 14px;border:1px solid var(--stroke);background:rgba(255,255,255,.02)}
+.mob-status-box p{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ── SYSTEM ──────────────────────────────────── */
+.sys{min-height:calc(100vh - 52px)}
+.sys-hd{
+  padding:48px;border-bottom:1px solid var(--stroke);
+  display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;
+}
+.sys-hd h2{font-size:clamp(40px,6vw,78px);font-weight:700;letter-spacing:-.07em;line-height:.9}
+.sys-hd p{font-size:16px;line-height:1.72;color:var(--muted);max-width:54ch}
+.sys-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--stroke)}
+.sp{padding:36px;border-right:1px solid var(--stroke);border-bottom:1px solid var(--stroke)}
+.sp:nth-child(2n){border-right:none}
+.sp:nth-last-child(-n+2){border-bottom:none}
+.sp-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.sp h3{font-size:20px;font-weight:700;letter-spacing:-.05em;margin-bottom:16px}
+.col-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.col-item{display:grid;gap:7px}
+.col-chip{height:68px;border:1px solid rgba(255,255,255,.07)}
+.col-n{font-size:13px;font-weight:600;letter-spacing:-.02em}
+.col-h{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.col-u{font-size:12px;color:var(--muted)}
+.type-row{
+  display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center;
+  padding:12px 0;border-bottom:1px solid var(--stroke);
+}
+.type-row:last-child{border-bottom:none}
+.type-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.type-detail strong{font-size:14px;font-weight:600;letter-spacing:-.02em;display:block;margin-bottom:2px}
+.type-detail span{font-size:12px;color:var(--muted)}
+.sp-bar-rows{display:grid;gap:10px}
+.sp-bar-row{display:grid;grid-template-columns:40px 1fr 36px;gap:10px;align-items:center}
+.sp-bar-lbl{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.sp-bar-track{height:4px;background:rgba(255,255,255,.07)}
+.sp-bar-fill{height:100%;background:var(--accent);transition:width .6s ease}
+.flow-canvas{overflow-x:auto;border:1px solid var(--stroke);padding:22px}
+.flow-nodes{display:flex;align-items:flex-start;min-width:680px}
+.fn{
+  flex:1;padding:18px 14px;border-right:1px solid var(--stroke);
+  display:grid;gap:9px;
+  transition:background .18s,border-color .18s;
+}
+.fn:last-child{border-right:none}
+.fn:hover{background:rgba(163,194,255,.06);border-color:rgba(163,194,255,.22)}
+.fn-step{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;
+  background:rgba(157,195,255,.1);border:1px solid rgba(157,195,255,.22);
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+}
+.fn h4{font-size:14px;font-weight:700;letter-spacing:-.04em}
+.fn p{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* ── FOOTER ──────────────────────────────────── */
+.foot{
+  padding:22px 40px;border-top:1px solid var(--stroke);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.foot-copy{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.foot-link{
+  padding:9px 18px;border:1px solid var(--stroke);
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);
+  transition:color .18s,border-color .18s;
+}
+.foot-link:hover{color:var(--text);border-color:rgba(255,255,255,.22)}
+
+/* ── KEYFRAMES ───────────────────────────────── */
+@keyframes floatHero{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
+@keyframes cableMove{from{stroke-dashoffset:0}to{stroke-dashoffset:-44}}
+@keyframes ping{0%{transform:scale(.82);opacity:0}20%{opacity:.75}100%{transform:scale(1.42);opacity:0}}
+@keyframes shimmer{from{transform:translateX(-120%)}to{transform:translateX(120%)}}
+@keyframes echo{0%,100%{opacity:.5;transform:scale(.96)}50%{opacity:.9;transform:scale(1.03)}}
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media(max-width:1100px){
+  .hero-split,.ds-home,.ds-configure,.ds-gallery,.mob-section,.sys-hd{grid-template-columns:1fr}
+  .ds-home-left{min-height:380px}
+  .ds-configure{grid-template-rows:auto auto}
+  .ctrl-dock{max-height:none}
+  .sys-grid{grid-template-columns:1fr}
+  .sp{border-right:none}
+  .sp:nth-last-child(-n+2){border-bottom:1px solid var(--stroke)}
+  .sp:last-child{border-bottom:none}
+}
+@media(max-width:800px){
+  .disc-grid,.lb-strip{grid-template-columns:1fr}
+  .dcell{border-right:none;border-bottom:1px solid var(--stroke)}
+  .lb-cell{height:220px;border-right:none;border-bottom:1px solid var(--stroke)}
+  .col-row{grid-template-columns:1fr 1fr}
+  .top-nav{padding:0 16px}
+  .ns-btn{padding:0 12px;font-size:10px}
+  .nav-meta{display:none}
+}
+</style>
+</head>
+<body data-plate="frost" data-mood="grounded" data-detox="false" data-cable="true">
+<div class="amb a"></div><div class="amb b"></div><div class="amb c"></div>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+
+/* ── VENT DATA ──────────────────────────────── */
+const ventInfo = v => {
+  if(v>=80) return {pill:'Sealed',head:'Full ANC seal',body:'Maximum noise isolation — city blocks, commute tunnels, open offices.',helper:'Best for high-noise transit or deep focus work.'}
+  if(v>=50) return {pill:'Hybrid',head:'Hybrid open: city-aware',body:'Balanced enough for subway awareness, sealed enough for focus.',helper:'The default demo setting and the main purchase story.'}
+  if(v>=20) return {pill:'Semi-open',head:'Semi-open: room aware',body:'Lets ambient sound pass through. Natural listening without isolation anxiety.',helper:'Good for creative work, café sessions, and walks.'}
+  return {pill:'Full open',head:'Fully open: transparent',body:'Pass-through audio simulates no headphone. Context: outdoor walks and conversations.',helper:'Transparency mode — best for social environments.'}
+};
+const PLATES = {frost:'Frost shell',coral:'Coral drop',graffiti:'Graffiti chrome',clear:'Clear shell'};
+const MOOD_TEXT = {
+  amped:'Amped mode surges the bass and raises the soundstage for high-energy focus.',
+  grounded:'Grounded mode smooths the transition into calm transparency when sensors detect overload.',
+  reset:'Reset mode drops into sparse, minimal audio — almost silence with breath.'
+};
+
+/* ── TOGGLE ─────────────────────────────────── */
+const Toggle = ({on, onChange, disabled}) => (
+  <div
+    className={`sw-toggle${on?' on':''}`}
+    onClick={() => !disabled && onChange(!on)}
+    role="switch" aria-checked={on} tabIndex={0}
+    onKeyDown={e => e.key===' ' && !disabled && onChange(!on)}
+  />
+);
+
+/* ── EXACT ORIGINAL SVG ─────────────────────── */
+const HeadphoneSVG = () => (
+  <svg className="headphone-svg" viewBox="0 0 560 430" role="img" aria-label="Aura G1 live product render">
+    <defs>
+      <linearGradient id="desk-shell" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="rgba(255,255,255,0.35)"/>
+        <stop offset="100%" stopColor="rgba(255,255,255,0.10)"/>
+      </linearGradient>
+      <linearGradient id="desk-band" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="rgba(255,255,255,0.42)"/>
+        <stop offset="100%" stopColor="rgba(255,255,255,0.14)"/>
+      </linearGradient>
+      <linearGradient id="desk-cable" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#7ed4ff"/>
+        <stop offset="50%" stopColor="#ef6d45"/>
+        <stop offset="100%" stopColor="#f5c36c"/>
+      </linearGradient>
+    </defs>
+    {/* Sound wave rings */}
+    <circle className="soundwave-ring" cx="148" cy="245" r="74" fill="none" stroke="rgba(107,199,255,0.18)" strokeWidth="4"/>
+    <circle className="soundwave-ring" cx="412" cy="245" r="74" fill="none" stroke="rgba(107,199,255,0.18)" strokeWidth="4"/>
+    <circle className="soundwave-ring" cx="148" cy="245" r="94" fill="none" stroke="rgba(239,109,69,0.12)" strokeWidth="4"/>
+    <circle className="soundwave-ring" cx="412" cy="245" r="94" fill="none" stroke="rgba(239,109,69,0.12)" strokeWidth="4"/>
+    {/* Headband */}
+    <path d="M144 198 C144 80 198 32 280 32 C362 32 416 80 416 198" fill="none" stroke="url(#desk-band)" strokeWidth="28" strokeLinecap="round"/>
+    <path d="M148 202 C148 102 202 66 280 66 C358 66 412 102 412 202" fill="none" stroke="rgba(105,115,85,0.8)" strokeWidth="14" strokeLinecap="round"/>
+    {/* Left cup */}
+    <g transform="translate(74 170)">
+      <rect x="0" y="0" width="148" height="170" rx="74" fill="url(#desk-shell)" stroke="rgba(255,255,255,0.44)" strokeWidth="3"/>
+      <rect x="20" y="18" width="108" height="132" rx="54" fill="#697355" fillOpacity="0.96" stroke="rgba(255,255,255,0.14)" strokeWidth="2"/>
+      <circle cx="74" cy="84" r="42" fill="var(--plate-fill)" stroke="var(--plate-stroke)" strokeWidth="3"/>
+      <g className="plate-graffiti">
+        <path d="M48 79 C62 58 84 62 96 80" fill="none" stroke="rgba(19,20,23,0.55)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M56 100 C74 86 88 92 98 106" fill="none" stroke="rgba(19,20,23,0.55)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M48 92 C58 108 72 112 96 108" fill="none" stroke="rgba(19,20,23,0.55)" strokeWidth="4" strokeLinecap="round"/>
+      </g>
+      <rect x="120" y="50" width="8" height="48" rx="4" fill="rgba(255,255,255, calc(0.18 + var(--vent-ratio) * 0.6))"/>
+      <rect x="124" y="20" width="8" height="16" rx="4" fill="rgba(255,255,255,0.18)"/>
+      <rect x="124" y="112" width="8" height="16" rx="4" fill="rgba(255,255,255,0.18)"/>
+    </g>
+    {/* Right cup */}
+    <g transform="translate(338 170)">
+      <rect x="0" y="0" width="148" height="170" rx="74" fill="url(#desk-shell)" stroke="rgba(255,255,255,0.44)" strokeWidth="3"/>
+      <rect x="20" y="18" width="108" height="132" rx="54" fill="#697355" fillOpacity="0.96" stroke="rgba(255,255,255,0.14)" strokeWidth="2"/>
+      <circle cx="74" cy="84" r="42" fill="var(--plate-fill)" stroke="var(--plate-stroke)" strokeWidth="3"/>
+      <g className="plate-graffiti">
+        <path d="M48 79 C62 58 84 62 96 80" fill="none" stroke="rgba(19,20,23,0.55)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M56 100 C74 86 88 92 98 106" fill="none" stroke="rgba(19,20,23,0.55)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M48 92 C58 108 72 112 96 108" fill="none" stroke="rgba(19,20,23,0.55)" strokeWidth="4" strokeLinecap="round"/>
+      </g>
+      <rect x="20" y="50" width="8" height="48" rx="4" fill="rgba(255,255,255, calc(0.18 + var(--vent-ratio) * 0.6))"/>
+      <rect x="16" y="20" width="8" height="16" rx="4" fill="rgba(255,255,255,0.18)"/>
+      <rect x="16" y="112" width="8" height="16" rx="4" fill="rgba(255,255,255,0.18)"/>
+    </g>
+    {/* Cable */}
+    <path className="cable-path" d="M148 332 C124 366 140 386 96 404 C82 410 58 402 46 388"
+      fill="none" stroke="url(#desk-cable)" strokeWidth="8" strokeLinecap="round"/>
+  </svg>
+);
+
+/* ── MOBILE SVG (same structure, smaller) ───── */
+const MobileSVG = () => (
+  <svg className="mob-headphone-svg" viewBox="0 0 560 430" role="img" aria-label="Aura G1 mobile">
+    <defs>
+      <linearGradient id="mob-shell" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="rgba(255,255,255,0.35)"/>
+        <stop offset="100%" stopColor="rgba(255,255,255,0.10)"/>
+      </linearGradient>
+      <linearGradient id="mob-cable" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#7ed4ff"/>
+        <stop offset="50%" stopColor="#ef6d45"/>
+        <stop offset="100%" stopColor="#f5c36c"/>
+      </linearGradient>
+    </defs>
+    <path d="M144 198 C144 80 198 32 280 32 C362 32 416 80 416 198" fill="none" stroke="rgba(255,255,255,0.38)" strokeWidth="28" strokeLinecap="round"/>
+    <path d="M148 202 C148 102 202 66 280 66 C358 66 412 102 412 202" fill="none" stroke="rgba(105,115,85,0.8)" strokeWidth="14" strokeLinecap="round"/>
+    <g transform="translate(74 170)">
+      <rect x="0" y="0" width="148" height="170" rx="74" fill="url(#mob-shell)" stroke="rgba(255,255,255,0.44)" strokeWidth="3"/>
+      <rect x="20" y="18" width="108" height="132" rx="54" fill="#697355" fillOpacity="0.96"/>
+      <circle cx="74" cy="84" r="42" fill="var(--plate-fill)" stroke="var(--plate-stroke)" strokeWidth="3"/>
+      <g className="plate-graffiti">
+        <path d="M48 79 C62 58 84 62 96 80" fill="none" stroke="rgba(19,20,23,0.55)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M56 100 C74 86 88 92 98 106" fill="none" stroke="rgba(19,20,23,0.55)" strokeWidth="4" strokeLinecap="round"/>
+      </g>
+      <rect x="120" y="50" width="8" height="48" rx="4" fill="rgba(255,255,255, calc(0.18 + var(--vent-ratio) * 0.6))"/>
+    </g>
+    <g transform="translate(338 170)">
+      <rect x="0" y="0" width="148" height="170" rx="74" fill="url(#mob-shell)" stroke="rgba(255,255,255,0.44)" strokeWidth="3"/>
+      <rect x="20" y="18" width="108" height="132" rx="54" fill="#697355" fillOpacity="0.96"/>
+      <circle cx="74" cy="84" r="42" fill="var(--plate-fill)" stroke="var(--plate-stroke)" strokeWidth="3"/>
+      <g className="plate-graffiti">
+        <path d="M48 79 C62 58 84 62 96 80" fill="none" stroke="rgba(19,20,23,0.55)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M56 100 C74 86 88 92 98 106" fill="none" stroke="rgba(19,20,23,0.55)" strokeWidth="4" strokeLinecap="round"/>
+      </g>
+      <rect x="20" y="50" width="8" height="48" rx="4" fill="rgba(255,255,255, calc(0.18 + var(--vent-ratio) * 0.6))"/>
+    </g>
+    <path className="cable-path" d="M148 332 C124 366 140 386 96 404 C82 410 58 402 46 388"
+      fill="none" stroke="url(#mob-cable)" strokeWidth="8" strokeLinecap="round"/>
+  </svg>
+);
+
+/* ═══════════════════════════════════════════════
+   DESKTOP SCREEN: HOME
+   All defined at MODULE LEVEL — critical for no remounting
+═══════════════════════════════════════════════ */
+const DeskHome = ({ setScreen }) => (
+  <div className="ds-home sf">
+    <div className="ds-home-left">
+      <img src="render-stage.webp" alt="Aura G1 product staged"/>
+      <div className="ds-hl-copy">
+        <p className="sp-lbl" style={{marginBottom:12}}>Aura G1 — 2026 drop</p>
+        <h2>Headphones for<br/>city overstimulation,<br/>OOTD flex,<br/>soft isolation.</h2>
+      </div>
+    </div>
+    <div className="ds-home-right">
+      <div className="ds-grid-2">
+        {[
+          {l:'Mood Sync',h:'Grounded',p:'The soundtrack eases from high energy into transparency and brown noise when overstimulation climbs.'},
+          {l:'Connectivity',h:'Wireless + cable look',p:'The braided cord works as an outfit cue. Detox mode locks the experience into wired-only focus.'},
+          {l:'Hybrid vent',h:'Open-air awareness',p:'Keep the city audible when walking, or slide shut to seal into ANC when you need to disappear.'},
+          {l:'Drop logic',h:'TikTok-first release',p:'Scarcity, removable skins, and compostable stand packaging turn unboxing into reusable room decor.'},
+        ].map((c,i) => (
+          <div className="ds-card" key={i}>
+            <div className="ds-card-lbl">{c.l}</div>
+            <h4>{c.h}</h4>
+            <p>{c.p}</p>
+          </div>
+        ))}
+      </div>
+      <div className="ds-quote">
+        <p>"The look is the first gate. Price only becomes the problem after the aesthetic proves it belongs in the feed."</p>
+        <span>North star — Style as acquisition hook, calm as payoff, modularity as repeat purchase driver</span>
+      </div>
+      <div style={{display:'flex',gap:10}}>
+        
+        <button type="button" className="btn-s">Join the next drop</button>
+      </div>
+    </div>
+  </div>
+);
+
+/* ═══════════════════════════════════════════════
+   DESKTOP SCREEN: CONFIGURE
+═══════════════════════════════════════════════ */
+const DeskConfigure = ({ plate, setPlate, vent, setVent, cable, setCable, detox, handleDetox, mood, setMood, ghostActive, setGhostActive }) => {
+  const vi = ventInfo(vent);
+  return (
+    <div className="ds-configure sf">
+      <div className="hstage">
+        <div className="hglow"/>
+        <HeadphoneSVG/>
+        <div className="vent-info-box">
+          <div className="vi-pill">{vi.pill} · {vent}% open</div>
+          <div className="vi-head">{vi.head}</div>
+          <div className="vi-body">{vi.body}</div>
+        </div>
+      </div>
+      <div className="ctrl-dock">
+        {/* Plates */}
+        <div className="cg">
+          <div className="cg-lbl"><span>Skin plates</span><span>{PLATES[plate]}</span></div>
+          <div className="sw-row">
+            {Object.keys(PLATES).map(p => (
+              <button type="button" key={p} className={`swatch${plate===p?' active':''}`} data-plate={p}
+                onClick={() => setPlate(p)} aria-label={PLATES[p]}/>
+            ))}
+          </div>
+        </div>
+        {/* Vent */}
+        <div className="cg">
+          <div className="cg-lbl"><span>Sliding vent</span><span>{vent}%</span></div>
+          <input type="range" min="0" max="100" value={vent} onChange={e => setVent(+e.target.value)}/>
+          <div className="gauge-track"><div className="gauge-fill" style={{width:vent+'%'}}/></div>
+          <p className="helper-txt">{vi.helper}</p>
+        </div>
+        {/* Cable */}
+        <div className="cg">
+          <div className="cg-lbl"><span>Cable look</span></div>
+          <div className="toggle-row">
+            <div className="tinfo"><span>Show braided cable</span><small>Style-led preview</small></div>
+            <Toggle on={detox ? true : cable} onChange={setCable} disabled={detox}/>
+          </div>
+        </div>
+        {/* Detox */}
+        <div className="cg">
+          <div className="cg-lbl"><span>Digital Detox</span></div>
+          <div className="toggle-row">
+            <div className="tinfo"><span>Force cable + focus</span><small>Locks cable on, mutes phone</small></div>
+            <Toggle on={detox} onChange={handleDetox}/>
+          </div>
+          {detox && <p className="helper-txt" style={{marginTop:10,color:'rgba(239,109,69,.8)'}}>Detox active — cable locked on, phone silenced</p>}
+        </div>
+        {/* Mood */}
+        <div className="cg">
+          <div className="cg-lbl"><span>Mood Sync</span><span>{mood}</span></div>
+          <div className="mood-grid">
+            {['amped','grounded','reset'].map(m => (
+              <button type="button" key={m} className={`mood-btn${mood===m?' active':''}`}
+                onClick={() => setMood(m)} style={{textTransform:'capitalize'}}>{m}</button>
+            ))}
+          </div>
+          <p className="helper-txt" style={{marginTop:10}}>{MOOD_TEXT[mood]}</p>
+        </div>
+        {/* Ghost */}
+        <div className={`cg${ghostActive?' ghost-active':''}`}>
+          <div className="cg-lbl"><span>Ghost Mode</span></div>
+          <div className="avatar-row">
+            <div className="ava"><span className="gpulse"/></div>
+            <div className="ava"><span className="gpulse"/></div>
+            <div className="ava"><span className="gpulse"/></div>
+          </div>
+          <div className="ghost-lbl">{ghostActive ? '2 nearby Aura users connected' : 'Ghost Mode idle'}</div>
+          <button type="button" className={`ghost-btn${ghostActive?' active':''}`} onClick={() => setGhostActive(true)}>
+            {ghostActive ? 'Ghost Mode live' : 'Trigger Ghost Mode'}
+          </button>
+        </div>
+        {/* Motion spec */}
+        <div className="cg">
+          <div className="cg-lbl"><span>Motion timings</span></div>
+          <div className="motion-spec">
+            {[['6s','Hero float','Subtle vertical drift keeps the product alive.'],
+              ['1.6s','Cable shimmer','Dashed gradient turns the cord into fashion.'],
+              ['0.98s','Ghost pulse','Ripple rings visualize nearby share connections.'],
+              ['0.22s','Toggle snap','Spring-like easing for all control feedback.']
+            ].map(([t,l,p]) => (
+              <div className="mrow" key={l}>
+                <div className="mtime">{t}</div>
+                <div className="mdetail"><strong>{l}</strong><p>{p}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ═══════════════════════════════════════════════
+   DESKTOP SCREEN: GALLERY
+   Fixed image sizing with explicit aspect-ratio
+═══════════════════════════════════════════════ */
+// const DeskGallery = () => (
+//   <div className="ds-gallery sf">
+//     <div className="gal-left">
+//       <div className="gal-hd">
+//         <h3>Drop culture.<br/>Modular ownership.</h3>
+//         <p>Faceplates, cables, and pads are shoppable modules — turning sustainability into visible, repeatable ownership. Each drop creates a new reason to return to the product page.</p>
+//       </div>
+//       <div className="gal-img" style={{aspectRatio:'4/3',maxHeight:360}}>
+//         <img src="plates-board.webp" alt="Skin plate variants flatlay" style={{objectPosition:'center top'}}/>
+//       </div>
+//     </div>
+//     <div className="gal-right">
+//       <div className="gal-top">
+//         <img src="street-style.webp" alt="Street style editorial" style={{objectPosition:'50% 20%'}}/>
+//         <div className="gal-top-cap">OOTD context · editorial photography</div>
+//         <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,transparent 55%,rgba(9,13,24,.75))'}}/>
+//       </div>
+//       <div className="gal-bottom">
+//         <div className="gmini">
+//           <img src="social-shot.webp" alt="Ghost Mode social sharing" style={{objectPosition:'center'}}/>
+//           <div className="gmini-lbl">Ghost mode</div>
+//         </div>
+//         <div className="gmini">
+//           <img src="unboxing.webp" alt="Kit flatlay with packaging" style={{objectPosition:'center'}}/>
+//           <div className="gmini-lbl">Unboxing</div>
+//         </div>
+//       </div>
+//     </div>
+//   </div>
+// );
+
+/* ═══════════════════════════════════════════════
+   MOBILE SCREEN: HERO
+═══════════════════════════════════════════════ */
+const MobHero = ({ plate, vent, detox }) => {
+  const vi = ventInfo(vent);
+  return (
+    <div className="ms sf">
+      <div className="ms-topbar">
+        <div className="ms-brand">Aura G1</div>
+        <div className="ms-pill">{detox ? 'Focus on' : 'Focus off'}</div>
+      </div>
+      <div className="mob-svg-wrap">
+        <MobileSVG/>
+      </div>
+      <div>
+        <div className="ms-h">Hybrid calm-tech built for the feed.</div>
+        <div className="ms-p">Style, mood, focus, and sharing all sit one tap away without leaving the product page.</div>
+      </div>
+      <div className="ms-chips">
+        <span className="ms-chip">Digital thrift</span>
+        <span className="ms-chip">Mood Sync AI</span>
+        <span className="ms-chip">Drop culture</span>
+        <span className="ms-chip">{vi.pill}</span>
+      </div>
+      <div className="ms-info-box">
+        <div className="ms-kicker">Active skin</div>
+        <div style={{fontSize:16,fontWeight:700,letterSpacing:'-.04em',textTransform:'capitalize',margin:'4px 0'}}>{PLATES[plate]}</div>
+        <div style={{fontSize:11,color:'var(--muted)',fontFamily:'var(--mono)',letterSpacing:'.06em'}}>Switch in Configure screen</div>
+      </div>
+    </div>
+  );
+};
+
+/* ═══════════════════════════════════════════════
+   MOBILE SCREEN: CUSTOMIZE
+═══════════════════════════════════════════════ */
+const MobCustomize = ({ plate, setPlate, vent, setVent, cable, setCable, detox, handleDetox, mood, setMood }) => {
+  const [tab, setTab] = useState('style');
+  const vi = ventInfo(vent);
+  return (
+    <div className="ms sf">
+      <div className="ms-topbar" style={{paddingTop:22}}>
+        <div className="ms-brand">Configure</div>
+        <div className="ms-pill" style={{color:'var(--accent)',borderColor:'rgba(157,195,255,.3)'}}>{PLATES[plate]}</div>
+      </div>
+      <div className="mob-tabs">
+        {['style','mood','focus'].map(t => (
+          <button type="button" key={t} className={`mob-tab${tab===t?' on':''}`}
+            onClick={() => setTab(t)} style={{textTransform:'capitalize'}}>{t}</button>
+        ))}
+      </div>
+
+      {tab==='style' && (
+        <div style={{display:'grid',gap:12}} className="sf">
+          <div className="ms-kicker" style={{marginBottom:6}}>Skin plates</div>
+          <div className="mob-sw-row">
+            {Object.keys(PLATES).map(p => (
+              <button type="button" key={p} className={`mob-swatch${plate===p?' active':''}`}
+                data-plate={p} onClick={() => setPlate(p)} aria-label={PLATES[p]}/>
+            ))}
+          </div>
+          <div className="mob-toggle">
+            <span style={{fontSize:13}}>Cable look</span>
+            <Toggle on={detox ? true : cable} onChange={setCable} disabled={detox}/>
+          </div>
+          <div style={{padding:'12px 14px',border:'1px solid var(--stroke)',background:'rgba(255,255,255,.02)'}}>
+            <div className="ms-kicker" style={{marginBottom:8}}>Vent — {vent}%</div>
+            <input type="range" min="0" max="100" value={vent} onChange={e => setVent(+e.target.value)} style={{width:'100%'}}/>
+            <div style={{fontSize:11,color:'var(--muted)',marginTop:6,fontFamily:'var(--mono)'}}>{vi.pill} — {vi.helper}</div>
+          </div>
+        </div>
+      )}
+
+      {tab==='mood' && (
+        <div style={{display:'grid',gap:12}} className="sf">
+          <div className="ms-kicker">Mood Sync AI</div>
+          <p style={{fontSize:13,color:'var(--muted)',lineHeight:1.6}}>{MOOD_TEXT[mood]}</p>
+          <div className="mob-mood">
+            {['amped','grounded','reset'].map(m => (
+              <button type="button" key={m} className={`mob-mood-btn${mood===m?' active':''}`}
+                onClick={() => setMood(m)} style={{textTransform:'capitalize'}}>{m}</button>
+            ))}
+          </div>
+          <div className="ms-info-box">
+            <div className="ms-kicker">Current state</div>
+            <div style={{fontSize:22,fontWeight:700,letterSpacing:'-.06em',textTransform:'capitalize',margin:'4px 0'}}>{mood}</div>
+            <div style={{fontSize:11,color:'var(--muted)',fontFamily:'var(--mono)'}}>UI glow colors adapt with the sound profile</div>
+          </div>
+        </div>
+      )}
+
+      {tab==='focus' && (
+        <div style={{display:'grid',gap:12}} className="sf">
+          <div className="ms-kicker">Digital Detox</div>
+          <div className="mob-toggle">
+            <div>
+              <div style={{fontSize:13,fontWeight:600}}>Enable detox mode</div>
+              <div style={{fontSize:11,color:'var(--muted)',marginTop:2}}>Forces cable, mutes phone</div>
+            </div>
+            <Toggle on={detox} onChange={handleDetox}/>
+          </div>
+          {detox && (
+            <div style={{padding:'12px 14px',border:'1px solid rgba(239,109,69,.3)',background:'rgba(239,109,69,.08)',fontSize:12,color:'rgba(239,109,69,.85)',lineHeight:1.6}} className="sf">
+              Detox active — cable locked on, phone silenced.
+            </div>
+          )}
+          <div className="ms-kicker" style={{marginBottom:4}}>Vent — {vent}%</div>
+          <input type="range" min="0" max="100" value={vent} onChange={e => setVent(+e.target.value)} style={{width:'100%'}}/>
+          <div style={{fontSize:11,color:'var(--muted)',fontFamily:'var(--mono)'}}>{vi.pill} mode · {vi.helper}</div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* ═══════════════════════════════════════════════
+   MOBILE SCREEN: SHARE
+═══════════════════════════════════════════════ */
+const MobShare = ({ ghostActive, setGhostActive, detox }) => (
+  <div className={`ms sf${ghostActive?' ghost-active':''}`}>
+    <div className="ms-topbar" style={{paddingTop:22}}>
+      <div className="ms-brand">Share</div>
+      <div className="ms-pill">Ghost Mode</div>
+    </div>
+    <div className="mob-share-vis">
+      {[0,1].map(i => (
+        <div key={i} className="mob-ava">
+          <div className="mob-ring"/>
+          <div style={{position:'absolute',inset:0,background:'radial-gradient(circle at 40%,rgba(255,255,255,.28),transparent 60%)'}}/>
+        </div>
+      ))}
+      <div className="mob-share-cap">{ghostActive ? '2 nearby listeners' : 'No connections'}</div>
+    </div>
+    <div className="mob-status-box">
+      <div className="ms-kicker" style={{marginBottom:6}}>Status</div>
+      <p>{ghostActive
+        ? 'Ghost Mode found nearby Aura listeners and opened a soft share pulse.'
+        : 'Ghost Mode is idle until another Aura G1 user comes within range.'}</p>
+    </div>
+    <button type="button" className={`mob-ghost-btn${ghostActive?' active':''}`} onClick={() => setGhostActive(true)}>
+      {ghostActive ? 'Ghost Mode live' : 'Ping nearby Aura users'}
+    </button>
+    <div className="mob-toggle" style={{marginTop:4}}>
+      <div>
+        <div style={{fontSize:13,fontWeight:600}}>Focus mode</div>
+        <div style={{fontSize:11,color:'var(--muted)',marginTop:2}}>Mute social sharing temporarily</div>
+      </div>
+      <Toggle on={detox} onChange={() => {}} disabled={true}/>
+    </div>
+    <div style={{padding:'12px 14px',border:'1px solid var(--stroke)',background:'rgba(255,255,255,.02)'}}>
+      <div className="ms-kicker" style={{marginBottom:6}}>What is Ghost Mode?</div>
+      <p style={{fontSize:12,color:'var(--muted)',lineHeight:1.6}}>
+        When two Aura G1 users are within 10 feet, Ghost Mode opens a soft audio-sharing pulse — no app required, no pairing screen.
+      </p>
+    </div>
+  </div>
+);
+
+/* ═══════════════════════════════════════════════
+   PROTOTYPE SECTION — local state for sub-tabs
+   Safe because this component is at module level
+═══════════════════════════════════════════════ */
+const PrototypeSection = ({ plate, setPlate, vent, setVent, cable, setCable, detox, handleDetox, mood, setMood, ghostActive, setGhostActive, setScreen }) => {
+  const [deskTab, setDeskTab] = useState('home');
+  const [mobScreen, setMobScreen] = useState('hero');
+
+  return (
+    <div className="sf">
+      {/* Desktop sub-nav */}
+      <div className="sub-nav">
+        <span className="sub-lbl">Desktop</span>
+        {[['home','01 Home'],['configure','02 Configure'],['gallery','03 Mobile']].map(([t,l]) => (
+          <button type="button" key={t} className={`sub-tab${deskTab===t?' on':''}`} onClick={() => setDeskTab(t)}>{l}</button>
+        ))}
+      </div>
+
+      {deskTab==='home'      && <DeskHome setScreen={setScreen}/>}
+      {deskTab==='configure' && <DeskConfigure plate={plate} setPlate={setPlate} vent={vent} setVent={setVent}
+        cable={cable} setCable={setCable} detox={detox} handleDetox={handleDetox}
+        mood={mood} setMood={setMood} ghostActive={ghostActive} setGhostActive={setGhostActive}/>}
+      
+
+      {/* Mobile section */}
+      <div className="mob-section">
+        <div className="mob-intro">
+          <div className="mob-intro-tag">03 / Mobile prototype · 3 screens</div>
+          <h3>Same story.<br/>Less friction.</h3>
+          <p>Style, mood, and social sharing are re-prioritized for thumb reach. Every interaction — plate swap, vent, Ghost Mode — updates the SVG render live, matching the desktop configurator state.</p>
+          <div className="mob-snav">
+            {[['hero','01 Hero'],['customize','02 Configure'],['share','03 Share']].map(([s,l]) => (
+              <button type="button" key={s} className={`ms-btn${mobScreen===s?' on':''}`} onClick={() => setMobScreen(s)}>{l}</button>
+            ))}
+          </div>
+          <div className="mob-notes">
+            {[
+              {l:'Screen 01',h:'Hero',p:'Product visual, title, key stat chips. Style is the first signal — spec is secondary on mobile.'},
+              {l:'Screen 02',h:'Configure',p:'Plate swatches, vent slider, cable toggle, mood sync. Sub-tabbed: Style / Mood / Focus. No scroll needed.'},
+              {l:'Screen 03',h:'Share',p:'Ghost Mode proximity social. Find nearby Aura users, trigger a sharing pulse — no leaving the page.'},
+            ].map(n => (
+              <div className="mob-note" key={n.h}>
+                <div className="mob-note-lbl">{n.l}</div>
+                <h4>{n.h}</h4>
+                <p>{n.p}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="phone-wrap">
+          <div className="phone-frame">
+            <div className="phone-screen">
+              {mobScreen==='hero'      && <MobHero plate={plate} vent={vent} detox={detox}/>}
+              {mobScreen==='customize' && <MobCustomize plate={plate} setPlate={setPlate} vent={vent} setVent={setVent}
+                cable={cable} setCable={setCable} detox={detox} handleDetox={handleDetox} mood={mood} setMood={setMood}/>}
+              {mobScreen==='share'     && <MobShare ghostActive={ghostActive} setGhostActive={setGhostActive} detox={detox}/>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ═══════════════════════════════════════════════
+   DISCOVER SCREEN
+═══════════════════════════════════════════════ */
+const DiscoverScreen = ({ setScreen }) => (
+  <div className="disc sf">
+    <div className="hero-split">
+      <div className="hero-left">
+        <div>
+          <div className="eyebrow-tag">Y2K retro-futurism meets calm tech</div>
+          <h1 className="h1">Aura<br/>G1.</h1>
+          <p className="lede">A Gen Z headphone website concept for 2026. Digital thrift styling, mood-sync AI, modular skins, and a detox-first interaction model.</p>
+          <div className="chips">
+            <span className="chip"><strong>Look</strong> Digital thrift</span>
+            <span className="chip"><strong>AI</strong> Mood sync</span>
+            <span className="chip"><strong>Context</strong> City overstimulation</span>
+            <span className="chip"><strong>Commerce</strong> Drop culture</span>
+          </div>
+        </div>
+        <div className="cta-row">
+          <button type="button" className="btn-p" onClick={() => setScreen('prototype')}>Open prototype →</button>
+          <button type="button" className="btn-s" onClick={() => setScreen('system')}>Design system</button>
+        </div>
+      </div>
+      <div className="hero-right">
+        <div className="hero-img">
+          <img src="mood-collage.webp" alt="Aura G1 mood collage"/>
+          <div className="hero-img-cap">Visual language · editorial mood board</div>
+        </div>
+        <div className="stats-bar">
+          <div className="stat"><div className="stat-v">4</div><div className="stat-k">Skin variants</div></div>
+          <div className="stat"><div className="stat-v">3</div><div className="stat-k">Mood states</div></div>
+          <div className="stat" style={{borderRight:'none'}}>
+            <div className="stat-v">1</div><div className="stat-k">Physical focus switch</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div className="disc-grid">
+      {[
+        {n:'01',h:'Selfie before spec',p:'Transparent shell and braided cable earn the outfit slot before the product earns the spec sheet. If it does not look good in a mirror shot, Gen Z never reaches the price conversation.'},
+        {n:'02',h:'Modularity as repeat purchase',p:'Faceplates, cables, and pads are shoppable modules. Sustainability becomes visible ownership and a mechanic for drop culture.'},
+        {n:'03',h:'Physical focus switch',p:'A real switch changes behavior faster than another settings page. The UI reflects that with a hard, staged mode change — not a buried toggle.'},
+      ].map(c => (
+        <div className="dcell" key={c.n}>
+          <div className="dcell-n">{c.n}</div>
+          <div className="dcell-h">{c.h}</div>
+          <p className="dcell-p">{c.p}</p>
+        </div>
+      ))}
+    </div>
+    <div className="lb-strip">
+      {[
+        {src:'street-style.webp',alt:'Street style editorial',lbl:'OOTD context'},
+        {src:'hero-product.webp',alt:'Product on concrete plinth',lbl:'Retail staging'},
+        {src:'kit-flatlay.webp',alt:'Kit flatlay with accessories',lbl:'Kit flatlay'},
+      ].map(i => (
+        <div className="lb-cell" key={i.src}>
+          <img src={i.src} alt={i.alt}/>
+          <div className="lb-lbl">{i.lbl}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+/* ═══════════════════════════════════════════════
+   SYSTEM SCREEN
+═══════════════════════════════════════════════ */
+const SystemScreen = () => (
+  <div className="sys sf">
+    <div className="sys-hd">
+      <h2>Visual system for a collectible calm-tech brand.</h2>
+      <p>Y2K retro-futurism meets calm tech. Six color tokens, Space Grotesk for display, IBM Plex Mono for data and labels — all grounded by moss and chrome as material anchors.</p>
+    </div>
+    <div className="sys-grid">
+      {/* Colors */}
+      <div className="sp">
+        <div className="sp-lbl">Color board</div>
+        <h3>Six-token palette.</h3>
+        <div className="col-row">
+          {[
+            {n:'Moss',h:'#697355',u:'Ear pads, band',bg:'linear-gradient(135deg,#768360,#515a43)'},
+            {n:'Chrome',h:'#CACAC5',u:'Shell, hardware',bg:'linear-gradient(135deg,#f3f4f1,#9d9f9b)'},
+            {n:'Alley',h:'#10182F',u:'Background deep',bg:'linear-gradient(135deg,#1a2544,#0b1020)'},
+            {n:'Tangerine',h:'#EF6D45',u:'Cable, alerts',bg:'linear-gradient(135deg,#ff8f6d,#d74e24)'},
+            {n:'Vapor',h:'#6BC7FF',u:'Focus, UI states',bg:'linear-gradient(135deg,#dff7ff,#53bdff)'},
+            {n:'Compost',h:'#C8B79E',u:'Warm body copy',bg:'linear-gradient(135deg,#ded1bf,#aa8f72)'},
+          ].map(c => (
+            <div className="col-item" key={c.n}>
+              <div className="col-chip" style={{background:c.bg}}/>
+              <div className="col-n">{c.n}</div>
+              <div className="col-h">{c.h}</div>
+              <div className="col-u">{c.u}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Type */}
+      <div className="sp">
+        <div className="sp-lbl">Typography</div>
+        <h3>Display → mono hierarchy.</h3>
+        <div style={{fontSize:'clamp(36px,4vw,54px)',fontWeight:700,lineHeight:.9,letterSpacing:'-.07em',marginBottom:14}}>Aura G1</div>
+        <div style={{fontSize:16,color:'var(--muted)',lineHeight:1.7,maxWidth:'52ch',marginBottom:20}}>Calm tech for the overstimulated city. Transparent hardware, braided cord, magnetic skins.</div>
+        {[
+          {t:'Display',s:'Space Grotesk 700 / −.07em',d:'clamp(56px,8vw,96px)'},
+          {t:'Section',s:'Space Grotesk 700 / −.05em',d:'clamp(28px,3vw,44px)'},
+          {t:'Body',s:'Space Grotesk 400 / +.01em',d:'16–17px / 1.7 line-height'},
+          {t:'Mono',s:'IBM Plex Mono 400 / +.1em',d:'11–13px / uppercase labels'},
+        ].map(r => (
+          <div className="type-row" key={r.t}>
+            <div className="type-tag">{r.t}</div>
+            <div className="type-detail"><strong>{r.s}</strong><span>{r.d}</span></div>
+          </div>
+        ))}
+      </div>
+      {/* Spacing */}
+      <div className="sp">
+        <div className="sp-lbl">Spacing scale</div>
+        <h3>4px base grid.</h3>
+        <div className="sp-bar-rows">
+          {[[4,'xs',6],[8,'sm',12],[12,'md',18],[16,'lg',26],[24,'xl',38],[32,'2xl',52],[48,'3xl',72]].map(([v,n,w]) => (
+            <div className="sp-bar-row" key={n}>
+              <div className="sp-bar-lbl">{v}px</div>
+              <div className="sp-bar-track"><div className="sp-bar-fill" style={{width:w+'%'}}/></div>
+              <div className="sp-bar-lbl" style={{textAlign:'right'}}>{n}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Motion */}
+      <div className="sp">
+        <div className="sp-lbl">Motion + microinteractions</div>
+        <h3>Four keyframe behaviors.</h3>
+        <div className="motion-spec">
+          {[['6s','Hero float','Subtle vertical drift keeps the product alive without feeling game-like.'],
+            ['1.6s','Cable shimmer','Dashed gradient motion turns the detachable cord into a fashion accessory.'],
+            ['0.98s','Ghost pulse','Ripple rings visualize nearby share connections inside 10 feet.'],
+            ['0.22s','Toggle snap','Spring-like easing curve for control feedback within 160ms travel.']
+          ].map(([t,l,p]) => (
+            <div className="mrow" key={l}>
+              <div className="mtime">{t}</div>
+              <div className="mdetail"><strong>{l}</strong><p>{p}</p></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Flow diagram */}
+    <div style={{padding:'36px 40px 0',borderTop:'1px solid var(--stroke)'}}>
+      <div className="sp-lbl" style={{marginBottom:16}}>Web flow diagram</div>
+      <div className="flow-canvas">
+        <div className="flow-nodes">
+          {[
+            {n:'01',h:'Entry',p:'Social link, QR, or street poster. First impression is a selfie moment.'},
+            {n:'02',h:'Story',p:'Mood collage, product intro, three core value props above the fold.'},
+            {n:'03',h:'Configure',p:'Skin swap, vent, cable. Live render updates state in real time.'},
+            {n:'04',h:'Drop',p:'CTA to wish-list a limited plate. Timer and scarcity drive urgency.'},
+            {n:'05',h:'Ghost',p:'Nearby Aura detect. Soft share pulse. Social proof without friction.'},
+          ].map(f => (
+            <div className="fn" key={f.n}>
+              <div className="fn-step">{f.n}</div>
+              <h4>{f.h}</h4>
+              <p>{f.p}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Image strip */}
+    <div className="lb-strip" style={{marginTop:40,borderTop:'1px solid var(--stroke)'}}>
+      {[
+        {src:'closeup.webp',alt:'Closeup detail shot',lbl:'Closeup detail'},
+        {src:'product-board.webp',alt:'Product system board',lbl:'Full system'},
+        {src:'social-shot.webp',alt:'Social sharing moment',lbl:'Ghost Mode in use'},
+      ].map(i => (
+        <div className="lb-cell" key={i.src}>
+          <img src={i.src} alt={i.alt}/>
+          <div className="lb-lbl">{i.lbl}</div>
+        </div>
+      ))}
+    </div>
+
+    <div className="foot">
+      <div className="foot-copy">Aura G1 · UI/UX Case Study · Debayan Mukherjee · 2026</div>
+      <a href="/" className="foot-link">← Portfolio</a>
+    </div>
+  </div>
+);
+
+/* ═══════════════════════════════════════════════
+   APP ROOT — all shared state lives here
+═══════════════════════════════════════════════ */
+const App = () => {
+  const [screen, setScreen]           = useState('discover');
+  const [plate, setPlate]             = useState('frost');
+  const [vent, setVent]               = useState(62);
+  const [cable, setCable]             = useState(true);
+  const [detox, setDetox]             = useState(false);
+  const [mood, setMood]               = useState('grounded');
+  const [ghostActive, setGhostActive] = useState(false);
+
+  const handleDetox = useCallback(v => {
+    setDetox(v);
+    if (v) setCable(true);
+  }, []);
+
+  /* Sync CSS variables + body attributes */
+  useEffect(() => {
+    document.body.dataset.plate  = plate;
+    document.body.dataset.mood   = mood;
+    document.body.dataset.detox  = detox ? 'true' : 'false';
+    document.body.dataset.cable  = (detox || cable) ? 'true' : 'false';
+    document.documentElement.style.setProperty('--vent-ratio', (vent / 100).toFixed(2));
+  }, [plate, mood, detox, cable, vent]);
+
+  /* Ghost mode auto-reset */
+  useEffect(() => {
+    if (!ghostActive) return;
+    const t = setTimeout(() => setGhostActive(false), 2200);
+    return () => clearTimeout(t);
+  }, [ghostActive]);
+
+  const sharedProps = { plate, setPlate, vent, setVent, cable, setCable, detox, handleDetox, mood, setMood, ghostActive, setGhostActive };
+
+  return (
+    <div className="app">
+      <nav className="top-nav">
+        <div className="nav-brand">
+          <span>AURA G1</span>
+        </div>
+        <div className="nav-screens">
+          {[['discover','01 Discover'],['prototype','02 Prototype'],['system','03 System']].map(([s,l]) => (
+            <button type="button" key={s} className={`ns-btn${screen===s?' active':''}`} onClick={() => setScreen(s)}>{l}</button>
+          ))}
+        </div>
+        <div className="nav-meta">UI/UX Case Study · 2026</div>
+      </nav>
+
+      {screen==='discover'  && <DiscoverScreen setScreen={setScreen}/>}
+      {screen==='prototype' && <PrototypeSection {...sharedProps} setScreen={setScreen}/>}
+      {screen==='system'    && <SystemScreen/>}
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

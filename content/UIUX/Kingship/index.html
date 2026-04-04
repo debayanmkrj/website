@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kinship — Accessible FinTech Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ──────────────────────────────── */
+:root {
+  --bg:      #f2f5f9;
+  --bg2:     #e5ecf5;
+  --panel:   rgba(255,255,255,.78);
+  --card:    #ffffff;
+  --stroke:  rgba(11,23,54,.09);
+  --stroke2: rgba(11,23,54,.05);
+  --text:    #0b1736;
+  --muted:   #52637a;
+  --sky:     #5ab4f5;
+  --sky-dim: rgba(90,180,245,.12);
+  --mint:    #7dd9b2;
+  --mint-dim:rgba(125,217,178,.12);
+  --gold:    #e8b84b;
+  --coral:   #f07d61;
+  --navy:    #0b1736;
+  --f:       "DM Sans", system-ui, sans-serif;
+  --mono:    ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0 }
+html { scroll-behavior: smooth }
+body {
+  color: var(--text);
+  font-family: var(--f);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg2);
+}
+img { display: block; max-width: 100% }
+button, input { font: inherit; cursor: pointer }
+
+/* ── BOARD ───────────────────────────────── */
+.board {
+  width: min(1320px, calc(100vw - 32px));
+  margin: 20px auto 80px;
+  display: grid;
+  gap: 2px;
+}
+
+/* ── PANEL ───────────────────────────────── */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+}
+/* subtle inner-top line for depth */
+.panel::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: rgba(255,255,255,.9);
+  pointer-events: none;
+}
+
+/* ── HERO ────────────────────────────────── */
+.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: 10px; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 20px;
+}
+.eyebrow .dot {
+  width: 6px; height: 6px;
+  background: var(--sky); border-radius: 50%;
+  animation: pulse 2.4s infinite;
+}
+h1 {
+  font-size: clamp(32px, 4.2vw, 56px);
+  font-weight: 800; line-height: 1.06;
+  letter-spacing: -.03em; margin-bottom: 18px;
+}
+.lede {
+  font-size: 16px; line-height: 1.76;
+  color: var(--muted); font-weight: 400;
+  max-width: 52ch; margin-bottom: 28px;
+}
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px }
+.chip {
+  padding: 8px 13px;
+  border: 1px solid var(--stroke);
+  background: var(--card);
+  font-size: 12px; font-weight: 600; color: var(--muted);
+}
+.chip small {
+  display: block; margin-bottom: 2px;
+  font-size: 9px; letter-spacing: .14em;
+  text-transform: uppercase; color: rgba(82,99,122,.6); font-weight: 700;
+}
+
+/* Hero images */
+.hero-visual { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2px; min-height: 380px }
+.mosaic-card, .mosaic-stack > div {
+  position: relative; overflow: hidden;
+  min-height: 160px;
+  border: 1px solid var(--stroke);
+  background: var(--bg2);
+}
+.mosaic-card img, .mosaic-stack img { width:100%; height:100%; object-fit:cover }
+.mosaic-stack { display: grid; gap: 2px }
+.floating-note {
+  position: absolute; left: 14px; right: 14px; bottom: 14px;
+  padding: 12px 14px;
+  background: rgba(8,14,28,.72);
+  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(12px);
+  color: #fff;
+}
+.floating-note strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 3px }
+.floating-note span { font-size: 11px; line-height: 1.55; color: rgba(255,255,255,.68); font-weight: 400 }
+
+/* ── SECTION HEAD ────────────────────────── */
+.section-head {
+  display: flex; justify-content: space-between;
+  align-items: center; gap: 20px; margin-bottom: 28px;
+  padding-bottom: 20px; border-bottom: 1px solid var(--stroke);
+}
+.section-title {
+  font-size: 20px; font-weight: 800;
+  letter-spacing: -.02em; line-height: 1.1;
+}
+.section-copy {
+  max-width: 60ch; color: var(--muted);
+  line-height: 1.68; font-size: 14px; font-weight: 400; margin-top: 4px;
+}
+.meta-pill {
+  padding: 7px 13px;
+  border: 1px solid var(--stroke); background: var(--card);
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: .14em; font-weight: 700; color: var(--muted);
+  white-space: nowrap; flex-shrink: 0;
+}
+
+/* ── GRID + CARDS ────────────────────────── */
+.token-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 2px }
+.card {
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  padding: 24px;
+}
+.card h3 { font-size: 17px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 8px }
+.card p { color: var(--muted); font-size: 14px; line-height: 1.7; font-weight: 400 }
+
+/* ── COLOR BOARD ─────────────────────────── */
+.color-board { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 2px; margin-top: 16px }
+.color-chip {
+  min-height: 120px; padding: 12px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  border: 1px solid rgba(255,255,255,.14);
+}
+.color-chip strong { font-size: 13px; font-weight: 700; letter-spacing: -.01em }
+.color-chip span { font-size: 11px; line-height: 1.4; opacity: .85; font-weight: 400 }
+
+/* ── TYPE STACK ──────────────────────────── */
+.type-stack { display: grid; gap: 2px; margin-top: 16px }
+.type-spec {
+  padding: 14px 16px;
+  border: 1px solid var(--stroke); background: var(--card);
+}
+.type-meta {
+  display: flex; justify-content: space-between; gap: 12px; align-items: baseline;
+  font-size: 10px; color: var(--muted);
+  letter-spacing: .12em; text-transform: uppercase; font-weight: 600;
+}
+.type-sample { margin-top: 9px }
+
+/* ── SAFE SPACES ─────────────────────────── */
+.safe-shell { display: grid; gap: 2px; margin-top: 16px }
+.safe-diagram { padding: 16px; border: 1px solid var(--stroke); background: var(--card) }
+.safe-viewport {
+  position: relative; min-height: 150px;
+  background: var(--bg2);
+  border: 1px dashed rgba(11,23,54,.16);
+  overflow: hidden;
+}
+.safe-zone {
+  position: absolute; inset: 20px;
+  border: 2px solid var(--sky);
+  background: var(--sky-dim);
+}
+.safe-zone.mobile { inset: 16px 20px }
+.safe-label {
+  position: absolute; padding: 5px 9px;
+  background: var(--card); border: 1px solid var(--stroke);
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .11em;
+}
+.safe-label.outside { top: 9px; right: 9px }
+.safe-label.inside { left: 14px; bottom: 14px; color: var(--sky) }
+.safe-callouts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px }
+.callout {
+  padding: 7px 10px;
+  background: var(--card); border: 1px solid var(--stroke);
+  font-size: 11px; color: var(--muted); font-weight: 400;
+}
+
+/* ── SPACING ─────────────────────────────── */
+.spacing-stack { display: grid; gap: 9px; margin-top: 16px }
+.space-row { display: grid; grid-template-columns: 44px 1fr 44px; gap: 12px; align-items: center }
+.space-tag { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+.space-bar { height: 10px; background: var(--sky); opacity: .7 }
+.space-note { text-align: right; font-size: 11px; color: var(--muted); font-weight: 500 }
+
+/* ── MICRO CARDS ─────────────────────────── */
+.micro-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 2px; margin-top: 16px }
+.micro-card {
+  min-height: 116px; position: relative;
+  padding: 14px; background: var(--card);
+  border: 1px solid var(--stroke); overflow: hidden;
+}
+.micro-card strong { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 700; letter-spacing: -.01em }
+.micro-card span { display: block; font-size: 12px; color: var(--muted); line-height: 1.55; max-width: 22ch; font-weight: 400 }
+.micro-card::after { content: ''; position: absolute; right: 14px; top: 14px }
+.micro-card.breathe::after { width: 38px; height: 38px; border: 2px solid var(--sky); border-radius: 50%; animation: breatheRing 2.8s ease-in-out infinite }
+.micro-card.snap::after { width: 20px; height: 20px; background: var(--mint); animation: snap 1.8s cubic-bezier(.18,.86,.44,1) infinite }
+.micro-card.float::after { width: 48px; height: 10px; background: var(--sky); animation: floaty 3s ease-in-out infinite }
+.micro-card.pulse::after { width: 15px; height: 15px; border-radius: 50%; background: var(--mint); animation: pulse 2s infinite }
+
+/* ── PROOF ───────────────────────────────── */
+.proof-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 2px }
+.proof-list { margin: 12px 0 0; padding: 0; list-style: none; display: grid; gap: 2px }
+.proof-list li {
+  padding: 11px 14px;
+  background: var(--bg2); border: 1px solid var(--stroke);
+  font-size: 13px; line-height: 1.55; color: var(--muted); font-weight: 400;
+}
+.proof-badge {
+  display: inline-flex; padding: 5px 10px;
+  border: 1px solid var(--stroke); background: var(--navy);
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; color: #e8f0ff; margin-bottom: 10px;
+}
+.mini-map { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 2px; margin-top: 14px }
+.mini-step {
+  padding: 14px; background: var(--bg2); border: 1px solid var(--stroke); min-height: 100px;
+}
+.mini-step strong { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; letter-spacing: -.01em }
+.mini-step span { font-size: 11px; line-height: 1.55; color: var(--muted); font-weight: 400 }
+
+/* ── FLOW ────────────────────────────────── */
+.flow-grid { display: grid; grid-template-columns: repeat(var(--flow-count,5),minmax(0,1fr)); gap: 2px }
+.flow-node {
+  position: relative; min-height: 120px; padding: 16px;
+  background: var(--card); border: 1px solid var(--stroke);
+}
+.flow-node strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; letter-spacing: -.01em }
+.flow-node p { margin: 0; font-size: 12px; line-height: 1.6; color: var(--muted); font-weight: 400 }
+.flow-node:not(:last-child)::after {
+  content: '→'; position: absolute; top: 50%; right: -10px;
+  transform: translateY(-50%); display: grid; place-items: center;
+  width: 18px; height: 18px;
+  color: var(--sky); font-size: 14px; font-weight: 700; z-index: 1;
+}
+
+/* ── PROTOTYPE ───────────────────────────── */
+.prototype-wrap { display: grid; grid-template-columns: 1.12fr .88fr; gap: 2px; align-items: start }
+.prototype-label {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 10px; border: 1px solid var(--stroke); background: var(--card);
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em;
+  color: var(--muted); margin-bottom: 2px;
+}
+
+.prototype-label-mobile {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 10px; border: 1px solid var(--stroke); background: var(--card);
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em;
+  color: var(--muted); margin-bottom: 2px; margin-left: 105px;
+}
+
+/* Desktop prototype — fixed height, scrolls */
+.prototype-shell {
+  overflow-y: auto; overflow-x: hidden;
+  height: 640px; border: 1px solid var(--stroke);
+  background: #f9fbff;
+  box-shadow: 0 8px 32px rgba(11,23,54,.08);
+  scroll-behavior: smooth;
+}
+.prototype-shell::-webkit-scrollbar { width: 5px }
+.prototype-shell::-webkit-scrollbar-track { background: var(--bg2) }
+.prototype-shell::-webkit-scrollbar-thumb { background: rgba(11,23,54,.18) }
+
+/* Mobile phone — fixed height, scrolls */
+.phone-shell {
+  max-width: 340px; margin-inline: auto;
+  background: #111c33;
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 5px;
+  box-shadow: 0 20px 48px rgba(11,23,54,.28);
+  border-radius: 30px;
+}
+.phone-bezel {
+  overflow-y: auto; overflow-x: hidden;
+  background: #f9fbff; height: 600px;
+  scroll-behavior: smooth;
+  border-radius: 25px;
+}
+.phone-bezel::-webkit-scrollbar { width: 0px }
+.phone-bezel::-webkit-scrollbar-track { background: var(--bg2) }
+.phone-bezel::-webkit-scrollbar-thumb { background: rgba(11,23,54,.18) }
+
+/* ── KEYFRAMES ───────────────────────────── */
+@keyframes pulse {
+  0%  { box-shadow: 0 0 0 0 rgba(90,180,245,.4) }
+  70% { box-shadow: 0 0 0 10px transparent }
+  100%{ box-shadow: 0 0 0 0 transparent }
+}
+@keyframes floaty { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-5px) } }
+@keyframes breatheRing { 0%,100% { transform: scale(.86); opacity: .6 } 50% { transform: scale(1.1); opacity: 1 } }
+@keyframes snap { 0%,100% { transform: scale(1) } 30% { transform: scale(1.14) } 60% { transform: scale(.94) } }
+@keyframes kinPulse {
+  0%,100% { transform: scale(.97); box-shadow: 0 0 0 0 rgba(90,180,245,.16) }
+  50%      { transform: scale(1.03); box-shadow: 0 0 0 16px rgba(90,180,245,0) }
+}
+
+/* ── RESPONSIVE ──────────────────────────── */
+@media (max-width:1200px) {
+  .hero,.token-grid,.prototype-wrap,.proof-grid { grid-template-columns: 1fr }
+  .micro-grid { grid-template-columns: repeat(2,minmax(0,1fr)) }
+  .color-board { grid-template-columns: repeat(3,minmax(0,1fr)) }
+  .flow-grid,.mini-map { grid-template-columns: repeat(2,minmax(0,1fr)) }
+  .flow-node:not(:last-child)::after { display: none }
+}
+@media (max-width:800px) {
+  .board { width: min(100vw - 16px,1320px); margin: 10px auto 40px }
+  .panel { padding: 20px }
+  .hero-visual,.micro-grid,.color-board { grid-template-columns: 1fr }
+  .section-head { flex-direction: column; align-items: flex-start; gap: 10px }
+  .space-row { grid-template-columns: 38px 1fr 38px }
+  .prototype-shell { height: 560px }
+  .phone-bezel { height: 520px }
+}
+
+/* ═══════════════════════════════════════════
+   KIN APP — DESKTOP PROTOTYPE
+═══════════════════════════════════════════ */
+.kin-app, .kin-phone { color: var(--text) }
+.kin-app {
+  
+  padding: 20px;
+  min-height: 100%;
+  background: #f9fbff;
+  display: grid; gap: 14px; align-content: start;
+}
+.kin-topbar, .kin-phone-head {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.kin-brand { font-size: 22px; font-weight: 800; letter-spacing: -.04em }
+.kin-brand span, .kin-phone-head span {
+  display: block; font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted); margin-top: 3px; font-weight: 600;
+}
+.kin-a11y { display: flex; gap: 6px; flex-wrap: wrap }
+
+/* Buttons inside the prototype */
+.kin-a11y button, .utterance, .chip-group button, .confirm-btn {
+  min-height: 48px; padding: 0 16px;
+  border: 1px solid rgba(11,23,54,.12);
+  font-weight: 700; font-size: 13px;
+}
+.kin-a11y button { background: #fff; color: var(--text) }
+.kin-a11y button.active { background: var(--navy); color: #e8f0ff; border-color: var(--navy) }
+.kin-a11y button:hover:not(.active) { background: var(--bg2) }
+
+.kin-grid { display: grid; grid-template-columns: 1.02fr .98fr; gap: 14px }
+.kin-left, .kin-right { display: grid; gap: 12px; align-content: start }
+
+/* Cards inside prototype */
+.balance-card, .voice-card, .clarify-card, .receipt-card, .kin-phone-card {
+  background: #fff; border: 1px solid rgba(11,23,54,.1);
+  box-shadow: 0 2px 12px rgba(11,23,54,.04);
+}
+.balance-card { padding: 18px }
+.balance-card strong {
+  display: block; font-size: 50px; line-height: .96;
+  letter-spacing: -.06em; margin-top: 10px; font-weight: 800;
+}
+.balance-card span { display: block; margin-top: 8px; font-size: 14px; color: var(--muted); font-weight: 400 }
+.mini-tag.navy {
+  display: inline-flex; padding: 5px 9px;
+  background: var(--navy); color: #e8f0ff;
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700;
+}
+.voice-card {
+  padding: 18px; display: grid;
+  grid-template-columns: 70px 1fr; gap: 14px; align-items: center;
+}
+.voice-orb {
+  width: 70px; height: 70px; border-radius: 50%;
+  background: radial-gradient(circle at 32% 32%, #fff, var(--sky) 48%, var(--navy) 100%);
+  box-shadow: 0 0 0 0 rgba(90,180,245,.16);
+  animation: kinPulse 2.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.voice-copy strong {
+  display: block; margin-top: 8px; font-size: 22px;
+  line-height: 1.1; letter-spacing: -.04em; font-weight: 800;
+}
+.voice-copy p { margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.68; font-weight: 400 }
+.utterance-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px }
+.utterance {
+  background: #fff; text-align: left;
+  padding: 14px 16px; color: var(--text); line-height: 1.4; font-weight: 500; font-size: 13px;
+}
+.utterance.active { background: var(--navy); color: #e8f0ff; border-color: var(--navy) }
+.utterance:hover:not(.active) { background: var(--bg2) }
+
+.clarify-card, .receipt-card, .kin-phone-card { padding: 18px }
+.clarify-card strong, .receipt-card strong { display: block; margin-top: 10px; font-size: 22px; line-height: 1.1; letter-spacing: -.03em; font-weight: 800 }
+.secondary-title { font-size: 16px !important; margin-top: 16px !important; font-weight: 700 !important }
+.chip-group { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px }
+.chip-group button {
+  background: var(--bg2); color: var(--text); border-color: rgba(11,23,54,.1);
+  min-height: 44px; padding: 0 16px; font-weight: 600; font-size: 13px;
+}
+.chip-group button.active { background: var(--sky-dim); border-color: var(--sky); color: var(--navy) }
+.chip-group button:disabled { opacity: .45; cursor: not-allowed }
+.confirm-btn {
+  margin-top: 14px; width: 100%;
+  background: var(--navy); color: #e8f0ff; border-color: var(--navy); font-size: 14px;
+}
+.confirm-btn:hover:not(:disabled) { background: #172850 }
+.confirm-btn:disabled { background: rgba(11,23,54,.07); color: var(--muted); cursor: not-allowed; border-color: var(--stroke) }
+.receipt-card p, .kin-phone-card p { margin: 10px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; font-weight: 400 }
+.receipt-card.success {
+  background: var(--mint-dim); border-color: var(--mint);
+  box-shadow: 0 4px 20px rgba(125,217,178,.18);
+}
+
+/* Accessibility mode overrides */
+#kinApp.high-contrast, #kinPhone.high-contrast { background: #fff }
+#kinApp.high-contrast .balance-card,
+#kinApp.high-contrast .voice-card,
+#kinApp.high-contrast .clarify-card,
+#kinApp.high-contrast .receipt-card,
+#kinPhone.high-contrast .balance-card,
+#kinPhone.high-contrast .voice-card,
+#kinPhone.high-contrast .kin-phone-card,
+#kinPhone.high-contrast .receipt-card { border-width: 2px; border-color: var(--navy) }
+#kinApp.large-type, #kinPhone.large-type { font-size: 112% }
+#kinApp.large-type .balance-card strong, #kinPhone.large-type .balance-card strong { font-size: 58px }
+#kinApp.large-type .voice-copy strong, #kinPhone.large-type .voice-copy strong { font-size: 26px }
+#kinApp.large-type .clarify-card strong, #kinPhone.large-type .kin-phone-card strong { font-size: 26px }
+#kinApp.motor-assist button, #kinPhone.motor-assist button { min-height: 60px; padding: 0 20px }
+#kinApp.motor-assist .chip-group, #kinPhone.motor-assist .chip-group { gap: 12px }
+
+/* ── KIN PHONE ───────────────────────────── */
+.kin-phone {
+  padding: 16px; min-height: 100%;
+  background: #f9fbff;
+  display: grid; gap: 12px; align-content: start;
+}
+.kin-phone-head strong { font-size: 22px; letter-spacing: -.04em; font-weight: 800 }
+.kin-help {
+  padding: 8px 14px; background: var(--bg2);
+  border: 1px solid var(--stroke);
+  font-size: 12px; font-weight: 700; color: var(--muted);
+}
+.balance-card.phone strong { font-size: 42px }
+.voice-card.phone { grid-template-columns: 54px 1fr }
+.voice-card.phone .voice-orb { width: 54px; height: 54px }
+.kin-phone-card { display: grid; gap: 10px }
+.kin-a11y.stacked { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px }
+.utterance-grid.mobile { grid-template-columns: 1fr }
+
+@media (max-width:1120px) {
+  .kin-grid { grid-template-columns: 1fr }
+  .utterance-grid { grid-template-columns: 1fr }
+  .kin-a11y.stacked { grid-template-columns: 1fr }
+}
+</style>
+</head>
+<body class="kinship">
+<main class="board">
+
+  <!-- ══ HERO ══════════════════════════════ -->
+  <section class="panel hero">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>Accessible FinTech · Voice-first banking</div>
+      <h1>A banking app that speaks plainly, listens carefully, and never hides the exit.</h1>
+      <p class="lede">Kinship is a multimodal banking concept for older adults and the unbanked — voice-first by default, touch-first when needed, and built around massive hit targets, high contrast, and safe clarification before money moves.</p>
+      <div class="chip-row">
+        <div class="chip"><small>Problem</small>Banking apps feel too game-like</div>
+        <div class="chip"><small>UX challenge</small>Voice + touch in sync</div>
+        <div class="chip"><small>Accessibility</small>Low vision + motor support</div>
+        <div class="chip"><small>Trust pattern</small>Clarify before confirm</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="mosaic-card">
+        <img src="https://images.unsplash.com/photo-1758686254007-a1aec378eca3?auto=format&fit=crop&q=80&w=1600" alt="Elderly couple using phone" loading="lazy">
+        <div class="floating-note"><strong>Voice-first, never voice-only</strong><span>The product assumes spoken requests, then offers big, touchable confirmations and alternatives.</span></div>
+      </div>
+      <div class="mosaic-stack">
+        <div>
+          <img src="https://images.unsplash.com/photo-1681826291722-70bd7e9e6fc3?auto=format&fit=crop&q=80&w=1600" alt="Hands holding phone" loading="lazy">
+          <div class="floating-note"><strong>Money movement needs clarity</strong><span>Ambiguous phrases trigger clarification instead of risky guessing.</span></div>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1681825984459-47ee999da245?auto=format&fit=crop&q=80&w=1600" alt="Hand using banking app" loading="lazy">
+          <div class="floating-note"><strong>Accessible by touch too</strong><span>Large glass cards, strong contrast, and forgiving targets let voice and touch reinforce each other.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ DESIGN SYSTEM ═════════════════════ -->
+  <section class="panel">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Design system foundations</h2>
+        <div class="section-copy">The visual language is friendly, high-contrast, and intentionally un-gamified. Every surface is large, calm, and explicit about what will happen next.</div>
+      </div>
+      <div class="meta-pill">Color · type · spacing · safe zones</div>
+    </div>
+    <div class="token-grid">
+      <div class="card">
+        <h3>Color board</h3>
+        <p>Deep navy for readability, sky blue for interactive focus, mint for confirmation, gold for attention, coral only for high-risk warnings.</p>
+        <div class="color-board">
+          <div class="color-chip" style="background:#0B1736;color:#F4F8FF">
+            <div><strong>Trust Navy</strong><br><span>Primary text + contrast</span></div>
+            <div><strong>#0B1736</strong></div>
+          </div>
+          <div class="color-chip" style="background:#5AB4F5;color:#06223A">
+            <div><strong>Sky Focus</strong><br><span>Active controls</span></div>
+            <div><strong>#5AB4F5</strong></div>
+          </div>
+          <div class="color-chip" style="background:#7DD9B2;color:#0F2C20">
+            <div><strong>Mint Confirm</strong><br><span>Safe confirmations</span></div>
+            <div><strong>#7DD9B2</strong></div>
+          </div>
+          <div class="color-chip" style="background:#E8B84B;color:#332100">
+            <div><strong>Guide Gold</strong><br><span>Attention without alarm</span></div>
+            <div><strong>#E8B84B</strong></div>
+          </div>
+          <div class="color-chip" style="background:#F07D61;color:#381309">
+            <div><strong>Warm Coral</strong><br><span>Risk / destructive states</span></div>
+            <div><strong>#F07D61</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Typography</h3>
+        <p>Typography prioritizes legibility over style-signaling: plain geometric sans, large numerals, and generous spacing to support low vision and financial newcomers.</p>
+        <div class="type-stack">
+          <div class="type-spec">
+            <div class="type-meta"><span>Display / balance</span><span>50 / 800</span></div>
+            <div class="type-sample" style="font-size:44px;font-weight:800;letter-spacing:-.05em;line-height:.98">$2,481.32</div>
+          </div>
+          <div class="type-spec">
+            <div class="type-meta"><span>Interface heading</span><span>22 / 800</span></div>
+            <div class="type-sample" style="font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.1">How can I help today?</div>
+          </div>
+          <div class="type-spec">
+            <div class="type-meta"><span>Guidance copy</span><span>16 / 400 / 1.68</span></div>
+            <div class="type-sample" style="font-size:15px;font-weight:400;line-height:1.68;color:var(--muted)">I heard "Move some money to my sister." I need two details before I can move anything safely.</div>
+          </div>
+          <div class="type-spec">
+            <div class="type-meta"><span>Receipt / audit</span><span>12 / mono</span></div>
+            <div class="type-sample" style="font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.03em;line-height:1.5;color:var(--muted)">intent: transfer · contact: sister? · amount: missing · risk: clarification_required</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="token-grid" style="margin-top:2px">
+      <div class="card">
+        <h3>Safe spaces</h3>
+        <p>Primary actions live inside oversized safe zones with strong contrast. Confirmation, undo, and human-help options always sit in the easiest-to-reach area.</p>
+        <div class="safe-shell">
+          <div class="safe-diagram">
+            <div class="safe-viewport">
+              <div class="safe-zone"></div>
+              <div class="safe-label outside">Unsafe edge</div>
+              <div class="safe-label inside">Voice + touch action zone</div>
+            </div>
+            <div class="safe-callouts">
+              <div class="callout">Minimum 56px targets across primary actions</div>
+              <div class="callout">Help and undo co-located with confirm</div>
+              <div class="callout">Voice transcript visually tethered to current action</div>
+            </div>
+          </div>
+          <div class="safe-diagram">
+            <div class="safe-viewport" style="min-height:210px;max-width:240px;margin:auto">
+              <div class="safe-zone mobile"></div>
+              <div class="safe-label outside">Camera / gestures</div>
+              <div class="safe-label inside">Large-target confirmation zone</div>
+            </div>
+            <div class="safe-callouts">
+              <div class="callout">Primary CTA anchored above device safe area</div>
+              <div class="callout">Chips sized for imprecise taps</div>
+              <div class="callout">Human support one tap away</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Spacing scale</h3>
+        <p>Kinship uses larger spacing tokens than a typical finance app so voice transcripts, buttons, and receipts never collapse into a dense wall of numbers.</p>
+        <div class="spacing-stack">
+          <div class="space-row"><div class="space-tag">xs</div><div class="space-bar" style="width:15%"></div><div class="space-note">8px</div></div>
+          <div class="space-row"><div class="space-tag">sm</div><div class="space-bar" style="width:23%"></div><div class="space-note">12px</div></div>
+          <div class="space-row"><div class="space-tag">md</div><div class="space-bar" style="width:38%"></div><div class="space-note">20px</div></div>
+          <div class="space-row"><div class="space-tag">lg</div><div class="space-bar" style="width:53%"></div><div class="space-note">28px</div></div>
+          <div class="space-row"><div class="space-tag">xl</div><div class="space-bar" style="width:69%"></div><div class="space-note">36px</div></div>
+          <div class="space-row"><div class="space-tag">2xl</div><div class="space-bar" style="width:100%"></div><div class="space-note">52px</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:2px">
+      <h3>Micro-interactions + motion logic</h3>
+      <p>Motion is subtle and functional: the voice orb pulses while listening, confirmation cards brighten when details are complete, and motor-assist mode grows target sizes rather than adding visual chrome.</p>
+      <div class="micro-grid">
+        <div class="micro-card breathe">
+          <strong>Voice orb pulse</strong>
+          <span>A calm pulse signals listening state without looking like a chat gimmick.</span>
+        </div>
+        <div class="micro-card snap">
+          <strong>Clarify-to-confirm</strong>
+          <span>The main action only unlocks after all ambiguous details are resolved.</span>
+        </div>
+        <div class="micro-card float">
+          <strong>Motor-assist growth</strong>
+          <span>Targets expand when motor support is enabled, reducing precision demands.</span>
+        </div>
+        <div class="micro-card pulse">
+          <strong>Receipt glow</strong>
+          <span>A successful action settles into a mint confirmation card — no flashy celebration.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PORTFOLIO PROOF ═══════════════════ -->
+  <section class="panel">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Key portfolio proof</h2>
+        <div class="section-copy">A credible accessible-fintech case study needs more than a nice UI. It has to show how the system behaves with ambiguity, low vision, and unsteady touch input.</div>
+      </div>
+      <div class="meta-pill">Accessibility + VUI flow</div>
+    </div>
+    <div class="proof-grid">
+      <div class="card">
+        <h3>Accessibility audit built into the concept</h3>
+        <p>The UI layers in large touch targets, high-contrast surfaces, big type, and obvious support lanes from the start — not as a QA pass.</p>
+        <div class="proof-badge">Accessibility audit</div>
+        <ul class="proof-list">
+          <li><strong>Low vision:</strong> large numerals, high contrast, and minimal decorative noise.</li>
+          <li><strong>Motor support:</strong> oversized hit targets, forgiving spacing, imprecision-tolerant chip groups.</li>
+          <li><strong>Cognitive load:</strong> plain language, one primary action per screen, no gamified streaks or confetti.</li>
+          <li><strong>Human fallback:</strong> support is visible in the same lane as confirmation and receipts.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Voice interaction mapping for vague requests</h3>
+        <p>The voice system never guesses with money. It parses intent, surfaces missing details, and turns the clarification path into a visual touch flow too.</p>
+        <div class="proof-badge">VUI mapping</div>
+        <div class="mini-map">
+          <div class="mini-step"><strong>Utterance</strong><span>"Move some money to my sister."</span></div>
+          <div class="mini-step"><strong>Intent parse</strong><span>Transfer money to saved contact family_member.</span></div>
+          <div class="mini-step"><strong>Clarify</strong><span>Ask which sister and what amount before proceeding.</span></div>
+          <div class="mini-step"><strong>Confirm</strong><span>Read the final action back in plain language.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ INTERACTIVE PROTOTYPE ═════════════ -->
+  <section class="panel">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Interactive prototype</h2>
+        <div class="section-copy">Tap a spoken request, clarify missing details with touch, and toggle accessibility modes to see hit targets and contrast adapt live on both views.</div>
+      </div>
+      <div class="meta-pill">Desktop + mobile mirror</div>
+    </div>
+    <div class="chip-row" style="margin-top:0;margin-bottom:20px">
+      <div class="chip">Voice utterance buttons</div>
+      <div class="chip">High contrast / large type / motor assist</div>
+      <div class="chip">Clarification chips</div>
+      <div class="chip">Safe confirmation + receipt</div>
+    </div>
+    <div class="prototype-wrap">
+      <div>
+        <div class="prototype-label">Desktop view</div>
+        <div class="prototype-shell">
+<div class="kin-app" id="kinApp">
+  <div class="kin-topbar">
+    <div class="kin-brand">Kinship <span>Voice-first banking</span></div>
+    <div class="kin-a11y">
+      <button data-kin-flag="contrast">High contrast</button>
+      <button data-kin-flag="large">Large type</button>
+      <button data-kin-flag="motor">Motor assist</button>
+    </div>
+  </div>
+
+  <div class="kin-grid">
+    <div class="kin-left">
+      <div class="balance-card">
+        <div class="mini-tag navy">Everyday balance</div>
+        <strong>$2,481.32</strong>
+        <span>Safe to spend this week: $290</span>
+      </div>
+
+      <div class="voice-card">
+        <div class="voice-orb"></div>
+        <div class="voice-copy">
+          <div class="mini-tag navy">Heard</div>
+          <strong data-kin-transcript>"Move some money to my sister."</strong>
+          <p data-kin-response>That could mean Anna or Meera. I will ask before moving any money.</p>
+        </div>
+      </div>
+
+      <div class="utterance-grid">
+        <button class="utterance active" data-utterance="sister">Move some money to my sister</button>
+        <button class="utterance" data-utterance="bill">Pay the light bill Friday</button>
+        <button class="utterance" data-utterance="groceries">What did I spend on groceries?</button>
+      </div>
+    </div>
+
+    <div class="kin-right">
+      <div class="clarify-card" data-kin-clarify>
+        <div class="mini-tag navy">Clarify safely</div>
+        <strong data-kin-clarify-title>Which sister should I use?</strong>
+        <div class="chip-group" data-kin-recipient-group>
+          <button data-recipient="Anna">Anna</button>
+          <button data-recipient="Meera">Meera</button>
+        </div>
+        <strong class="secondary-title" data-kin-amount-title>How much should I move?</strong>
+        <div class="chip-group" data-kin-amount-group>
+          <button data-amount="$40">$40</button>
+          <button data-amount="$80">$80</button>
+          <button data-amount="$120">$120</button>
+        </div>
+        <button class="confirm-btn" data-kin-confirm disabled>Confirm transfer</button>
+      </div>
+
+      <div class="receipt-card" data-kin-receipt>
+        <div class="mini-tag navy" data-kin-receipt-tag>Awaiting details</div>
+        <strong data-kin-receipt-title>No money moves until the details are clear.</strong>
+        <p data-kin-receipt-copy>Kinship keeps a spoken request visible, asks one question at a time, and waits for a plain-language confirmation before doing anything.</p>
+      </div>
+    </div>
+  </div>
+</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="prototype-label-mobile">Mobile view</div>
+        <div class="phone-shell"><div class="phone-bezel">
+<div class="kin-phone" id="kinPhone">
+
+  <!-- Topbar -->
+  <div class="kin-phone-head">
+    <div><strong>Kinship</strong><span>Voice-first banking</span></div>
+    <div class="kin-help">Help</div>
+  </div>
+
+  <!-- Balance -->
+  <div class="balance-card phone">
+    <div class="mini-tag navy">Everyday balance</div>
+    <strong>$2,481.32</strong>
+    <span>Safe to spend this week: $290</span>
+  </div>
+
+  <!-- Voice -->
+  <div class="voice-card phone">
+    <div class="voice-orb"></div>
+    <div class="voice-copy">
+      <div class="mini-tag navy">Heard</div>
+      <strong data-kin-transcript>"Move some money to my sister."</strong>
+      <p data-kin-response>That could mean Anna or Meera. I will ask before moving any money.</p>
+    </div>
+  </div>
+
+  <!-- Accessibility toggles -->
+  <div class="kin-phone-card">
+    <div class="kin-a11y stacked">
+      <button data-kin-flag="contrast">High contrast</button>
+      <button data-kin-flag="large">Large type</button>
+      <button data-kin-flag="motor">Motor assist</button>
+    </div>
+  </div>
+
+  <!-- Utterance buttons -->
+  <div class="kin-phone-card">
+    <div class="mini-tag navy" style="margin-bottom:10px">Try a spoken request</div>
+    <div class="utterance-grid mobile">
+      <button class="utterance active" data-utterance="sister">Move some money to my sister</button>
+      <button class="utterance" data-utterance="bill">Pay the light bill Friday</button>
+      <button class="utterance" data-utterance="groceries">What did I spend on groceries?</button>
+    </div>
+  </div>
+
+  <!-- Clarify -->
+  <div class="kin-phone-card" data-kin-clarify>
+    <div class="mini-tag navy">Clarify safely</div>
+    <strong data-kin-clarify-title>Which sister should I use?</strong>
+    <div class="chip-group" data-kin-recipient-group>
+      <button data-recipient="Anna">Anna</button>
+      <button data-recipient="Meera">Meera</button>
+    </div>
+    <strong class="secondary-title" data-kin-amount-title>How much should I move?</strong>
+    <div class="chip-group" data-kin-amount-group>
+      <button data-amount="$40">$40</button>
+      <button data-amount="$80">$80</button>
+      <button data-amount="$120">$120</button>
+    </div>
+    <button class="confirm-btn" data-kin-confirm disabled>Confirm transfer</button>
+  </div>
+
+  <!-- Receipt -->
+  <div class="receipt-card" data-kin-receipt>
+    <div class="mini-tag navy" data-kin-receipt-tag>Awaiting details</div>
+    <strong data-kin-receipt-title>No money moves until the details are clear.</strong>
+    <p data-kin-receipt-copy>Kinship keeps a spoken request visible, asks one question at a time, and waits for a plain-language confirmation before doing anything.</p>
+  </div>
+
+</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ WEB FLOW ═══════════════════════════ -->
+  <section class="panel">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Voice-first banking webflow</h2>
+        <div class="section-copy">The interaction flow treats spoken intent as the starting point, not the whole experience. Ambiguity triggers clarification, then the touch UI takes over with big, accessible confirmations.</div>
+      </div>
+      <div class="meta-pill">Webflow / interaction map</div>
+    </div>
+    <div class="flow-grid" style="--flow-count:6">
+      <div class="flow-node"><strong>Hear request</strong><p>The user speaks or taps a saved utterance like "Move some money to my sister."</p></div>
+      <div class="flow-node"><strong>Intent parse</strong><p>Kinship identifies transfer, payment, or insight without guessing missing financial details.</p></div>
+      <div class="flow-node"><strong>Clarify safely</strong><p>The UI asks one question at a time to resolve recipient, amount, or date ambiguity.</p></div>
+      <div class="flow-node"><strong>Plain confirm</strong><p>Before money moves, the action is read back in direct everyday language.</p></div>
+      <div class="flow-node"><strong>Execute</strong><p>The payment or transfer runs only after explicit confirmation.</p></div>
+      <div class="flow-node"><strong>Receipt + help</strong><p>A readable receipt and visible support path remain available after the action.</p></div>
+    </div>
+  </section>
+
+</main>
+
+<footer style="width:min(1320px,calc(100vw - 32px));margin:0 auto 48px;display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-top:1px solid var(--stroke);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.04em">
+  <span>Kinship · Accessible FinTech Case Study · Debayan Mukherjee · 2026</span>
+  <a href="/" style="color:var(--muted);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;font-size:10px;font-weight:700;padding:8px 14px;border:1px solid var(--stroke);background:var(--card);transition:color .2s" onmouseover="this.style.color=var('--text','#0b1736')" onmouseout="this.style.color=''">← Portfolio</a>
+</footer>
+
+<script>
+(() => {
+  const state = {
+    utterance: 'sister',
+    contrast: false,
+    large: false,
+    motor: false,
+    recipient: '',
+    amount: '',
+    confirmed: false
+  };
+
+  const models = {
+    sister: {
+      transcript: '"Move some money to my sister."',
+      response: 'That could mean Anna or Meera. I will ask before moving any money.',
+      clarifyTitle: 'Which sister should I use?',
+      amountTitle: 'How much should I move?',
+      receiptTag: 'Awaiting details',
+      receiptTitle: 'No money moves until the details are clear.',
+      receiptCopy: 'Kinship keeps a spoken request visible, asks one question at a time, and waits for a plain-language confirmation before doing anything.'
+    },
+    bill: {
+      transcript: '"Pay the light bill Friday."',
+      response: 'I found your City Electric bill for $84. Friday is available. I just need your confirmation.',
+      clarifyTitle: 'Pay City Electric on Friday?',
+      amountTitle: 'Review the amount',
+      receiptTag: 'Ready to schedule',
+      receiptTitle: 'Friday payment is prepared for review.',
+      receiptCopy: 'Because the payee and amount are already known, Kinship moves straight to a plain-language confirmation.'
+    },
+    groceries: {
+      transcript: '"What did I spend on groceries?"',
+      response: 'You spent $214 on groceries in the last 30 days. That is $18 less than the month before.',
+      clarifyTitle: 'No clarification needed',
+      amountTitle: 'Choose another quick follow-up',
+      receiptTag: 'Insight ready',
+      receiptTitle: 'Groceries are trending slightly down month over month.',
+      receiptCopy: 'Voice and touch stay in sync here too: the spoken request becomes a readable summary card you can revisit later.'
+    }
+  };
+
+  function isTransferReady() {
+    return state.utterance === 'sister' && !!state.recipient && !!state.amount;
+  }
+
+  function render() {
+    const model = models[state.utterance];
+    const desktop = document.getElementById('kinApp');
+    const mobile = document.getElementById('kinPhone');
+
+    [desktop, mobile].forEach(app => {
+      app.classList.toggle('high-contrast', state.contrast);
+      app.classList.toggle('large-type', state.large);
+      app.classList.toggle('motor-assist', state.motor);
+    });
+
+    document.querySelectorAll('button[data-kin-flag]').forEach(btn => {
+      btn.classList.toggle('active', !!state[btn.dataset.kinFlag]);
+    });
+    document.querySelectorAll('button[data-utterance]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.utterance === state.utterance);
+    });
+
+    document.querySelectorAll('[data-kin-transcript]').forEach(el => el.textContent = model.transcript);
+    document.querySelectorAll('[data-kin-response]').forEach(el => el.textContent = model.response);
+    document.querySelectorAll('[data-kin-clarify-title]').forEach(el => el.textContent = model.clarifyTitle);
+    document.querySelectorAll('[data-kin-amount-title]').forEach(el => el.textContent = model.amountTitle);
+
+    let receiptTag = model.receiptTag;
+    let receiptTitle = model.receiptTitle;
+    let receiptCopy = model.receiptCopy;
+    let confirmText = 'Confirm transfer';
+
+    if (state.utterance === 'sister') {
+      if (isTransferReady() && state.confirmed) {
+        receiptTag = 'Transfer sent';
+        receiptTitle = `${state.amount} moved to ${state.recipient}.`;
+        receiptCopy = `Confirmed in plain language before sending. A receipt and undo window are now available.`;
+      } else if (isTransferReady()) {
+        receiptTag = 'Ready to confirm';
+        receiptTitle = `${state.amount} to ${state.recipient} is ready to confirm.`;
+        receiptCopy = `Both missing details are filled in. Kinship still waits for one explicit confirmation before moving funds.`;
+      }
+      confirmText = isTransferReady() ? `Confirm ${state.amount} transfer` : 'Confirm transfer';
+    } else if (state.utterance === 'bill') {
+      receiptTag = state.confirmed ? 'Payment scheduled' : 'Ready to schedule';
+      receiptTitle = state.confirmed ? 'City Electric is scheduled for Friday.' : 'Friday payment is prepared for review.';
+      receiptCopy = state.confirmed ? 'The bill is scheduled and a clear receipt is stored for later reference.' : 'Tap once to schedule the payment on Friday with no extra navigation.';
+      confirmText = state.confirmed ? 'Payment scheduled' : 'Schedule payment';
+    } else if (state.utterance === 'groceries') {
+      receiptTag = 'Insight ready';
+      receiptTitle = 'Groceries are trending slightly down month over month.';
+      receiptCopy = 'Because this is informational, Kinship avoids fake urgency and offers a readable, reusable answer.';
+      confirmText = 'Ask another question';
+    }
+
+    document.querySelectorAll('[data-kin-receipt-tag]').forEach(el => el.textContent = receiptTag);
+    document.querySelectorAll('[data-kin-receipt-title]').forEach(el => el.textContent = receiptTitle);
+    document.querySelectorAll('[data-kin-receipt-copy]').forEach(el => el.textContent = receiptCopy);
+
+    document.querySelectorAll('[data-kin-confirm]').forEach(btn => {
+      btn.disabled = state.utterance === 'sister' ? !isTransferReady() : false;
+      btn.textContent = confirmText;
+    });
+
+    document.querySelectorAll('[data-kin-receipt]').forEach(card => {
+      card.classList.toggle('success',
+        (state.utterance === 'sister' && state.confirmed) ||
+        (state.utterance === 'bill' && state.confirmed)
+      );
+    });
+
+    document.querySelectorAll('[data-kin-recipient-group] button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.recipient === state.recipient);
+      btn.disabled = state.utterance !== 'sister';
+    });
+    document.querySelectorAll('[data-kin-amount-group] button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.amount === state.amount);
+      btn.disabled = state.utterance !== 'sister';
+    });
+    document.querySelectorAll('[data-kin-clarify]').forEach(card => {
+      card.style.opacity = state.utterance === 'groceries' ? '0.88' : '1';
+    });
+  }
+
+  document.querySelectorAll('button[data-kin-flag]').forEach(btn => {
+    btn.addEventListener('click', () => { state[btn.dataset.kinFlag] = !state[btn.dataset.kinFlag]; render(); });
+  });
+  document.querySelectorAll('button[data-utterance]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.utterance = btn.dataset.utterance;
+      state.recipient = ''; state.amount = ''; state.confirmed = false;
+      render();
+    });
+  });
+  document.querySelectorAll('[data-kin-recipient-group] button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (state.utterance !== 'sister') return;
+      state.recipient = btn.dataset.recipient; state.confirmed = false; render();
+    });
+  });
+  document.querySelectorAll('[data-kin-amount-group] button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (state.utterance !== 'sister') return;
+      state.amount = btn.dataset.amount; state.confirmed = false; render();
+    });
+  });
+  document.querySelectorAll('[data-kin-confirm]').forEach(btn => {
+    btn.addEventListener('click', () => { state.confirmed = !state.confirmed; render(); });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

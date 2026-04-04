@@ -338,6 +338,30 @@
     .ml-tile:hover .ml-tile-heading,
     .de-tile:hover .de-tile-heading { transform: translateY(0); }
 
+    /* ─── UIUX IFRAME OVERLAY ─── */
+    .uiux-iframe-overlay {
+      position: fixed; inset: 0; z-index: 1500;
+      background: var(--bg);
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    .uiux-iframe-overlay.active { opacity: 1; pointer-events: all; }
+    .uiux-iframe-overlay iframe {
+      width: 100%; height: 100%;
+      border: none; display: block;
+    }
+    .uiux-overlay-close {
+      position: fixed; top: 18px; right: 24px; z-index: 10001;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      width: 40px; height: 40px;
+      cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s ease;
+    }
+    .uiux-overlay-close:hover { color: var(--text); border-color: var(--text); background: var(--bg3); }
+
     /* ─── PROJECT OVERLAY (Gen-AI / old style) ─── */
     .project-overlay {
       position: fixed; inset: 0; z-index: 1500;
@@ -661,6 +685,7 @@
       <a href="#genai"   class="nav-a">Gen·AI</a>
       <a href="#ml"      class="nav-a">ML</a>
       <a href="#digital" class="nav-a">Digital</a>
+      <a href="#uiux"    class="nav-a">UI/UX</a>
       <a href="#content" class="nav-a">Content</a>
       <a href="pages/about.html" class="nav-a">About</a>
       <a href="content/Resume/DEBAYAN_MUKHERJEE_CV_2_Pages_Generic_12292025.pdf"
@@ -698,7 +723,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">01 / 04</div>
+          <div class="section-num">01 / 05</div>
           <h2 class="section-title">GEN·AI<br>PROJECTS</h2>
         </div>
         <p class="section-desc">Generative AI video production using node based workflows for cinematic video, editorial fashion, ecommerce visuals, and experimental creative production.</p>
@@ -719,7 +744,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">02 / 04</div>
+          <div class="section-num">02 / 05</div>
           <h2 class="section-title">MACHINE<br>LEARNING</h2>
         </div>
         <p class="section-desc">Applied ML systems spanning multimodal generation, diffusion models, audio processing, and real-time interactive applications.</p>
@@ -743,7 +768,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">03 / 04</div>
+          <div class="section-num">03 / 05</div>
           <h2 class="section-title">DIGITAL<br>EXPERIENCE</h2>
         </div>
         <p class="section-desc">Games, AR experiences, interactive installations, and generative systems — technology as creative medium.</p>
@@ -762,12 +787,40 @@
     </div>
   </div>
 
+  <!-- ─── UI/UX RESEARCH ─── -->
+  <div class="section-wrap" id="uiux">
+    <div class="section">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-num">04 / 05</div>
+          <h2 class="section-title">UI/UX<br>RESEARCH</h2>
+        </div>
+        <p class="section-desc">Concept boards, design systems, and interactive prototypes — UX research brought to life through visual language.</p>
+      </div>
+      <div class="carousel-shell reveal">
+        <div class="carousel" id="carousel-uiux"></div>
+      </div>
+      <div class="carousel-nav reveal">
+        <button class="carousel-btn" data-section="uiux" data-action="prev">←</button>
+        <span class="counter-text" id="counter-uiux">1 OF 5</span>
+        <button class="carousel-btn" data-section="uiux" data-action="next">→</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- UIUX iframe overlay -->
+  <div class="uiux-iframe-overlay" id="uiux-iframe-overlay">
+    <button class="uiux-overlay-close" id="uiux-overlay-close"
+            onclick="closeUIUXProjectOverlay()">✕</button>
+    <iframe id="uiux-iframe" src="" title="UIUX Project"></iframe>
+  </div>
+
   <!-- ─── CONTENT CREATION ─── -->
   <div class="section-wrap" id="content">
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">04 / 04</div>
+          <div class="section-num">05 / 05</div>
           <h2 class="section-title">CONTENT<br>CREATION</h2>
         </div>
         <p class="section-desc">Visual storytelling through photography and video — capturing emotion, form, and narrative across subjects and formats.</p>
