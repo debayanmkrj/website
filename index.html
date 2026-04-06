@@ -338,6 +338,65 @@
     .ml-tile:hover .ml-tile-heading,
     .de-tile:hover .de-tile-heading { transform: translateY(0); }
 
+    /* ─── CASCADE FEATURED TILE ─── */
+    .cascade-preview-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--border2);
+    }
+    .cascade-iframe-preview {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1440px;
+      height: 900px;
+      border: none;
+      pointer-events: none;
+      transform-origin: top left;
+      /* scale set dynamically via JS */
+    }
+    .cascade-tile-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(5,5,8,0.9) 0%, rgba(5,5,8,0.1) 55%, transparent 100%);
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 36px 40px;
+      transition: background 0.3s;
+    }
+    .cascade-preview-wrap:hover .cascade-tile-overlay {
+      background: linear-gradient(to top, rgba(5,5,8,0.8) 0%, rgba(5,5,8,0.3) 100%);
+    }
+    .cascade-tile-label {
+      font-family: var(--ff-display);
+      font-size: clamp(2.5rem,6vw,6rem);
+      letter-spacing: 0.04em;
+      line-height: 0.9;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .cascade-tile-desc {
+      font-family: var(--ff-body);
+      font-size: 0.88rem; font-weight: 300;
+      color: rgba(237,233,224,0.55);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+    .cascade-tile-cta {
+      font-family: var(--ff-mono);
+      font-size: 0.68rem; letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #00d4ff;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    .cascade-preview-wrap:hover .cascade-tile-cta {
+      opacity: 1; transform: none;
+    }
+
     /* ─── UIUX IFRAME OVERLAY ─── */
     .uiux-iframe-overlay {
       position: fixed; inset: 0; z-index: 1500;
@@ -682,6 +741,7 @@
   <nav class="nav">
     <a href="#top" class="nav-logo">DEB<em>.</em></a>
     <div class="nav-links" id="nav-links">
+      <a href="#cascade" class="nav-a">Cascade</a>
       <a href="#genai"   class="nav-a">Gen·AI</a>
       <a href="#ml"      class="nav-a">ML</a>
       <a href="#digital" class="nav-a">Digital</a>
@@ -719,12 +779,40 @@
     <div class="hero-scroll">Scroll</div>
   </section>
 
+  <!-- ─── CASCADE ─── -->
+  <div class="section-wrap" id="cascade">
+    <div class="section">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-num">01 / 06</div>
+          <h2 class="section-title">CASCADE</h2>
+        </div>
+        <p class="section-desc">Prompt-driven visual node graph generation — a generative AI system that builds ComfyUI workflows from natural language.</p>
+      </div>
+      <div class="cascade-preview-wrap reveal" id="cascade-tile">
+        <iframe
+          class="cascade-iframe-preview"
+          id="cascade-preview-iframe"
+          src="content/Cascade/index.html"
+          scrolling="no"
+          tabindex="-1"
+          title="Cascade — Prompt-Driven Visual Node Graph Generation">
+        </iframe>
+        <div class="cascade-tile-overlay">
+          <div class="cascade-tile-label">CASCADE</div>
+          <div class="cascade-tile-desc">Prompt-driven visual node graph generation — build ComfyUI pipelines from natural language using generative AI.</div>
+          <div class="cascade-tile-cta">View Project →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ─── GEN·AI PROJECTS ─── -->
   <div class="section-wrap" id="genai">
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">01 / 05</div>
+          <div class="section-num">02 / 06</div>
           <h2 class="section-title">GEN·AI<br>PROJECTS</h2>
         </div>
         <p class="section-desc">Generative AI video production using node based workflows for cinematic video, editorial fashion, ecommerce visuals, and experimental creative production.</p>
@@ -745,7 +833,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">02 / 05</div>
+          <div class="section-num">03 / 06</div>
           <h2 class="section-title">MACHINE<br>LEARNING</h2>
         </div>
         <p class="section-desc">Applied ML systems spanning multimodal generation, diffusion models, audio processing, and real-time interactive applications.</p>
@@ -769,7 +857,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">03 / 05</div>
+          <div class="section-num">04 / 06</div>
           <h2 class="section-title">DIGITAL<br>EXPERIENCE</h2>
         </div>
         <p class="section-desc">Games, AR experiences, interactive installations, and generative systems — technology as creative medium.</p>
@@ -793,7 +881,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">04 / 05</div>
+          <div class="section-num">05 / 06</div>
           <h2 class="section-title">UI/UX<br>RESEARCH</h2>
         </div>
         <p class="section-desc">Concept boards, design systems, and interactive prototypes — UX research brought to life through visual language.</p>
@@ -821,7 +909,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">05 / 05</div>
+          <div class="section-num">06 / 06</div>
           <h2 class="section-title">CONTENT<br>CREATION</h2>
         </div>
         <p class="section-desc">Visual storytelling through photography and video — capturing emotion, form, and narrative across subjects and formats.</p>

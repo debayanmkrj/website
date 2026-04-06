@@ -1166,10 +1166,34 @@ function closeUIUXProjectOverlay() {
   if (iframe) { iframe.onload = null; iframe.src = ''; }
 }
 
+// =====================================================
+// CASCADE FEATURED TILE — IFRAME PREVIEW + SCALE
+// =====================================================
+
+function initCascadeTile() {
+  const tile   = document.getElementById('cascade-tile');
+  const iframe = document.getElementById('cascade-preview-iframe');
+  if (!tile || !iframe) return;
+
+  function scalePreview() {
+    const scale = tile.offsetWidth / 1440;
+    iframe.style.transform = `scale(${scale})`;
+    iframe.style.height = (tile.offsetHeight / scale) + 'px';
+  }
+
+  scalePreview();
+  new ResizeObserver(scalePreview).observe(tile);
+
+  tile.addEventListener('click', () => openUIUXProjectOverlay('content/Cascade/index.html'));
+}
+
 // Initialize all carousels on page load
 async function initializeProjects() {
   // Load photography images first
   await loadPhotographyImages();
+
+  // Init cascade featured tile
+  initCascadeTile();
 
   // Build tile grids (replace carousels)
   buildMLTileGrid();
