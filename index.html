@@ -338,6 +338,98 @@
     .ml-tile:hover .ml-tile-heading,
     .de-tile:hover .de-tile-heading { transform: translateY(0); }
 
+    /* ─── WIP SECTION ─── */
+    .wip-section {
+      padding-top: 58px !important;
+      padding-bottom: 58px !important;
+    }
+    .wip-section .section-head { margin-bottom: 24px; }
+    .wip-section .section-title { font-size: clamp(1.8rem, 3.5vw, 3.6rem); }
+
+    .wip-layout {
+      display: grid;
+      grid-template-columns: 38% 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* Left — static image */
+    .wip-left { position: relative; }
+    .wip-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--ff-mono); font-size: 0.58rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(212,255,71,0.25);
+      padding: 4px 10px; margin-bottom: 10px;
+    }
+    .wip-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      animation: wip-pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes wip-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.3; transform: scale(0.6); }
+    }
+    .wip-image {
+      display: block; width: 100%;
+      height: auto;
+      border: 1px solid var(--border2);
+    }
+    .wip-meta { margin-top: 12px; }
+    .wip-title {
+      font-family: var(--ff-display);
+      font-size: 1.4rem; letter-spacing: 0.05em;
+      color: var(--text); margin-bottom: 5px;
+    }
+    .wip-meta-desc {
+      font-size: 0.78rem; font-weight: 300;
+      color: rgba(237,233,224,0.45);
+      line-height: 1.75;
+    }
+
+    /* Right — compact video carousel */
+    .wip-right { display: flex; flex-direction: column; gap: 10px; }
+    .wip-carousel-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--bg2);
+      overflow: hidden;
+      border: 1px solid var(--border2);
+    }
+    .wip-video-slide {
+      position: absolute; inset: 0;
+      opacity: 0; transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+    .wip-video-slide.active { opacity: 1; pointer-events: auto; }
+    .wip-video-slide video {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .wip-carousel-controls {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .wip-carousel-btn {
+      font-family: var(--ff-mono); font-size: 0.82rem;
+      background: transparent; border: 1px solid var(--border2);
+      color: var(--muted); width: 36px; height: 36px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: color .2s, border-color .2s, background .2s;
+    }
+    .wip-carousel-btn:hover { color: var(--text); border-color: var(--border2); background: var(--bg3); }
+    .wip-carousel-counter {
+      font-family: var(--ff-mono); font-size: 0.65rem;
+      letter-spacing: 0.14em; color: var(--muted);
+    }
+
+    @media (max-width: 720px) {
+      .wip-layout { grid-template-columns: 1fr; }
+    }
+
     /* ─── CASCADE FEATURED TILE ─── */
     .cascade-preview-wrap {
       position: relative;
@@ -746,6 +838,7 @@
       <a href="#ml"      class="nav-a">ML</a>
       <a href="#digital" class="nav-a">Digital</a>
       <a href="#uiux"    class="nav-a">UI/UX</a>
+      <a href="#wip"     class="nav-a">WIP</a>
       <a href="#content" class="nav-a">Content</a>
       <a href="pages/about.html" class="nav-a">About</a>
       <a href="content/Resume/DEBAYAN_MUKHERJEE_CV_2_Pages_Generic_12292025.pdf"
@@ -784,7 +877,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">01 / 06</div>
+          <div class="section-num">01 / 07</div>
           <h2 class="section-title">CASCADE</h2>
         </div>
         <p class="section-desc">Prompt-driven visual node graph generation — a generative AI system that builds workflows from natural language.</p>
@@ -812,7 +905,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">02 / 06</div>
+          <div class="section-num">02 / 07</div>
           <h2 class="section-title">GEN·AI<br>PROJECTS</h2>
         </div>
         <p class="section-desc">Generative AI video production using node based workflows for cinematic video, editorial fashion, ecommerce visuals, and experimental creative production.</p>
@@ -833,7 +926,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">03 / 06</div>
+          <div class="section-num">03 / 07</div>
           <h2 class="section-title">MACHINE<br>LEARNING</h2>
         </div>
         <p class="section-desc">Applied ML systems spanning multimodal generation, diffusion models, audio processing, and real-time interactive applications.</p>
@@ -857,7 +950,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">04 / 06</div>
+          <div class="section-num">04 / 07</div>
           <h2 class="section-title">DIGITAL<br>EXPERIENCE</h2>
         </div>
         <p class="section-desc">Games, AR experiences, interactive installations, and generative systems — technology as creative medium.</p>
@@ -881,7 +974,7 @@
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">05 / 06</div>
+          <div class="section-num">05 / 07</div>
           <h2 class="section-title">UI/UX<br>RESEARCH</h2>
         </div>
         <p class="section-desc">Concept boards, design systems, and interactive prototypes — UX research brought to life through visual language.</p>
@@ -904,12 +997,56 @@
     <iframe id="uiux-iframe" src="" title="UIUX Project"></iframe>
   </div>
 
+  <!-- ─── WIP ─── -->
+  <div class="section-wrap" id="wip">
+    <div class="section wip-section">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-num">06 / 07</div>
+          <h2 class="section-title">IN<br>DEVELOPMENT</h2>
+        </div>
+        <p class="section-desc">DP Blocking Planner — isometric cinematography planning with AI-driven prompt synthesis.</p>
+      </div>
+      <div class="wip-layout reveal">
+
+        <div class="wip-left">
+          <div class="wip-badge"><span class="wip-badge-dot"></span>Work in Progress</div>
+          <img src="content/WIP/image1.jpeg" alt="DP Blocking Planner" class="wip-image">
+          <div class="wip-meta">
+            <div class="wip-title">DP BLOCKING PLANNER</div>
+            <div class="wip-meta-desc">Isometric DP tool for camera blocking, character movement &amp; lighting layouts — generates physics-grounded shot timelines and synthesises video prompts.</div>
+          </div>
+        </div>
+
+        <div class="wip-right">
+          <div class="wip-carousel-wrap" id="wip-carousel-wrap">
+            <div class="wip-video-slide active">
+              <video src="content/WIP/media1.mp4" muted autoplay loop playsinline></video>
+            </div>
+            <div class="wip-video-slide">
+              <video src="content/WIP/media2.mp4" muted loop playsinline></video>
+            </div>
+            <div class="wip-video-slide">
+              <video src="content/WIP/media3.mp4" muted loop playsinline></video>
+            </div>
+          </div>
+          <div class="wip-carousel-controls">
+            <button class="wip-carousel-btn" id="wip-prev">←</button>
+            <span class="wip-carousel-counter" id="wip-counter">1 / 3</span>
+            <button class="wip-carousel-btn" id="wip-next">→</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- ─── CONTENT CREATION ─── -->
   <div class="section-wrap" id="content">
     <div class="section">
       <div class="section-head reveal">
         <div>
-          <div class="section-num">06 / 06</div>
+          <div class="section-num">07 / 07</div>
           <h2 class="section-title">CONTENT<br>CREATION</h2>
         </div>
         <p class="section-desc">Visual storytelling through photography and video — capturing emotion, form, and narrative across subjects and formats.</p>

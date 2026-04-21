@@ -1167,6 +1167,35 @@ function closeUIUXProjectOverlay() {
 }
 
 // =====================================================
+// WIP SECTION — COMPACT VIDEO CAROUSEL
+// =====================================================
+
+function initWIPCarousel() {
+  const slides  = document.querySelectorAll('.wip-video-slide');
+  const counter = document.getElementById('wip-counter');
+  const prev    = document.getElementById('wip-prev');
+  const next    = document.getElementById('wip-next');
+  if (!slides.length || !prev || !next) return;
+
+  let current = 0;
+
+  function goTo(index) {
+    slides[current].classList.remove('active');
+    const prevVid = slides[current].querySelector('video');
+    if (prevVid) prevVid.pause();
+
+    current = (index + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    const nextVid = slides[current].querySelector('video');
+    if (nextVid) { nextVid.currentTime = 0; nextVid.play(); }
+    if (counter) counter.textContent = `${current + 1} / ${slides.length}`;
+  }
+
+  prev.addEventListener('click', () => goTo(current - 1));
+  next.addEventListener('click', () => goTo(current + 1));
+}
+
+// =====================================================
 // CASCADE FEATURED TILE — IFRAME PREVIEW + SCALE
 // =====================================================
 
@@ -1194,6 +1223,9 @@ async function initializeProjects() {
 
   // Init cascade featured tile
   initCascadeTile();
+
+  // Init WIP video carousel
+  initWIPCarousel();
 
   // Build tile grids (replace carousels)
   buildMLTileGrid();
