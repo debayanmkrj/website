@@ -1,3 +1,8 @@
+// ── Shared utility ──
+function slugify(str) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
 // Projects data for all sections
 const projectsData = {
   llms: [
@@ -176,6 +181,7 @@ function createCarouselItem(section, index, position) {
 
     item.addEventListener('click', function () {
       if (position === 'center') {
+        setProjectHash('content', project.name);
         openFullVideo(project.coverVideo);
       } else {
         carouselStates[section].currentIndex = index;
@@ -192,6 +198,7 @@ function createCarouselItem(section, index, position) {
 
     item.addEventListener('click', function () {
       if (position === 'center') {
+        setProjectHash('content', project.name);
         openFullImage(project.coverImage, [project.coverImage], 0);
       } else {
         carouselStates[section].currentIndex = index;
@@ -232,7 +239,7 @@ function createCarouselItem(section, index, position) {
 
     item.addEventListener('click', function () {
       if (position === 'center') {
-        openUIUXProjectOverlay(project.htmlPage);
+        openUIUXProjectOverlay(project.htmlPage, slugify(project.title));
       } else {
         carouselStates[section].currentIndex = index;
         setupCarousel(section);
@@ -460,6 +467,7 @@ async function openProjectOverlay(section, index) {
   }
 
   overlay.classList.add('active');
+  setProjectHash('genai', project.name);
 }
 
 // Open Gen-AI project overlay with video + labeled images
@@ -511,6 +519,7 @@ function openGenAIOverlay(index) {
   }
 
   overlay.classList.add('active');
+  setProjectHash('genai', project.name);
 }
 
 // Close project overlay — stop all videos before hiding
@@ -519,6 +528,7 @@ function closeProjectOverlay(section, index) {
   if (overlay) {
     overlay.querySelectorAll('video').forEach(v => { v.pause(); v.src = ''; v.load(); });
     overlay.classList.remove('active');
+    clearProjectHash();
   }
 }
 
@@ -556,6 +566,7 @@ function closeFullImage() {
   fullsizeImage.src = '';
   currentImageGallery = [];
   currentImageIndex = 0;
+  clearProjectHash();
 }
 
 // ── Full-screen VIDEO viewer for photography videos ──
@@ -616,6 +627,7 @@ function closeFullVideo() {
   ovl.style.opacity = '0';
   ovl.style.pointerEvents = 'none';
   document.body.style.overflow = '';
+  clearProjectHash();
 }
 
 function navigateFullImage(direction) {
@@ -982,6 +994,7 @@ async function openMLProjectOverlay(index) {
   // Show overlay + prevent body scroll
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
+  setProjectHash('ml', project.name);
 
   // Close on backdrop click (clicking the outer overlay itself)
   overlay._backdropHandler = function (e) {
@@ -1000,6 +1013,7 @@ function closeMLProjectOverlay() {
 
   overlay.classList.remove('active');
   document.body.style.overflow = '';
+  clearProjectHash();
 
   // Pause all videos to stop audio/network
   if (rightPanel) {
@@ -1116,6 +1130,7 @@ async function openDEProjectOverlay(index) {
 
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
+  setProjectHash('de', project.name);
 
   overlay._backdropHandler = function (e) {
     if (e.target === overlay) closeDEProjectOverlay();
@@ -1130,6 +1145,7 @@ function closeDEProjectOverlay() {
 
   overlay.classList.remove('active');
   document.body.style.overflow = '';
+  clearProjectHash();
 
   if (rightPanel) {
     rightPanel.querySelectorAll('video').forEach(v => { v.pause(); v.src = ''; });
@@ -1145,7 +1161,7 @@ function closeDEProjectOverlay() {
 // UI/UX RESEARCH IFRAME OVERLAY
 // =====================================================
 
-function openUIUXProjectOverlay(htmlPage) {
+function openUIUXProjectOverlay(htmlPage, hashId) {
   const overlay = document.getElementById('uiux-iframe-overlay');
   const iframe  = document.getElementById('uiux-iframe');
   if (!overlay || !iframe) return;
@@ -1153,6 +1169,16 @@ function openUIUXProjectOverlay(htmlPage) {
   iframe.src = htmlPage;
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
+
+  // Set hash: cascade has its own type, uiux projects use slug
+  if (hashId) {
+    setProjectHash(hashId === 'cascade' ? 'cascade' : 'uiux', hashId === 'cascade' ? '' : hashId);
+  } else {
+    // Derive from htmlPage if no hashId provided
+    const project = projectsData.uiux.find(p => p.htmlPage === htmlPage);
+    if (project) setProjectHash('uiux', slugify(project.title));
+    else if (htmlPage.includes('Cascade')) setProjectHash('cascade', '');
+  }
 }
 
 function closeUIUXProjectOverlay() {
@@ -1162,6 +1188,7 @@ function closeUIUXProjectOverlay() {
 
   overlay.classList.remove('active');
   document.body.style.overflow = '';
+  clearProjectHash();
   // Clear iframe src so content stops
   if (iframe) { iframe.onload = null; iframe.src = ''; }
 }
@@ -1213,7 +1240,7 @@ function initCascadeTile() {
   scalePreview();
   new ResizeObserver(scalePreview).observe(tile);
 
-  tile.addEventListener('click', () => openUIUXProjectOverlay('content/Cascade/index.html'));
+  tile.addEventListener('click', () => openUIUXProjectOverlay('content/Cascade/index.html', 'cascade'));
 }
 
 // Initialize all carousels on page load
@@ -1255,6 +1282,16 @@ async function initializeProjects() {
     });
   }
 
+  // Handle initial hash (direct URL to a project)
+  if (window.location.hash) {
+    await handleProjectHash(window.location.hash.slice(1));
+  }
+
+  // Handle browser back/forward hash changes
+  window.addEventListener('hashchange', () => {
+    handleProjectHash(window.location.hash.slice(1));
+  });
+
   // Keyboard navigation
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
@@ -1276,6 +1313,55 @@ async function initializeProjects() {
       }
     }
   });
+}
+
+// =====================================================
+// URL HASH ROUTING — each project gets its own address
+// =====================================================
+
+function setProjectHash(type, id) {
+  const hash = id ? `${type}/${id}` : type;
+  history.replaceState(null, '', `#${hash}`);
+}
+
+function clearProjectHash() {
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+}
+
+async function handleProjectHash(hash) {
+  if (!hash) return;
+  const [type, ...rest] = hash.split('/');
+  const id = rest.join('/');
+
+  if (type === 'ml') {
+    const index = projectsData.creative.findIndex(p => p.name === id);
+    if (index !== -1) await openMLProjectOverlay(index);
+  } else if (type === 'de') {
+    const index = projectsData.visual.findIndex(p => p.name === id);
+    if (index !== -1) await openDEProjectOverlay(index);
+  } else if (type === 'genai') {
+    const index = projectsData.llms.findIndex(p => p.name === id);
+    if (index !== -1) openGenAIOverlay(index);
+  } else if (type === 'uiux') {
+    const project = projectsData.uiux.find(p => slugify(p.title) === id);
+    if (project) openUIUXProjectOverlay(project.htmlPage, id);
+  } else if (type === 'cascade') {
+    openUIUXProjectOverlay('content/Cascade/index.html', 'cascade');
+  } else if (type === 'content') {
+    // Scroll to section, then open the specific photo/video fullscreen
+    const section = document.getElementById('content');
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
+    const item = projectsData.photography.find(p => p.name === id);
+    if (item) {
+      setTimeout(() => {
+        if (item.coverVideo) openFullVideo(item.coverVideo);
+        else if (item.coverImage) openFullImage(item.coverImage, [item.coverImage], 0);
+      }, 600);
+    }
+  } else if (type === 'wip') {
+    const section = document.getElementById('wip');
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 // Make functions globally accessible
