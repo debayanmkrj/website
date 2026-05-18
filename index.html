@@ -1144,7 +1144,8 @@ function renderContentCarousel() {
   inner.innerHTML = '';
   if (item.type === 'video') {
     const v = document.createElement('video');
-    v.src = item.src; v.autoplay = true; v.muted = true; v.loop = true; v.playsinline = true;
+    v.src = item.src; v.autoplay = true; v.muted = true; v.loop = true;
+    v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
     v.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
     inner.appendChild(v);
   } else {
@@ -1174,8 +1175,12 @@ function openContentFull() {
   med.innerHTML = '';
   if (item.type === 'video') {
     const v = document.createElement('video');
-    v.src = item.src; v.autoplay = true; v.controls = true; v.playsinline = true;
+    v.src = item.src; v.autoplay = true; v.controls = true;
+    v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
     v.style.cssText = 'max-width:90vw;max-height:90vh;object-fit:contain;display:block;';
+    const resumeOnFsExit = () => { if (!document.fullscreenElement && !document.webkitFullscreenElement && v.paused) v.play(); };
+    v.addEventListener('fullscreenchange', resumeOnFsExit);
+    v.addEventListener('webkitfullscreenchange', resumeOnFsExit);
     med.appendChild(v);
   } else {
     const img = document.createElement('img');
@@ -1267,6 +1272,9 @@ function buildVidControls(video) {
     if (video.requestFullscreen) video.requestFullscreen();
     else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
   };
+  const resumeAfterFs = () => { if (!document.fullscreenElement && !document.webkitFullscreenElement && video.paused) video.play(); };
+  video.addEventListener('fullscreenchange', resumeAfterFs);
+  video.addEventListener('webkitfullscreenchange', resumeAfterFs);
   ctrl.append(muteBtn, seek, time, fsBtn);
   return ctrl;
 }
@@ -1283,7 +1291,8 @@ function renderOverlayMedia() {
   let el;
   if (isVid) {
     el = document.createElement('video');
-    el.src = src; el.autoplay = true; el.muted = true; el.loop = true; el.playsinline = true;
+    el.src = src; el.autoplay = true; el.muted = true; el.loop = true;
+    el.setAttribute('playsinline', ''); el.setAttribute('webkit-playsinline', '');
     el.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;';
     mediaEl.insertBefore(el, mediaEl.firstChild);
     mediaEl.appendChild(buildVidControls(el));
