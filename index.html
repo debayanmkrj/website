@@ -942,16 +942,15 @@ function slugify(str) {
 const SECTION_IDS = ['cascade','genai','ml','digital','uiux','wip','content'];
 
 function navigateToHash(h) {
-  if (!h) { showSection('landing'); return; }
-  if (h === 'landing') { showSection('landing'); return; }
-  // Try to split section from project slug on first hyphen
+  if (!h) { showSection('landing', true); return; }
+  if (h === 'landing') { showSection('landing', true); return; }
   const dash = h.indexOf('-');
   const possibleSect = dash > 0 ? h.slice(0, dash) : h;
   const slug = dash > 0 && SECTION_IDS.includes(possibleSect) ? h.slice(dash + 1) : '';
   const sect = SECTION_IDS.includes(possibleSect) ? possibleSect : (SECTION_IDS.includes(h) ? h : null);
-  if (!sect) { showSection('landing'); return; }
-  showSection(sect);
-  if (slug) setTimeout(() => openBySlug(sect, slug), 80);
+  if (!sect) { showSection('landing', true); return; }
+  showSection(sect, true);
+  if (slug) openBySlug(sect, slug);
 }
 function openBySlug(sect, slug) {
   if (sect === 'ml' || sect === 'digital') {
@@ -978,17 +977,18 @@ function openBySlug(sect, slug) {
 }
 
 // ── SECTION NAV ───────────────────────────────────────────────
-function showSection(id) {
+function showSection(id, replace) {
   document.querySelectorAll('.proj-section').forEach(s => s.classList.remove('ps-open'));
   document.querySelectorAll('.nav-a[data-section]').forEach(b => b.classList.remove('active'));
   const btn = document.querySelector(`.nav-a[data-section="${id}"]`);
   if (btn) btn.classList.add('active');
+  const method = replace ? 'replaceState' : 'pushState';
   if (id !== 'landing') {
     const sect = document.getElementById('sect-' + id);
     if (sect) sect.classList.add('ps-open');
-    history.pushState(null, '', '#' + id);
+    history[method](null, '', '#' + id);
   } else {
-    history.pushState(null, '', window.location.pathname + window.location.search);
+    history[method](null, '', window.location.pathname + window.location.search);
   }
   document.getElementById('hamburger').classList.remove('open');
   document.getElementById('nav-links').classList.remove('open');
@@ -996,8 +996,13 @@ function showSection(id) {
 // deep-link on load & browser back/forward
 (function() {
   const go = () => { navigateToHash(location.hash.slice(1)); };
-  setTimeout(go, 0); // delay until all data consts are initialized
   window.addEventListener('popstate', go);
+  // DOMContentLoaded guarantees all HTML (including overlays and sections) is parsed
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', go);
+  } else {
+    go();
+  }
 })();
 
 // ── HAMBURGER ─────────────────────────────────────────────────
@@ -1418,8 +1423,8 @@ const _origShow = showSection;
     content: () => { if (!document.getElementById('content-car-inner').children.length) buildContentCarousel(); }
   };
   const origShow = showSection;
-  window.showSection = function(id) {
-    origShow(id);
+  window.showSection = function(id, replace) {
+    origShow(id, replace);
     if (sectionInits[id]) sectionInits[id]();
   };
   const h = location.hash.slice(1);
