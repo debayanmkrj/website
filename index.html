@@ -1030,8 +1030,9 @@ function showSection(id, replace) {
 // ── PROJECT DATA ──────────────────────────────────────────────
 const SITE_DATA = {
   genai: [
-    { title:'CINEMATIC',   desc:'Generative AI driven cinematic video content creation.',      cover:'content/Gen-AI/Cinematic/media1.mp4',   refImage:'content/Gen-AI/Cinematic/Portfolio_debayan.01.jpeg',   workflow:'content/Gen-AI/Cinematic/Portfolio_debayan.02.jpeg',   coverIsVideo:true },
     { title:'ECOMMERCE',   desc:'AI powered ecommerce visual content generation.',             cover:'content/Gen-AI/Ecommerce/media1.mp4',   refImage:'content/Gen-AI/Ecommerce/Portfolio_debayan.001.jpeg',  workflow:'content/Gen-AI/Ecommerce/Portfolio_debayan.002.jpeg',  coverIsVideo:true },
+    { title:'MOTION',      desc:'Motion, character and garment consistency workflow.',          cover:'content/Gen-AI/comfy_proj1/media.mp4',  refImage:'content/Gen-AI/comfy_proj1/reference_front.jpeg',      refVideo:'content/Gen-AI/comfy_proj1/Reference1.mp4',            workflow:'content/Gen-AI/comfy_proj1/Screenshot 2026-05-20 000630.jpeg', coverIsVideo:true, coverIsVertical:true },
+    { title:'CINEMATIC',   desc:'Generative AI driven cinematic video content creation.',      cover:'content/Gen-AI/Cinematic/media1.mp4',   refImage:'content/Gen-AI/Cinematic/Portfolio_debayan.01.jpeg',   workflow:'content/Gen-AI/Cinematic/Portfolio_debayan.02.jpeg',   coverIsVideo:true },
     { title:'EDITORIAL',   desc:'Generative AI fashion video production and styling.',         cover:'content/Gen-AI/Editorial/media1.mp4',   refImage:'content/Gen-AI/Editorial/Portfolio_debayan.001.jpeg',  workflow:'content/Gen-AI/Editorial/Portfolio_debayan.002.jpeg',  coverIsVideo:true },
     { title:'HOME',        desc:'AI generated home and interior design visualizations.',       cover:'content/Gen-AI/Home/media1.mp4',        refImage:'content/Gen-AI/Home/port_1.jpeg',                      workflow:'content/Gen-AI/Home/port_2.jpeg',                      coverIsVideo:true },
     { title:'IMAGINATIVE', desc:'Experimental generative AI art and creative explorations.',   cover:'content/Gen-AI/Imaginative/media1.mp4', refImage:'content/Gen-AI/Imaginative/Portfolio_debayan.01.jpeg', workflow:'content/Gen-AI/Imaginative/Portfolio_debayan.02.jpeg', coverIsVideo:true }
@@ -1074,7 +1075,7 @@ function buildGenaiCarousel() {
 function renderGenaiCarousel() {
   const p = SITE_DATA.genai[genaiIdx];
   const v = document.getElementById('genai-car-video');
-  if (v) { v.src = p.cover; v.play(); }
+  if (v) { v.src = p.cover; v.style.objectFit = p.coverIsVertical ? 'contain' : 'cover'; v.play(); }
   const el = document.getElementById('genai-car-title');
   if (el) el.textContent = p.title;
   const de = document.getElementById('genai-car-desc');
@@ -1093,9 +1094,26 @@ function openGenaiOverlay(idx) {
   document.getElementById('genai-full-name').textContent = p.title;
   document.getElementById('genai-full-desc').textContent = p.desc;
   const v = document.getElementById('genai-full-video');
-  v.src = p.cover; v.play();
+  v.src = p.cover;
+  v.style.objectFit = p.coverIsVertical ? 'contain' : 'cover';
+  v.play();
   document.getElementById('genai-full-refimg').src = p.refImage || '';
   document.getElementById('genai-full-workflow').src = p.workflow || '';
+  const rv = document.getElementById('genai-full-refvideo');
+  const wf = document.getElementById('genai-full-workflow');
+  const rightCol = document.getElementById('genai-full-right');
+  if (p.refVideo) {
+    rv.src = p.refVideo;
+    rv.setAttribute('playsinline', ''); rv.setAttribute('webkit-playsinline', '');
+    rv.style.cssText = 'display:block;width:100%;flex:1;min-height:0;object-fit:contain;border-radius:4px;background:#000;';
+    rv.play();
+    wf.style.cssText = 'width:100%;flex:0 0 auto;max-height:38%;object-fit:contain;border-radius:4px;';
+    rightCol.style.cssText = 'display:flex;flex-direction:column;gap:8px;overflow:hidden;';
+  } else {
+    rv.style.display = 'none'; rv.src = '';
+    wf.style.cssText = '';
+    rightCol.style.cssText = '';
+  }
   document.getElementById('genai-full-overlay').classList.add('open');
 }
 function closeGenaiOverlay() {
@@ -1103,6 +1121,8 @@ function closeGenaiOverlay() {
   document.getElementById('genai-full-overlay').classList.remove('open');
   const v = document.getElementById('genai-full-video');
   if (v) { v.pause(); v.src = ''; }
+  const rv = document.getElementById('genai-full-refvideo');
+  if (rv) { rv.pause(); rv.src = ''; rv.style.display = 'none'; }
 }
 
 const WIP_VIDS = ['content/WIP/media1.mp4','content/WIP/media2.mp4','content/WIP/media3.mp4'];
@@ -1474,8 +1494,8 @@ const _origShow = showSection;
       <span class="ps-role">VIDEO · IMAGE · EDITORIAL</span>
     </div>
     <p class="ps-desc" style="margin-bottom:28px;">Generative AI video production using node based workflows for cinematic video, editorial fashion, ecommerce visuals, and experimental creative production.</p>
-    <div style="width:100%;aspect-ratio:16/9;position:relative;border-radius:10px 10px 3px 3px;overflow:hidden;box-shadow:inset 3px 3px 0 rgba(255,255,255,.07),inset -3px -3px 0 rgba(0,0,0,.65),0 28px 70px rgba(0,0,0,.75);cursor:pointer;" onclick="openGenaiOverlay(genaiIdx)">
-      <video id="genai-car-video" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>
+    <div style="width:100%;aspect-ratio:16/9;position:relative;border-radius:10px 10px 3px 3px;overflow:hidden;background:#000;box-shadow:inset 3px 3px 0 rgba(255,255,255,.07),inset -3px -3px 0 rgba(0,0,0,.65),0 28px 70px rgba(0,0,0,.75);cursor:pointer;" onclick="openGenaiOverlay(genaiIdx)">
+      <video id="genai-car-video" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;background:#000;"></video>
       <div class="ps-video-scan"></div>
       <div class="ps-video-glare"></div>
     </div>
@@ -1652,7 +1672,8 @@ const _origShow = showSection;
       <video id="genai-full-video" autoplay muted loop playsinline></video>
       <img id="genai-full-refimg" src="" alt="Reference">
     </div>
-    <div class="genai-full-right">
+    <div class="genai-full-right" id="genai-full-right">
+      <video id="genai-full-refvideo" autoplay muted loop playsinline style="display:none;"></video>
       <img id="genai-full-workflow" src="" alt="Workflow Diagram">
     </div>
   </div>
