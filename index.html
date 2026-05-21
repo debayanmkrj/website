@@ -260,6 +260,65 @@
       color:rgba(200,165,90,.55);
     }
 
+    /* ── PS-BAR MENU BTN + SECTION NAV ── */
+    .ps-menu-btn {
+      background:none; border:none; cursor:pointer; padding:4px;
+      display:flex; flex-direction:column; gap:5px; align-items:center;
+    }
+    .ps-menu-btn span {
+      display:block; width:22px; height:2px;
+      background:rgba(200,165,90,.75); transition:background .2s; border-radius:1px;
+    }
+    .ps-menu-btn:hover span { background:rgba(235,210,155,.9); }
+    .ps-sect-nav { display:flex; gap:0; align-items:center; }
+    .ps-sect-prev, .ps-sect-next {
+      font-family:'DM Mono',monospace; font-size:.85rem; letter-spacing:.02em;
+      color:rgba(200,165,90,.75); background:none; border:none;
+      cursor:pointer; padding:4px 10px; transition:color .2s; line-height:1;
+    }
+    .ps-sect-prev:hover, .ps-sect-next:hover { color:rgba(235,210,155,.9); }
+
+    /* ── PS-NAV PANEL (slide-in from left) ── */
+    #ps-nav-panel {
+      position:fixed; top:0; left:0; width:240px; height:100%;
+      background:rgba(10,8,6,.97); border-right:1px solid rgba(200,165,90,.15);
+      z-index:1000; transform:translateX(-100%);
+      transition:transform .28s cubic-bezier(.4,0,.2,1);
+      padding:60px 0 40px; display:flex; flex-direction:column;
+    }
+    #ps-nav-panel.open { transform:translateX(0); }
+    #ps-nav-panel-backdrop {
+      position:fixed; inset:0; z-index:999; display:none;
+    }
+    #ps-nav-panel-backdrop.open { display:block; }
+    .ps-nav-panel-close {
+      position:absolute; top:16px; right:16px;
+      font-family:'DM Mono',monospace; font-size:.55rem; letter-spacing:.12em;
+      color:rgba(200,165,90,.45); background:none; border:none; cursor:pointer;
+      transition:color .2s; text-transform:uppercase;
+    }
+    .ps-nav-panel-close:hover { color:rgba(235,210,155,.9); }
+    .ps-nav-panel-link {
+      font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.2em;
+      color:rgba(200,165,90,.65); padding:15px 32px; cursor:pointer;
+      border:none; background:none; text-align:left; text-transform:uppercase;
+      transition:color .2s, background .2s; width:100%;
+    }
+    .ps-nav-panel-link:hover { color:rgba(235,210,155,.95); background:rgba(200,165,90,.06); }
+
+    /* ── OVERLAY PROJECT NAV (prev/next within a section overlay) ── */
+    .ps-ov-proj-nav { display:flex; align-items:center; gap:6px; }
+    .ps-ov-proj-nav button {
+      font-family:'DM Mono',monospace; font-size:.8rem; letter-spacing:.02em;
+      color:rgba(200,165,90,.75); background:none; border:none;
+      cursor:pointer; padding:4px 8px; transition:color .2s; line-height:1;
+    }
+    .ps-ov-proj-nav button:hover { color:rgba(235,210,155,.9); }
+    .ps-ov-proj-nav span {
+      font-family:'DM Mono',monospace; font-size:.48rem; letter-spacing:.1em;
+      color:rgba(200,165,90,.4); min-width:36px; text-align:center;
+    }
+
     .ps-body {
       position:relative; z-index:1;
       padding:48px clamp(24px,5vw,72px) 80px;
@@ -978,6 +1037,7 @@ function openBySlug(sect, slug) {
 
 // ── SECTION NAV ───────────────────────────────────────────────
 function showSection(id, replace) {
+  currentSection = id;
   document.querySelectorAll('.proj-section').forEach(s => s.classList.remove('ps-open'));
   document.querySelectorAll('.nav-a[data-section]').forEach(b => b.classList.remove('active'));
   const btn = document.querySelector(`.nav-a[data-section="${id}"]`);
@@ -992,6 +1052,8 @@ function showSection(id, replace) {
   }
   document.getElementById('hamburger').classList.remove('open');
   document.getElementById('nav-links').classList.remove('open');
+  closePsMenu();
+  updatePsNav(id);
 }
 // deep-link on load & browser back/forward
 (function() {
@@ -1068,6 +1130,7 @@ const SITE_DATA = {
 
 
 // ── GENAI CAROUSEL ───────────────────────────────────────────
+let currentSection = 'landing';
 let genaiIdx = 0;
 function buildGenaiCarousel() {
   renderGenaiCarousel();
@@ -1115,6 +1178,8 @@ function openGenaiOverlay(idx) {
     rightCol.style.cssText = '';
   }
   document.getElementById('genai-full-overlay').classList.add('open');
+  const gCtr = document.getElementById('genai-proj-counter');
+  if (gCtr) gCtr.textContent = (idx + 1) + ' / ' + SITE_DATA.genai.length;
 }
 function closeGenaiOverlay() {
   history.replaceState(null, '', '#genai');
@@ -1286,10 +1351,15 @@ function navPhoto(dir) {
 
 // ── PROJECT OVERLAY ──────────────────────────────────────────
 let overlayMedia = [], overlayMediaIdx = 0;
+let overlaySection = '', overlayProjIdx = 0;
 async function openOverlay(section, idx) {
+  overlaySection = section;
+  overlayProjIdx = idx;
   const p = SITE_DATA[section][idx];
   overlayMedia = p.media || [];
   overlayMediaIdx = 0;
+  const oCtr = document.getElementById('overlay-proj-counter');
+  if (oCtr && SITE_DATA[section]) oCtr.textContent = (idx + 1) + ' / ' + SITE_DATA[section].length;
   history.replaceState(null, '', '#' + section + '-' + slugify(p.title));
   const ov = document.getElementById('ps-overlay');
   const infoEl = document.getElementById('overlay-info');
@@ -1407,6 +1477,7 @@ document.addEventListener('keydown', e => {
   }
   if (document.getElementById('uiux-full-overlay').classList.contains('open') && e.key === 'Escape') closeUIUXOverlay();
   if (document.getElementById('genai-full-overlay').classList.contains('open') && e.key === 'Escape') closeGenaiOverlay();
+  if (e.key === 'Escape') closePsMenu();
 });
 function closeOverlay() {
   const h = location.hash.slice(1);
@@ -1415,6 +1486,38 @@ function closeOverlay() {
   document.getElementById('ps-overlay').classList.remove('open');
   const v = document.querySelector('#overlay-media video');
   if (v) { v.pause(); }
+}
+function togglePsMenu() {
+  document.getElementById('ps-nav-panel').classList.toggle('open');
+  document.getElementById('ps-nav-panel-backdrop').classList.toggle('open');
+}
+function closePsMenu() {
+  document.getElementById('ps-nav-panel').classList.remove('open');
+  document.getElementById('ps-nav-panel-backdrop').classList.remove('open');
+}
+function updatePsNav(sectId) {
+  const idx = SECTION_IDS.indexOf(sectId);
+  document.querySelectorAll('.ps-sect-prev').forEach(b => b.style.visibility = idx <= 0 ? 'hidden' : '');
+  document.querySelectorAll('.ps-sect-next').forEach(b => b.style.visibility = idx >= SECTION_IDS.length - 1 ? 'hidden' : '');
+}
+function navPrevSection() {
+  const idx = SECTION_IDS.indexOf(currentSection);
+  if (idx > 0) showSection(SECTION_IDS[idx - 1]);
+}
+function navNextSection() {
+  const idx = SECTION_IDS.indexOf(currentSection);
+  if (idx >= 0 && idx < SECTION_IDS.length - 1) showSection(SECTION_IDS[idx + 1]);
+}
+function navOverlayProject(dir) {
+  const data = SITE_DATA[overlaySection];
+  if (!data) return;
+  overlayProjIdx = (overlayProjIdx + dir + data.length) % data.length;
+  openOverlay(overlaySection, overlayProjIdx);
+}
+function navGenaiProject(dir) {
+  genaiIdx = (genaiIdx + dir + SITE_DATA.genai.length) % SITE_DATA.genai.length;
+  renderGenaiCarousel();
+  openGenaiOverlay(genaiIdx);
 }
 
 // ── UIUX OVERLAY ─────────────────────────────────────────────
@@ -1459,8 +1562,11 @@ const _origShow = showSection;
 <!-- CASCADE -->
 <div class="proj-section" id="sect-cascade">
   <div class="ps-bar">
-    <button class="ps-back-btn" onclick="showSection('landing')">← BACK</button>
-    <span class="ps-num">CASCADE</span>
+    <button class="ps-menu-btn" onclick="togglePsMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="ps-sect-nav">
+      <button class="ps-sect-prev" onclick="navPrevSection()">←</button>
+      <button class="ps-sect-next" onclick="navNextSection()">→</button>
+    </div>
   </div>
   <div class="ps-body">
     <div class="ps-eyebrow">FEATURED PROJECT</div>
@@ -1484,8 +1590,11 @@ const _origShow = showSection;
 <!-- GEN·AI -->
 <div class="proj-section" id="sect-genai">
   <div class="ps-bar">
-    <button class="ps-back-btn" onclick="showSection('landing')">← BACK</button>
-    <span class="ps-num">GEN·AI</span>
+    <button class="ps-menu-btn" onclick="togglePsMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="ps-sect-nav">
+      <button class="ps-sect-prev" onclick="navPrevSection()">←</button>
+      <button class="ps-sect-next" onclick="navNextSection()">→</button>
+    </div>
   </div>
   <div class="ps-body">
     <div class="ps-eyebrow">GENERATIVE AI PROJECTS</div>
@@ -1517,8 +1626,11 @@ const _origShow = showSection;
 <!-- ML -->
 <div class="proj-section" id="sect-ml">
   <div class="ps-bar">
-    <button class="ps-back-btn" onclick="showSection('landing')">← BACK</button>
-    <span class="ps-num">ML</span>
+    <button class="ps-menu-btn" onclick="togglePsMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="ps-sect-nav">
+      <button class="ps-sect-prev" onclick="navPrevSection()">←</button>
+      <button class="ps-sect-next" onclick="navNextSection()">→</button>
+    </div>
   </div>
   <div class="ps-body">
     <div class="ps-eyebrow">MACHINE LEARNING</div>
@@ -1537,8 +1649,11 @@ const _origShow = showSection;
 <!-- DIGITAL -->
 <div class="proj-section" id="sect-digital">
   <div class="ps-bar">
-    <button class="ps-back-btn" onclick="showSection('landing')">← BACK</button>
-    <span class="ps-num">DIGITAL</span>
+    <button class="ps-menu-btn" onclick="togglePsMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="ps-sect-nav">
+      <button class="ps-sect-prev" onclick="navPrevSection()">←</button>
+      <button class="ps-sect-next" onclick="navNextSection()">→</button>
+    </div>
   </div>
   <div class="ps-body">
     <div class="ps-eyebrow">DIGITAL EXPERIENCE</div>
@@ -1557,8 +1672,11 @@ const _origShow = showSection;
 <!-- UI/UX -->
 <div class="proj-section" id="sect-uiux">
   <div class="ps-bar">
-    <button class="ps-back-btn" onclick="showSection('landing')">← BACK</button>
-    <span class="ps-num">UI/UX</span>
+    <button class="ps-menu-btn" onclick="togglePsMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="ps-sect-nav">
+      <button class="ps-sect-prev" onclick="navPrevSection()">←</button>
+      <button class="ps-sect-next" onclick="navNextSection()">→</button>
+    </div>
   </div>
   <div class="ps-body">
     <div class="ps-eyebrow">UI/UX RESEARCH</div>
@@ -1581,8 +1699,11 @@ const _origShow = showSection;
 <!-- WIP -->
 <div class="proj-section" id="sect-wip">
   <div class="ps-bar">
-    <button class="ps-back-btn" onclick="showSection('landing')">← BACK</button>
-    <span class="ps-num">WIP</span>
+    <button class="ps-menu-btn" onclick="togglePsMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="ps-sect-nav">
+      <button class="ps-sect-prev" onclick="navPrevSection()">←</button>
+      <button class="ps-sect-next" onclick="navNextSection()">→</button>
+    </div>
   </div>
   <div class="ps-body">
     <div class="ps-eyebrow">IN DEVELOPMENT</div>
@@ -1618,8 +1739,11 @@ const _origShow = showSection;
 <!-- CONTENT -->
 <div class="proj-section" id="sect-content">
   <div class="ps-bar">
-    <button class="ps-back-btn" onclick="showSection('landing')">← BACK</button>
-    <span class="ps-num">CONTENT</span>
+    <button class="ps-menu-btn" onclick="togglePsMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="ps-sect-nav">
+      <button class="ps-sect-prev" onclick="navPrevSection()">←</button>
+      <button class="ps-sect-next" onclick="navNextSection()">→</button>
+    </div>
   </div>
   <div class="ps-body">
     <div class="ps-eyebrow">CONTENT CREATION</div>
@@ -1649,6 +1773,11 @@ const _origShow = showSection;
 <div class="ps-overlay" id="ps-overlay">
   <div class="ps-overlay-bar">
     <button class="ps-overlay-close" onclick="closeOverlay()">← BACK</button>
+    <div class="ps-ov-proj-nav" id="overlay-proj-nav">
+      <button onclick="navOverlayProject(-1)">←</button>
+      <span id="overlay-proj-counter"></span>
+      <button onclick="navOverlayProject(1)">→</button>
+    </div>
     <span class="ps-overlay-title-bar" id="overlay-section-label"></span>
   </div>
   <div class="ps-overlay-body">
@@ -1665,6 +1794,11 @@ const _origShow = showSection;
 <div class="genai-full-overlay" id="genai-full-overlay">
   <div class="genai-full-bar">
     <button onclick="closeGenaiOverlay()">← BACK</button>
+    <div class="ps-ov-proj-nav" id="genai-proj-nav">
+      <button onclick="navGenaiProject(-1)">←</button>
+      <span id="genai-proj-counter"></span>
+      <button onclick="navGenaiProject(1)">→</button>
+    </div>
     <span class="genai-full-bar-title" id="genai-full-bar-title"></span>
   </div>
   <div class="genai-full-body">
@@ -1700,6 +1834,19 @@ const _origShow = showSection;
   <div class="photo-full-count" id="photo-full-count"></div>
 </div>
 
+<!-- ── PS-NAV PANEL ── -->
+<div id="ps-nav-panel-backdrop" onclick="closePsMenu()"></div>
+<div id="ps-nav-panel">
+  <button class="ps-nav-panel-close" onclick="closePsMenu()">✕ CLOSE</button>
+  <button class="ps-nav-panel-link" onclick="showSection('landing');closePsMenu()">HOME</button>
+  <button class="ps-nav-panel-link" onclick="showSection('cascade');closePsMenu()">CASCADE</button>
+  <button class="ps-nav-panel-link" onclick="showSection('genai');closePsMenu()">GEN·AI</button>
+  <button class="ps-nav-panel-link" onclick="showSection('ml');closePsMenu()">ML</button>
+  <button class="ps-nav-panel-link" onclick="showSection('digital');closePsMenu()">DIGITAL</button>
+  <button class="ps-nav-panel-link" onclick="showSection('uiux');closePsMenu()">UI/UX</button>
+  <button class="ps-nav-panel-link" onclick="showSection('wip');closePsMenu()">WIP</button>
+  <button class="ps-nav-panel-link" onclick="showSection('content');closePsMenu()">CONTENT</button>
+</div>
 
 </body>
 </html>
