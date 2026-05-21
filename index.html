@@ -985,12 +985,14 @@ function glitchLoop() {
 setTimeout(glitchLoop, 7800);
 
 // ── CLICK ─────────────────────────────────────────────────────
+const TV_NAV = { 1:'ml', 3:'content', 4:'genai', 5:'uiux', 6:'digital' };
 ALL_IDS.forEach(id => {
   document.getElementById('tv' + id).addEventListener('click', () => {
     const screen = document.getElementById('screen' + id);
     if (!screen.classList.contains('on')) return;
     statics[id].start(); setTimeout(() => statics[id].stop(), 150 + Math.random() * 255);
     anime({ targets:document.getElementById('tv' + id), translateX:[0,-5,5,-2,0], duration:102, easing:'linear' });
+    if (TV_NAV[id]) setTimeout(() => showSection(TV_NAV[id]), 200);
   });
 });
 
