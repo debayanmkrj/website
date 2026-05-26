@@ -650,6 +650,55 @@
   }
   .nav-links.nh-gone::after { animation:none; opacity:0; }
 }
+
+/* ── DP PLANNER SECTION ── */
+#sect-dp { overflow:hidden; }
+.dp-bg-wrap {
+  position:absolute; inset:0; z-index:0; pointer-events:none;
+  opacity:0; transition:opacity .5s ease;
+}
+.dp-bg-wrap.dp-on { opacity:1; }
+#dp-bg-video { width:100%; height:100%; object-fit:cover; display:block; }
+.dp-bg-overlay { position:absolute; inset:0; background:rgba(8,7,6,.12); }
+.dp-scroll { position:absolute; inset:0; z-index:1; overflow-y:auto; }
+.dp-viewport { height:100vh; display:flex; flex-direction:column; flex-shrink:0; }
+.dp-heading {
+  font-family:'Bebas Neue',sans-serif; font-size:clamp(2rem,5vw,3.5rem);
+  line-height:1; letter-spacing:.02em; color:rgba(238,218,168,.9);
+  padding:8px clamp(24px,5vw,72px) 6px; flex-shrink:0;
+}
+.dp-grid {
+  flex:1; min-height:0;
+  display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(3,1fr);
+  gap:2px;
+}
+.dp-tile { position:relative; overflow:hidden; cursor:pointer; background:transparent; }
+.dp-tile video { width:100%; height:100%; object-fit:cover; display:block; }
+.dp-grid.dp-has-active .dp-tile:not(.dp-active) video { visibility:hidden; }
+.dp-tile-ov {
+  position:absolute; inset:0; background:rgba(18,18,18,.12);
+  transition:background .3s;
+}
+.dp-tile:hover .dp-tile-ov,
+.dp-tile.dp-active .dp-tile-ov { background:rgba(0,0,0,.02); }
+.dp-grid.dp-has-active .dp-tile:not(.dp-active) .dp-tile-ov { background:rgba(18,18,18,.16); }
+.dp-below { padding:36px clamp(24px,5vw,72px) 80px; max-width:1100px; margin:0 auto; width:100%; }
+.dp-desc-block { padding-top:24px; margin-bottom:32px; border-top:1px solid rgba(200,165,90,.12); }
+.dp-desc-title {
+  font-family:'Press Start 2P',monospace; font-size:.42rem;
+  letter-spacing:.08em; color:var(--cyan); margin-bottom:16px; line-height:1.9;
+}
+.dp-desc-body {
+  font-family:'DM Mono',monospace; font-size:.63rem;
+  line-height:1.8; color:rgba(200,165,90,.62); margin-bottom:12px; max-width:740px;
+}
+.dp-stack { font-family:'DM Mono',monospace; font-size:.52rem; letter-spacing:.1em; color:rgba(200,165,90,.32); }
+.dp-images { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:80px; }
+.dp-images img { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:4px; display:block; }
+@media(max-width:700px) {
+  .dp-grid { grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(6,1fr); }
+  .dp-images { grid-template-columns:1fr; }
+}
   </style>
 </head>
 <body>
@@ -662,12 +711,12 @@
   <a href="#" class="nav-logo" onclick="showSection('landing');return false;">DEB<em>.</em></a>
   <div class="nav-links" id="nav-links">
     <button class="nav-a active" data-section="landing" onclick="showSection('landing')">Home</button>
+    <button class="nav-a" data-section="dp" onclick="showSection('dp')">DP PLANNER</button>
     <button class="nav-a" data-section="cascade" onclick="showSection('cascade')">Cascade</button>
     <button class="nav-a" data-section="genai" onclick="showSection('genai')">Gen·AI</button>
     <button class="nav-a" data-section="ml" onclick="showSection('ml')">ML</button>
     <button class="nav-a" data-section="digital" onclick="showSection('digital')">Digital</button>
     <button class="nav-a" data-section="uiux" onclick="showSection('uiux')">UI/UX</button>
-    <button class="nav-a" data-section="wip" onclick="showSection('wip')">WIP</button>
     <button class="nav-a" data-section="content" onclick="showSection('content')">Content</button>
     <a href="pages/about.html" class="nav-a">About</a>
   </div>
@@ -1008,7 +1057,7 @@ ALL_IDS.forEach(id => {
 function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
-const SECTION_IDS = ['cascade','genai','ml','digital','uiux','wip','content'];
+const SECTION_IDS = ['dp','cascade','genai','ml','digital','uiux','content'];
 
 function navigateToHash(h) {
   if (!h) { showSection('landing', true); return; }
@@ -1200,14 +1249,40 @@ function closeGenaiOverlay() {
   if (rv) { rv.pause(); rv.src = ''; rv.style.display = 'none'; }
 }
 
-const WIP_VIDS = ['content/WIP/media1.mp4','content/WIP/media2.mp4','content/WIP/media3.mp4'];
-let wipIdx = 0;
-function wipNav(dir) {
-  wipIdx = (wipIdx + dir + WIP_VIDS.length) % WIP_VIDS.length;
-  const v = document.getElementById('wip-vid');
-  if (v) { v.src = WIP_VIDS[wipIdx]; v.play(); }
-  const c = document.getElementById('wip-counter');
-  if (c) c.textContent = (wipIdx+1) + ' / ' + WIP_VIDS.length;
+const DP_VIDS = Array.from({length:12}, (_,i) => `content/WIP/media${i+1}.mp4`);
+function buildDpGrid() {
+  const grid = document.getElementById('dp-grid');
+  if (!grid || grid.children.length) return;
+  const bgWrap = document.getElementById('dp-bg-wrap');
+  const bgVid  = document.getElementById('dp-bg-video');
+  DP_VIDS.forEach((src, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'dp-tile';
+    const vid = document.createElement('video');
+    vid.muted = true; vid.preload = 'metadata';
+    vid.setAttribute('playsinline', ''); vid.setAttribute('webkit-playsinline', '');
+    vid.src = src;
+    vid.addEventListener('loadedmetadata', () => { vid.currentTime = 0.01; });
+    const ov = document.createElement('div');
+    ov.className = 'dp-tile-ov';
+    tile.append(vid, ov);
+    const activate = () => {
+      grid.querySelectorAll('.dp-tile').forEach(t => t.classList.remove('dp-active'));
+      tile.classList.add('dp-active');
+      grid.classList.add('dp-has-active');
+      bgVid.src = src; bgVid.play();
+      bgWrap.classList.add('dp-on');
+    };
+    tile.addEventListener('mouseenter', activate);
+    tile.addEventListener('click', activate);
+    grid.appendChild(tile);
+  });
+  grid.addEventListener('mouseleave', () => {
+    grid.querySelectorAll('.dp-tile').forEach(t => t.classList.remove('dp-active'));
+    grid.classList.remove('dp-has-active');
+    bgWrap.classList.remove('dp-on');
+    bgVid.pause();
+  });
 }
 
 // ── TILE RENDERING ────────────────────────────────────────────
@@ -1549,6 +1624,7 @@ function closeUIUXOverlay() {
 const _origShow = showSection;
 (function() {
   const sectionInits = {
+    dp:      () => { buildDpGrid(); },
     genai:   () => { const _gv = document.getElementById('genai-car-video'); if (_gv && (!_gv.src || _gv.src === location.href)) buildGenaiCarousel(); },
     ml:      () => { if (!document.getElementById('ml-tiles').children.length)    buildTiles('ml','ml-tiles',4); },
     digital: () => { if (!document.getElementById('digital-tiles').children.length) buildTiles('digital','digital-tiles',4); },
@@ -1706,42 +1782,35 @@ const _origShow = showSection;
   </div>
 </div>
 
-<!-- WIP -->
-<div class="proj-section" id="sect-wip">
-  <div class="ps-bar">
-    <button class="ps-menu-btn" onclick="togglePsMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
-    <div class="ps-sect-nav">
-      <button class="ps-sect-prev" onclick="navPrevSection()">←</button>
-      <button class="ps-sect-next" onclick="navNextSection()">→</button>
-    </div>
+<!-- DP PLANNER -->
+<div class="proj-section" id="sect-dp">
+  <div class="dp-bg-wrap" id="dp-bg-wrap">
+    <video id="dp-bg-video" muted loop playsinline></video>
+    <div class="dp-bg-overlay"></div>
   </div>
-  <div class="ps-body">
-    <div class="ps-eyebrow">IN DEVELOPMENT</div>
-    <h1 class="ps-title">WORK IN<br>PROGRESS</h1>
-    <div class="ps-meta">
-      <span class="ps-role">ONGOING · EXPERIMENTAL</span>
-    </div>
-    <p class="ps-desc" style="margin-bottom:28px;">DP Blocking Planner — isometric cinematography planning with AI-driven prompt synthesis.</p>
-    <div class="ps-wip-layout">
-      <div class="ps-wip-left">
-        <div class="ps-wip-badge">Work in Progress</div>
-        <img class="ps-wip-img" src="content/WIP/image1.jpeg" alt="DP Blocking Planner">
-        <div class="ps-wip-title">DP BLOCKING PLANNER</div>
-        <p class="ps-wip-detail">Isometric DP tool for camera blocking, character movement &amp; lighting layouts — generates physics-grounded shot timelines and synthesises video prompts.</p>
-      </div>
-      <div class="ps-wip-right">
-        <div class="ps-wip-video-wrap">
-          <video id="wip-vid" src="content/WIP/media1.mp4" autoplay muted loop playsinline></video>
-        </div>
-        <div class="ps-car-nav">
-          <button class="ps-car-btn" onclick="wipNav(-1)">←</button>
-          <span class="ps-car-counter" id="wip-counter">1 / 3</span>
-          <button class="ps-car-btn" onclick="wipNav(1)">→</button>
+  <div class="dp-scroll">
+    <div class="dp-viewport">
+      <div class="ps-bar">
+        <button class="ps-menu-btn" onclick="togglePsMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+        <div class="ps-sect-nav">
+          <button class="ps-sect-prev" onclick="navPrevSection()">←</button>
+          <button class="ps-sect-next" onclick="navNextSection()">→</button>
         </div>
       </div>
+      <div class="dp-heading">DP PLANNER</div>
+      <div class="dp-grid" id="dp-grid"></div>
     </div>
-    <div class="ps-tags" style="margin-top:20px;">
-      <span class="ps-tag">DP BLOCKING</span><span class="ps-tag">ISOMETRIC</span><span class="ps-tag">AI PROMPTS</span>
+    <div class="dp-below">
+      <div class="dp-desc-block">
+        <div class="dp-desc-title">Director-of-Photography Blocking Board.</div>
+        <p class="dp-desc-body">Design and place Characters, props, lights, and a camera on a 16×12 world-unit grid. Movement arrows interpolates character/camera positions. An Ollama (vision + chat) pipeline writes a cinematic video prompt from the layout.</p>
+        <div class="dp-stack">Stack: React 18 · Vite · SVG Canvas · Ollama API · LTX Samples.</div>
+      </div>
+      <div class="dp-images">
+        <img src="content/WIP/image1.jpeg" alt="DP Planner screenshot">
+        <img src="content/WIP/image2.jpeg" alt="DP Planner screenshot">
+        <img src="content/WIP/image3.jpeg" alt="DP Planner screenshot">
+      </div>
     </div>
   </div>
 </div>
@@ -1849,12 +1918,12 @@ const _origShow = showSection;
 <div id="ps-nav-panel">
   <button class="ps-nav-panel-close" onclick="closePsMenu()">✕ CLOSE</button>
   <button class="ps-nav-panel-link" onclick="showSection('landing');closePsMenu()">HOME</button>
+  <button class="ps-nav-panel-link" onclick="showSection('dp');closePsMenu()">DP PLANNER</button>
   <button class="ps-nav-panel-link" onclick="showSection('cascade');closePsMenu()">CASCADE</button>
   <button class="ps-nav-panel-link" onclick="showSection('genai');closePsMenu()">GEN·AI</button>
   <button class="ps-nav-panel-link" onclick="showSection('ml');closePsMenu()">ML</button>
   <button class="ps-nav-panel-link" onclick="showSection('digital');closePsMenu()">DIGITAL</button>
   <button class="ps-nav-panel-link" onclick="showSection('uiux');closePsMenu()">UI/UX</button>
-  <button class="ps-nav-panel-link" onclick="showSection('wip');closePsMenu()">WIP</button>
   <button class="ps-nav-panel-link" onclick="showSection('content');closePsMenu()">CONTENT</button>
 </div>
 
