@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digital — Debayan Mukherjee</title>
+<meta name="description" content="Games, AR experiences, interactive installations, and generative systems — technology as creative medium.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/project-overlay.css">
+<style>
+  :root{
+    --paper:#f2f0ea; --ink:#141414; --line:rgba(20,20,20,.2);
+    --muted:rgba(20,20,20,.55); --yellow:#f4e400; --blue:#2f5bff; --blue-dk:#1c3fcc;
+    --magenta:#ff2d7a; --panel:#161615;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink);font-family:'Archivo',sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  img,video{max-width:100%;display:block;}
+
+  nav{display:flex;align-items:center;justify-content:space-between;
+    padding:20px clamp(16px,3vw,40px);border-bottom:1px solid var(--line);
+    position:sticky;top:0;background:var(--paper);z-index:50;}
+  .nav-mark{font-size:1rem;font-weight:700;flex-shrink:0;}
+  .nav-mark span{color:var(--blue);}
+  .nav-crumb{color:var(--muted);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;}
+  .nav-crumb a:hover{color:var(--ink);}
+  .nav-links{display:flex;gap:28px;flex-shrink:0;}
+  .nav-links a{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);}
+  .nav-links a:hover{color:var(--ink);}
+  @media (max-width:640px){ .nav-links{display:none;} .nav-crumb{display:none;} }
+
+  .tag-chip{display:inline-block;border:1px solid var(--line);padding:6px 12px;
+    font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);}
+
+  .masthead{padding:56px clamp(16px,3vw,40px) 40px;border-bottom:1px solid var(--line);}
+  .mh-eyebrow{color:var(--blue);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;}
+  .mh-title{font-size:clamp(2.4rem,7vw,4.6rem);font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:20px;}
+  .mh-desc{font-size:1rem;line-height:1.7;color:var(--muted);max-width:62ch;margin-bottom:22px;}
+  .mh-tags{display:flex;flex-wrap:wrap;gap:8px;}
+
+  .proj-block{padding:60px clamp(16px,3vw,40px) 80px;}
+  .tile-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .proj-tile{border:1px solid var(--line);cursor:pointer;transition:background .2s;min-width:0;}
+  .proj-tile:hover{background:rgba(47,91,255,.05);}
+  .proj-visual{aspect-ratio:4/3;overflow:hidden;background:var(--panel);}
+  .proj-visual img,.proj-visual video{width:100%;height:100%;object-fit:cover;display:block;
+    opacity:.92;transition:opacity .25s,transform .3s;}
+  .proj-tile:hover .proj-visual img,.proj-tile:hover .proj-visual video{opacity:1;transform:scale(1.03);}
+  .proj-body{padding:18px 20px;}
+  .proj-title{font-size:.92rem;font-weight:600;margin-bottom:6px;}
+  .proj-desc{font-family:'IBM Plex Mono',monospace;font-size:.62rem;line-height:1.6;color:var(--muted);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .proj-arrow{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--blue);margin-top:10px;display:block;}
+  @media (max-width:900px){ .tile-grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:640px){ .tile-grid{grid-template-columns:repeat(2,1fr);} }
+
+  footer{border-top:1px solid var(--line);padding:30px clamp(16px,3vw,40px) 30px;}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);}
+  .foot-bottom a:hover{color:var(--ink);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../llm_test/index_2.html" class="nav-mark">Debayan<span>.</span></a>
+  <div class="nav-crumb mono"><a href="../llm_test/index_2.html#work">Work</a> / Digital</div>
+  <div class="nav-links">
+    <a href="../llm_test/index_2.html#work">Work</a>
+    <a href="about.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="mh-eyebrow mono">Practice — 03</div>
+  <h1 class="mh-title">Digital</h1>
+  <p class="mh-desc">Games, AR experiences, interactive installations, and generative systems — technology as creative medium.</p>
+  <div class="mh-tags">
+    <span class="tag-chip">Swift</span>
+    <span class="tag-chip">Unity</span>
+    <span class="tag-chip">AR</span>
+    <span class="tag-chip">Interactive</span>
+  </div>
+</header>
+
+<section class="proj-block">
+  <div class="tile-grid" id="digital-grid"></div>
+</section>
+
+<footer id="contact">
+  <div class="foot-bottom">
+    <span>© 2026 Debayan Mukherjee</span>
+    <span><a href="https://linkedin.com/in/debmkrj" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/debayanmkrj" target="_blank" rel="noopener">GitHub</a></span>
+    <span><a href="about.html#contact">Get in touch →</a> · <a href="../llm_test/index_2.html">Back to home ↑</a></span>
+  </div>
+</footer>
+
+<script src="../assets/project-overlay.js"></script>
+<script>
+const DIGITAL_PROJECTS = [
+  { title:'WARRIOR DUEL',            eyebrow:'Digital', desc:'A side-scrolling combat game developed in Swift using SpriteKit. Players select from three character classes (Fighter, Samurai, or Shinobi) and battle through increasingly difficult vampire enemies across three unique castle environments.', cover:'../content/Visual Experience/Warrior_Duel/cover.jpg', media:['../content/Visual Experience/Warrior_Duel/new_media/Media1.mp4'], github:'https://github.com/debayanmkrj/Warrior-Duel', summaryPath:'../content/Visual Experience/Warrior_Duel/summary.txt' },
+  { title:'USDZ AR EXPERIENCES',     eyebrow:'Digital', desc:'3D augmented reality content creation for mobile platforms.', cover:'../content/Visual Experience/Usdz/cover.jpg', media:['../content/Visual Experience/Usdz/new_media/3.jpg'], summaryPath:'../content/Visual Experience/Usdz/summary.txt' },
+  { title:'SNIPEZONE',               eyebrow:'Digital', desc:'A Unity FPS game that combines gameplay with intelligent enemy AI and face tracking to control the player.', cover:'../content/Visual Experience/SnipeZone/cover.jpg', media:['../content/Visual Experience/SnipeZone/new_media/media1.mp4','../content/Visual Experience/SnipeZone/new_media/media2.mp4','../content/Visual Experience/SnipeZone/new_media/media3.mp4','../content/Visual Experience/SnipeZone/new_media/media4.mp4'], github:'https://github.com/debayanmkrj/Snipezone', summaryPath:'../content/Visual Experience/SnipeZone/summary.txt' },
+  { title:'REVERSE MIRROR',          eyebrow:'Digital', desc:'Interaction design based on user persona and generative art.', cover:'../content/Visual Experience/Reverse_Mirror/cover.jpg', media:['../content/Visual Experience/Reverse_Mirror/new_media/media1.mp4','../content/Visual Experience/Reverse_Mirror/new_media/media2.mp4','../content/Visual Experience/Reverse_Mirror/new_media/media3.mp4','../content/Visual Experience/Reverse_Mirror/new_media/media4.mp4'], summaryPath:'../content/Visual Experience/Reverse_Mirror/summary.txt' },
+  { title:'INTERACTIVE MEDIA I',     eyebrow:'Digital', desc:'Max/MSP patches demonstrating a hand tracking system that captures finger positions and gestures in real time, converting raw hand coordinates into control parameters for a racing game via a pre-trained Wekinator model.', cover:'../content/Visual Experience/Interactive_Media/cover.jpg', media:['../content/Visual Experience/Interactive_Media/new_media/media1.mp4'], summaryPath:'../content/Visual Experience/Interactive_Media/summary.txt' },
+  { title:'GROOVE IT',               eyebrow:'Digital', desc:'An immersive music player iOS app built with Swift, RealityKit and ARKit, combining audio playback with a real-time 3D experience.', cover:'../content/Visual Experience/Groove_it/cover.jpg', media:['../content/Visual Experience/Groove_it/new_media/media1.mp4','../content/Visual Experience/Groove_it/new_media/media2.mp4'], github:'https://github.com/debayanmkrj/GROO-V-IT', summaryPath:'../content/Visual Experience/Groove_it/summary.txt' },
+  { title:'GAN EXPLORATIONS',        eyebrow:'Digital', desc:'Generative Adversarial Network experiments in visual style transfer and creation.', cover:'../content/Visual Experience/Gan/cover.jpg', media:['../content/Visual Experience/Gan/new_media/2.jpg','../content/Visual Experience/Gan/new_media/3.jpg'], summaryPath:'../content/Visual Experience/Gan/summary.txt' },
+  { title:'DESIGNING FOR CONSUMERS', eyebrow:'Digital', desc:'User-centered design methodologies for consumer products.', cover:'../content/Visual Experience/Designing_for_consumers/cover.jpg', media:['../content/Visual Experience/Designing_for_consumers/new_media/6.jpg','../content/Visual Experience/Designing_for_consumers/new_media/7.jpg'], summaryPath:'../content/Visual Experience/Designing_for_consumers/summary.txt' }
+];
+
+const grid = document.getElementById('digital-grid');
+DIGITAL_PROJECTS.forEach((p, i) => {
+  const tile = document.createElement('div');
+  tile.className = 'proj-tile';
+  tile.innerHTML = `<div class="proj-visual"><img src="${p.cover}" alt="${p.title}" loading="lazy"></div>
+    <div class="proj-body">
+      <div class="proj-title">${p.title}</div>
+      <div class="proj-desc">${p.desc}</div>
+      <span class="proj-arrow">View project →</span>
+    </div>`;
+  tile.addEventListener('click', () => ProjectOverlay.open(DIGITAL_PROJECTS, i));
+  grid.appendChild(tile);
+});
+
+function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+const deepLinkHash = location.hash.slice(1);
+if (deepLinkHash){
+  const idx = DIGITAL_PROJECTS.findIndex(p => slugify(p.title) === deepLinkHash);
+  if (idx >= 0) ProjectOverlay.open(DIGITAL_PROJECTS, idx);
+}
+</script>
+</body>
+</html>

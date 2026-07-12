@@ -1,0 +1,49 @@
+/* Shared full-screen project detail overlay — used by ML and Digital
+   practice pages. Injected alongside project-overlay.js. Expects the
+   host page to define the --paper/--ink/--line/--muted/--blue/--panel
+   custom properties and load Archivo + IBM Plex Mono. */
+.po-overlay{position:fixed;inset:0;z-index:600;background:var(--paper);
+  transform:translateY(100%);transition:transform .45s cubic-bezier(.16,1,.3,1);
+  display:flex;flex-direction:column;overflow:hidden;}
+.po-overlay.open{transform:translateY(0);}
+.po-bar{height:56px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(16px,3vw,40px);border-bottom:1px solid var(--line);flex-shrink:0;}
+.po-bar button{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;
+  transition:color .2s;}
+.po-bar button:hover{color:var(--ink);}
+.po-bar-title{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--ink);}
+.po-bar-group{display:flex;align-items:center;gap:20px;}
+.po-body{flex:1;display:grid;grid-template-columns:1.3fr 1fr;gap:2px;padding:2px;
+  overflow:hidden;min-height:0;}
+.po-media{position:relative;background:var(--panel);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;}
+.po-media video,.po-media img{width:100%;height:100%;object-fit:contain;display:block;}
+.po-media-nav{position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:space-between;padding:0 12px;pointer-events:none;}
+.po-media-nav button{pointer-events:auto;background:rgba(20,20,20,.5);color:#f2f0ea;
+  border:none;width:34px;height:34px;cursor:pointer;font-family:'IBM Plex Mono',monospace;}
+.po-media-count{position:absolute;top:12px;right:12px;font-family:'IBM Plex Mono',monospace;
+  font-size:.6rem;color:#f2f0ea;background:rgba(20,20,20,.5);padding:4px 8px;z-index:2;}
+.po-vid-controls{position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;
+  gap:8px;padding:8px 10px;background:rgba(20,20,20,.6);}
+.po-vid-controls button{background:none;border:1px solid rgba(242,240,234,.4);color:#f2f0ea;
+  font-family:'IBM Plex Mono',monospace;font-size:.58rem;padding:4px 8px;cursor:pointer;
+  flex-shrink:0;}
+.po-vid-controls input[type=range]{flex:1;accent-color:var(--blue);}
+.po-vid-controls span{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:#f2f0ea;
+  flex-shrink:0;}
+.po-info{overflow-y:auto;padding:28px clamp(16px,3vw,32px);}
+.po-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+.po-name{font-size:1.4rem;font-weight:600;margin-bottom:12px;}
+.po-desc{font-size:.9rem;line-height:1.7;color:var(--muted);margin-bottom:18px;}
+.po-github{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.68rem;
+  border:1px solid var(--ink);padding:10px 16px;margin-bottom:22px;transition:all .2s;}
+.po-github:hover{background:var(--ink);color:var(--paper);}
+.po-summary-label{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:8px;border-top:1px solid var(--line);
+  padding-top:18px;}
+.po-summary{font-family:'IBM Plex Mono',monospace;font-size:.72rem;line-height:1.8;
+  color:var(--muted);white-space:pre-wrap;}
+@media (max-width:760px){ .po-body{grid-template-columns:1fr;} }

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gen·AI — Debayan Mukherjee</title>
+<meta name="description" content="Generative pipelines and model-driven creative systems — DP Planner, node-based production workflows, and Cascade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f2f0ea; --ink:#141414; --line:rgba(20,20,20,.2);
+    --muted:rgba(20,20,20,.55); --yellow:#f4e400; --blue:#2f5bff; --blue-dk:#1c3fcc;
+    --magenta:#ff2d7a; --panel:#161615;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink);font-family:'Archivo',sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  img,video{max-width:100%;display:block;}
+
+  /* ══════════ NAV ══════════ */
+  nav{display:flex;align-items:center;justify-content:space-between;
+    padding:20px clamp(16px,3vw,40px);border-bottom:1px solid var(--line);
+    position:sticky;top:0;background:var(--paper);z-index:50;}
+  .nav-mark{font-size:1rem;font-weight:700;flex-shrink:0;}
+  .nav-mark span{color:var(--blue);}
+  .nav-crumb{color:var(--muted);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;}
+  .nav-crumb a:hover{color:var(--ink);}
+  .nav-links{display:flex;gap:28px;flex-shrink:0;}
+  .nav-links a{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);}
+  .nav-links a:hover{color:var(--ink);}
+  @media (max-width:640px){ .nav-links{display:none;} .nav-crumb{display:none;} }
+
+  .tag-chip{display:inline-block;border:1px solid var(--line);padding:6px 12px;
+    font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);}
+
+  /* ══════════ MASTHEAD ══════════ */
+  .masthead{padding:56px clamp(16px,3vw,40px) 40px;border-bottom:1px solid var(--line);}
+  .mh-eyebrow{color:var(--blue);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;}
+  .mh-title{font-size:clamp(2.4rem,7vw,4.6rem);font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:20px;}
+  .mh-desc{font-size:1rem;line-height:1.7;color:var(--muted);max-width:62ch;margin-bottom:22px;}
+  .mh-tags{display:flex;flex-wrap:wrap;gap:8px;}
+
+  /* quick anchor sub-nav */
+  .subnav{display:flex;gap:0;border-bottom:1px solid var(--line);
+    position:sticky;top:58px;background:var(--paper);z-index:40;overflow-x:auto;}
+  .subnav a{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);padding:14px clamp(16px,3vw,28px);
+    border-right:1px solid var(--line);white-space:nowrap;transition:color .2s,background .2s;}
+  .subnav a:hover{color:var(--ink);background:rgba(47,91,255,.05);}
+
+  /* ══════════ SECTION SHELL ══════════ */
+  .proj-block{padding:80px clamp(16px,3vw,40px);border-bottom:1px solid var(--line);scroll-margin-top:110px;}
+  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:30px;}
+  .sec-head .num{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted);}
+  .sec-head h2{font-size:1.7rem;font-weight:600;}
+  .block-desc{font-size:.95rem;line-height:1.8;color:var(--muted);max-width:70ch;margin-bottom:10px;}
+  .stack-line{font-size:.68rem;letter-spacing:.04em;color:var(--muted);margin-bottom:34px;}
+
+  /* ══════════ DP PLANNER GRID ══════════ */
+  .dp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:44px;}
+  .dp-tile{position:relative;overflow:hidden;aspect-ratio:4/3;cursor:pointer;
+    border:1px solid var(--line);min-width:0;
+    background:var(--panel);}
+  .dp-tile video{width:100%;height:100%;object-fit:cover;display:block;opacity:.88;transition:opacity .25s,transform .3s;}
+  .dp-tile:hover video{opacity:1;transform:scale(1.03);}
+  .dp-tile-ov{position:absolute;inset:0;background:rgba(20,20,20,.14);transition:background .2s;
+    display:flex;align-items:flex-end;padding:10px;pointer-events:none;}
+  .dp-tile:hover .dp-tile-ov{background:rgba(47,91,255,.16);}
+  .dp-tile-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;
+    color:rgba(242,240,234,.85);text-transform:uppercase;}
+  @media (max-width:800px){ .dp-grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:540px){ .dp-grid{grid-template-columns:repeat(2,1fr);} }
+
+  .dp-images{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+    border:1px solid var(--line);}
+  .dp-images img{aspect-ratio:16/10;object-fit:cover;}
+  @media (max-width:640px){ .dp-images{grid-template-columns:1fr;} }
+
+  /* ══════════ NODE WORKFLOWS CAROUSEL ══════════ */
+  .node-stage{border:1px solid var(--line);aspect-ratio:16/9;max-width:720px;max-height:56vh;
+    margin:0 auto;position:relative;overflow:hidden;cursor:pointer;background:var(--panel);}
+  .node-stage video{width:100%;height:100%;object-fit:cover;display:block;}
+  .node-stage-hint{position:absolute;bottom:14px;right:16px;font-family:'IBM Plex Mono',monospace;
+    font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(242,240,234,.75);
+    border:1px solid rgba(242,240,234,.35);padding:6px 12px;background:rgba(20,20,20,.35);}
+  .node-car-nav{display:flex;align-items:center;gap:16px;margin:16px auto 0;max-width:720px;}
+  .node-car-btn{font-family:'IBM Plex Mono',monospace;font-size:.8rem;border:1px solid var(--line);
+    background:none;color:var(--ink);width:36px;height:36px;cursor:pointer;transition:background .2s;}
+  .node-car-btn:hover{background:rgba(47,91,255,.08);border-color:var(--blue);}
+  .node-car-counter{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--muted);}
+  .node-car-title{font-size:1.15rem;font-weight:600;margin:20px auto 0;max-width:720px;}
+  .node-car-desc{font-family:'IBM Plex Mono',monospace;font-size:.72rem;line-height:1.7;color:var(--muted);margin:8px auto 0;max-width:720px;}
+  .node-car-tags{display:flex;flex-wrap:wrap;gap:8px;margin:20px auto 0;max-width:720px;}
+
+  /* ══════════ NODE FULL OVERLAY ══════════ */
+  .node-overlay{position:fixed;inset:0;z-index:500;background:var(--paper);
+    transform:translateY(100%);transition:transform .45s cubic-bezier(.16,1,.3,1);
+    display:flex;flex-direction:column;overflow:hidden;}
+  .node-overlay.open{transform:translateY(0);}
+  .no-bar{height:56px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 clamp(16px,3vw,40px);border-bottom:1px solid var(--line);flex-shrink:0;}
+  .no-bar button{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .2s;}
+  .no-bar button:hover{color:var(--ink);}
+  .no-bar-title{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.08em;color:var(--ink);}
+  .no-bar-group{display:flex;align-items:center;gap:20px;}
+  .no-body{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:2px;overflow:hidden;min-height:0;}
+  .no-col{display:flex;flex-direction:column;gap:2px;overflow:hidden;min-height:0;}
+  .no-col video{width:100%;flex:1;object-fit:cover;min-height:0;background:var(--panel);}
+  .no-col img{width:100%;flex:0 0 auto;max-height:38%;object-fit:contain;background:var(--panel);}
+  .no-right{align-items:center;justify-content:center;background:var(--panel);}
+  .no-right img{width:100%;height:100%;object-fit:contain;}
+  .no-meta{padding:16px clamp(16px,3vw,40px) 22px;flex-shrink:0;border-top:1px solid var(--line);}
+  .no-meta-name{font-size:1.1rem;font-weight:600;margin-bottom:6px;}
+  .no-meta-desc{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted);line-height:1.7;max-width:70ch;}
+  @media (max-width:760px){ .no-body{grid-template-columns:1fr;} }
+
+  /* ══════════ CASCADE TEASER ══════════ */
+  .cas-card{border:1px solid var(--line);display:grid;grid-template-columns:1.1fr 1fr;}
+  .cas-visual{position:relative;overflow:hidden;background:var(--panel);min-height:260px;}
+  .cas-visual canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  .cas-text{padding:36px 34px;display:flex;flex-direction:column;justify-content:center;}
+  .cas-tag{display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;
+    font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--magenta);margin-bottom:14px;}
+  .cas-tag .letter{width:18px;height:18px;border:1px solid var(--magenta);display:flex;align-items:center;
+    justify-content:center;font-size:.6rem;flex-shrink:0;}
+  .cas-text h3{font-size:1.5rem;font-weight:600;margin-bottom:14px;}
+  .cas-text p{font-size:.88rem;line-height:1.75;color:var(--muted);margin-bottom:22px;max-width:48ch;}
+  .cas-btns{display:flex;gap:12px;flex-wrap:wrap;}
+  .btn{display:inline-block;border:1px solid var(--ink);padding:12px 22px;font-family:'IBM Plex Mono',monospace;
+    font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;transition:all .2s;}
+  .btn-solid{background:var(--ink);color:var(--paper);}
+  .btn-solid:hover{background:var(--blue);border-color:var(--blue);}
+  .btn-ghost{background:transparent;color:var(--ink);}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper);}
+  @media (max-width:760px){ .cas-card{grid-template-columns:1fr;} .cas-visual{min-height:200px;} }
+
+  /* ══════════ VIDEO MODAL (DP tiles) ══════════ */
+  .modal-overlay{display:none;position:fixed;inset:0;z-index:999;background:rgba(20,20,20,.92);
+    align-items:center;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .modal-box{position:relative;width:90vw;max-width:960px;background:var(--panel);
+    border:1px solid rgba(242,240,234,.15);}
+  .modal-video{width:100%;aspect-ratio:16/9;display:block;background:#000;}
+  .modal-close{position:absolute;top:-40px;right:0;background:none;color:var(--paper);
+    border:1px solid rgba(242,240,234,.3);width:34px;height:34px;font-size:1rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;}
+
+  /* ══════════ FOOTER ══════════ */
+  footer{border-top:1px solid var(--line);padding:30px clamp(16px,3vw,40px) 30px;}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);}
+  .foot-bottom a:hover{color:var(--ink);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../llm_test/index_2.html" class="nav-mark">Debayan<span>.</span></a>
+  <div class="nav-crumb mono"><a href="../llm_test/index_2.html#work">Work</a> / Gen·AI</div>
+  <div class="nav-links">
+    <a href="../llm_test/index_2.html#work">Work</a>
+    <a href="about.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="mh-eyebrow mono">Practice — 01</div>
+  <h1 class="mh-title">Gen·AI</h1>
+  <p class="mh-desc">Generative pipelines and model-driven creative systems — from AI-assisted cinematography planning to fully agentic, node-based production workflows.</p>
+  <div class="mh-tags">
+    <span class="tag-chip">DP Planner</span>
+    <span class="tag-chip">Node Workflows</span>
+    <span class="tag-chip">Cascade</span>
+    <span class="tag-chip">Video</span>
+    <span class="tag-chip">Editorial</span>
+  </div>
+</header>
+
+<div class="subnav mono">
+  <a href="#dp-planner">DP Planner</a>
+  <a href="#node-workflows">Node Workflows</a>
+  <a href="#cascade">Cascade</a>
+</div>
+
+<!-- ══════════ DP PLANNER ══════════ -->
+<section class="proj-block" id="dp-planner">
+  <div class="sec-head"><span class="num mono">01</span><h2>DP Planner</h2></div>
+  <p class="block-desc">Director-of-Photography Blocking Board. Design and place characters, props, lights, and a camera on a 16×12 world-unit grid. Movement arrows interpolate character and camera positions. An Ollama (vision + chat) pipeline writes a cinematic video prompt directly from the layout.</p>
+  <div class="stack-line mono">Stack: React 18 · Vite · SVG Canvas · Ollama API · LTX Samples</div>
+
+  <div class="dp-grid" id="dp-grid"></div>
+
+  <div class="dp-images">
+    <img src="../content/WIP/image1.jpeg" alt="DP Planner screenshot">
+    <img src="../content/WIP/image2.jpeg" alt="DP Planner screenshot">
+    <img src="../content/WIP/image3.jpeg" alt="DP Planner screenshot">
+  </div>
+</section>
+
+<!-- ══════════ NODE BASED WORKFLOWS ══════════ -->
+<section class="proj-block" id="node-workflows">
+  <div class="sec-head"><span class="num mono">02</span><h2>Node Based Workflows</h2></div>
+  <p class="block-desc">Generative AI video production using node-based ComfyUI workflows for cinematic video, editorial fashion, ecommerce visuals, and experimental creative production.</p>
+  <div class="stack-line mono">6 workflows · click to open full breakdown</div>
+
+  <div class="node-stage" id="node-stage" onclick="openNodeOverlay(nodeIdx)">
+    <video id="node-car-video" autoplay muted loop playsinline></video>
+    <div class="node-stage-hint">View breakdown ↗</div>
+  </div>
+
+  <div class="node-car-nav">
+    <button class="node-car-btn" onclick="nodeNav(-1)">←</button>
+    <span class="node-car-counter mono" id="node-car-counter">1 / 6</span>
+    <button class="node-car-btn" onclick="nodeNav(1)">→</button>
+  </div>
+
+  <div class="node-car-title" id="node-car-title"></div>
+  <p class="node-car-desc" id="node-car-desc"></p>
+  <div class="node-car-tags">
+    <span class="tag-chip">Node Based Workflows</span>
+    <span class="tag-chip">Video</span>
+    <span class="tag-chip">Editorial</span>
+    <span class="tag-chip">Fashion</span>
+  </div>
+</section>
+
+<!-- ══════════ CASCADE FLAGSHIP TEASER ══════════ -->
+<section class="proj-block" id="cascade" style="border-bottom:none;">
+  <div class="sec-head"><span class="num mono">03</span><h2>Cascade</h2></div>
+  <div class="cas-card">
+    <div class="cas-visual">
+      <canvas id="cas-node-canvas"></canvas>
+    </div>
+    <div class="cas-text">
+      <span class="cas-tag"><span class="letter">C</span>Flagship project</span>
+      <h3>A node-based engine for generative work</h3>
+      <p>A mixed-initiative AI design assistant that transforms a natural-language brief into a fully executable, browser-rendered volumetric node graph — no code required.</p>
+      <div class="cas-btns">
+        <a class="btn btn-solid" href="../content/Cascade/index.html">Open project →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="foot-bottom">
+    <span>© 2026 Debayan Mukherjee</span>
+    <span><a href="https://linkedin.com/in/debmkrj" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/debayanmkrj" target="_blank" rel="noopener">GitHub</a></span>
+    <span><a href="about.html#contact">Get in touch →</a> · <a href="../llm_test/index_2.html">Back to home ↑</a></span>
+  </div>
+</footer>
+
+<!-- Video Modal (DP Planner tiles) -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <video class="modal-video" id="modal-video" controls autoplay></video>
+    <button class="modal-close" id="modal-close">✕</button>
+  </div>
+</div>
+
+<!-- Node Workflow full overlay -->
+<div class="node-overlay" id="node-overlay">
+  <div class="no-bar">
+    <button onclick="closeNodeOverlay()">← Close</button>
+    <span class="no-bar-title mono" id="no-bar-title"></span>
+    <div class="no-bar-group">
+      <button onclick="nodeNav(-1)">Prev</button>
+      <span class="mono" id="no-counter" style="font-size:.62rem;color:var(--muted);"></span>
+      <button onclick="nodeNav(1)">Next</button>
+    </div>
+  </div>
+  <div class="no-body">
+    <div class="no-col">
+      <video id="no-video" autoplay muted loop playsinline></video>
+      <img id="no-refimg" src="" alt="Reference">
+    </div>
+    <div class="no-col no-right" id="no-right">
+      <video id="no-refvideo" autoplay muted loop playsinline style="display:none;"></video>
+      <img id="no-workflow" src="" alt="Workflow diagram">
+    </div>
+  </div>
+  <div class="no-meta">
+    <div class="no-meta-name" id="no-name"></div>
+    <p class="no-meta-desc" id="no-desc"></p>
+  </div>
+</div>
+
+<script src="../assets/node-graph.js"></script>
+<script>
+mountNodeGraph(document.getElementById('cas-node-canvas'));
+
+/* ══════════ DP PLANNER TILE GRID ══════════ */
+const DP_VIDS = Array.from({length:12}, (_,i) => `../content/WIP/media${i+1}.mp4`);
+(function(){
+  const grid = document.getElementById('dp-grid');
+  const modal = document.getElementById('modal');
+  const modalVideo = document.getElementById('modal-video');
+  const modalClose = document.getElementById('modal-close');
+
+  DP_VIDS.forEach((src, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'dp-tile';
+
+    const vid = document.createElement('video');
+    vid.src = src; vid.muted = true; vid.loop = true; vid.playsInline = true; vid.preload = 'metadata';
+    vid.setAttribute('playsinline', '');
+
+    const ov = document.createElement('div');
+    ov.className = 'dp-tile-ov';
+    ov.innerHTML = `<span class="dp-tile-label">Setup ${String(i+1).padStart(2,'0')}</span>`;
+
+    tile.append(vid, ov);
+    grid.appendChild(tile);
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) vid.play().catch(()=>{}); else vid.pause(); });
+    }, { threshold: 0.2 });
+    observer.observe(tile);
+
+    tile.addEventListener('mouseenter', () => vid.play().catch(()=>{}));
+    tile.addEventListener('click', () => {
+      modalVideo.src = src; modalVideo.muted = false;
+      modal.classList.add('open'); modalVideo.play().catch(()=>{});
+    });
+  });
+
+  function closeModal(){ modal.classList.remove('open'); modalVideo.pause(); modalVideo.src=''; }
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+})();
+
+/* ══════════ NODE BASED WORKFLOWS ══════════ */
+const NODE_PROJECTS = [
+  { title:'ECOMMERCE',   desc:'AI powered ecommerce visual content generation.',            cover:'../content/Gen-AI/Ecommerce/media1.mp4',   refImage:'../content/Gen-AI/Ecommerce/Portfolio_debayan.001.jpeg',  workflow:'../content/Gen-AI/Ecommerce/Portfolio_debayan.002.jpeg' },
+  { title:'MOTION',      desc:'Motion, character and garment consistency workflow.',         cover:'../content/Gen-AI/Comfy_Proj1/media1.mp4', refImage:'../content/Gen-AI/Comfy_Proj1/Portfolio_debayan.001.jpeg', refVideo:'../content/Gen-AI/Comfy_Proj1/media2.mp4', workflow:'../content/Gen-AI/Comfy_Proj1/Portfolio_debayan.002.jpeg', coverIsVertical:true },
+  { title:'CINEMATIC',   desc:'Generative AI driven cinematic video content creation.',      cover:'../content/Gen-AI/Cinematic/media1.mp4',   refImage:'../content/Gen-AI/Cinematic/Portfolio_debayan.01.jpeg',   workflow:'../content/Gen-AI/Cinematic/Portfolio_debayan.02.jpeg' },
+  { title:'EDITORIAL',   desc:'Generative AI fashion video production and styling.',         cover:'../content/Gen-AI/Editorial/media1.mp4',   refImage:'../content/Gen-AI/Editorial/Portfolio_debayan.001.jpeg',  workflow:'../content/Gen-AI/Editorial/Portfolio_debayan.002.jpeg' },
+  { title:'HOME',        desc:'AI generated home and interior design visualizations.',       cover:'../content/Gen-AI/Home/media1.mp4',        refImage:'../content/Gen-AI/Home/port_1.jpeg',                      workflow:'../content/Gen-AI/Home/port_2.jpeg' },
+  { title:'IMAGINATIVE', desc:'Experimental generative AI art and creative explorations.',   cover:'../content/Gen-AI/Imaginative/media1.mp4', refImage:'../content/Gen-AI/Imaginative/Portfolio_debayan.01.jpeg', workflow:'../content/Gen-AI/Imaginative/Portfolio_debayan.02.jpeg' }
+];
+
+let nodeIdx = 0;
+function renderNodeCarousel(){
+  const p = NODE_PROJECTS[nodeIdx];
+  const v = document.getElementById('node-car-video');
+  v.src = p.cover; v.style.objectFit = p.coverIsVertical ? 'contain' : 'cover'; v.play().catch(()=>{});
+  document.getElementById('node-car-title').textContent = p.title;
+  document.getElementById('node-car-desc').textContent = p.desc;
+  document.getElementById('node-car-counter').textContent = (nodeIdx+1) + ' / ' + NODE_PROJECTS.length;
+}
+function nodeNav(dir){
+  nodeIdx = (nodeIdx + dir + NODE_PROJECTS.length) % NODE_PROJECTS.length;
+  renderNodeCarousel();
+  if (document.getElementById('node-overlay').classList.contains('open')) openNodeOverlay(nodeIdx);
+}
+function openNodeOverlay(idx){
+  nodeIdx = idx;
+  const p = NODE_PROJECTS[idx];
+  document.getElementById('no-bar-title').textContent = p.title;
+  document.getElementById('no-name').textContent = p.title;
+  document.getElementById('no-desc').textContent = p.desc;
+  document.getElementById('no-counter').textContent = (idx+1) + ' / ' + NODE_PROJECTS.length;
+
+  const v = document.getElementById('no-video');
+  v.src = p.cover; v.style.objectFit = p.coverIsVertical ? 'contain' : 'cover'; v.play().catch(()=>{});
+  document.getElementById('no-refimg').src = p.refImage || '';
+
+  const rv = document.getElementById('no-refvideo');
+  const wf = document.getElementById('no-workflow');
+  const rightCol = document.getElementById('no-right');
+  if (p.refVideo){
+    rv.src = p.refVideo; rv.style.display = 'block'; rv.play().catch(()=>{});
+    wf.src = p.workflow || ''; wf.style.cssText = 'width:100%;flex:0 0 auto;max-height:38%;object-fit:contain;';
+    rightCol.style.cssText = 'display:flex;flex-direction:column;gap:2px;overflow:hidden;min-height:0;background:var(--panel);';
+  } else {
+    rv.style.display = 'none'; rv.src = '';
+    wf.src = p.workflow || ''; wf.style.cssText = 'width:100%;height:100%;object-fit:contain;';
+    rightCol.style.cssText = 'display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--panel);';
+  }
+  document.getElementById('node-overlay').classList.add('open');
+}
+function closeNodeOverlay(){
+  document.getElementById('node-overlay').classList.remove('open');
+  const v = document.getElementById('no-video'); if (v){ v.pause(); v.src=''; }
+  const rv = document.getElementById('no-refvideo'); if (rv){ rv.pause(); rv.src=''; rv.style.display='none'; }
+}
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('node-overlay').classList.contains('open')) return;
+  if (e.key === 'Escape') closeNodeOverlay();
+  if (e.key === 'ArrowRight') nodeNav(1);
+  if (e.key === 'ArrowLeft') nodeNav(-1);
+});
+
+renderNodeCarousel();
+
+function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+const deepLinkHash = location.hash.slice(1);
+if (deepLinkHash){
+  const idx = NODE_PROJECTS.findIndex(p => slugify(p.title) === deepLinkHash);
+  if (idx >= 0){
+    document.getElementById('node-workflows').scrollIntoView();
+    openNodeOverlay(idx);
+  }
+}
+</script>
+
+</body>
+</html>

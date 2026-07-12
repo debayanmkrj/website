@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI/UX — Debayan Mukherjee</title>
+<meta name="description" content="Concept boards, design systems, and interactive prototypes — UX research brought to life through visual language.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f2f0ea; --ink:#141414; --line:rgba(20,20,20,.2);
+    --muted:rgba(20,20,20,.55); --yellow:#f4e400; --blue:#2f5bff; --blue-dk:#1c3fcc;
+    --magenta:#ff2d7a; --panel:#161615;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink);font-family:'Archivo',sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  img,video{max-width:100%;display:block;}
+
+  nav{display:flex;align-items:center;justify-content:space-between;
+    padding:20px clamp(16px,3vw,40px);border-bottom:1px solid var(--line);
+    position:sticky;top:0;background:var(--paper);z-index:50;}
+  .nav-mark{font-size:1rem;font-weight:700;flex-shrink:0;}
+  .nav-mark span{color:var(--blue);}
+  .nav-crumb{color:var(--muted);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;}
+  .nav-crumb a:hover{color:var(--ink);}
+  .nav-links{display:flex;gap:28px;flex-shrink:0;}
+  .nav-links a{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);}
+  .nav-links a:hover{color:var(--ink);}
+  @media (max-width:640px){ .nav-links{display:none;} .nav-crumb{display:none;} }
+
+  .tag-chip{display:inline-block;border:1px solid var(--line);padding:6px 12px;
+    font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);}
+
+  .masthead{padding:56px clamp(16px,3vw,40px) 40px;border-bottom:1px solid var(--line);}
+  .mh-eyebrow{color:var(--blue);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;}
+  .mh-title{font-size:clamp(2.4rem,7vw,4.6rem);font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:20px;}
+  .mh-desc{font-size:1rem;line-height:1.7;color:var(--muted);max-width:62ch;margin-bottom:22px;}
+  .mh-tags{display:flex;flex-wrap:wrap;gap:8px;}
+
+  .proj-block{padding:60px clamp(16px,3vw,40px) 80px;}
+  .board-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .board-card{border:1px solid var(--line);
+    display:block;cursor:pointer;transition:background .2s;min-width:0;}
+  .board-card:hover{background:rgba(47,91,255,.05);}
+  .board-visual{aspect-ratio:4/3;overflow:hidden;background:var(--panel);}
+  .board-visual img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92;
+    transition:opacity .25s,transform .3s;}
+  .board-card:hover .board-visual img{opacity:1;transform:scale(1.03);}
+  .board-body{padding:18px 20px;}
+  .board-title{font-size:.92rem;font-weight:600;margin-bottom:6px;}
+  .board-desc{font-family:'IBM Plex Mono',monospace;font-size:.62rem;line-height:1.6;color:var(--muted);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .board-arrow{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--blue);margin-top:10px;display:block;}
+  @media (max-width:900px){ .board-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .board-grid{grid-template-columns:1fr;} }
+
+  footer{border-top:1px solid var(--line);padding:30px clamp(16px,3vw,40px) 30px;}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);}
+  .foot-bottom a:hover{color:var(--ink);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../llm_test/index_2.html" class="nav-mark">Debayan<span>.</span></a>
+  <div class="nav-crumb mono"><a href="../llm_test/index_2.html#work">Work</a> / UI/UX</div>
+  <div class="nav-links">
+    <a href="../llm_test/index_2.html#work">Work</a>
+    <a href="about.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="mh-eyebrow mono">Practice — 04</div>
+  <h1 class="mh-title">UI/UX</h1>
+  <p class="mh-desc">Concept boards, design systems, and interactive prototypes — UX research brought to life through visual language.</p>
+  <div class="mh-tags">
+    <span class="tag-chip">Design Systems</span>
+    <span class="tag-chip">Prototyping</span>
+    <span class="tag-chip">Research</span>
+  </div>
+</header>
+
+<section class="proj-block">
+  <div class="board-grid" id="uiux-grid"></div>
+</section>
+
+<footer id="contact">
+  <div class="foot-bottom">
+    <span>© 2026 Debayan Mukherjee</span>
+    <span><a href="https://linkedin.com/in/debmkrj" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/debayanmkrj" target="_blank" rel="noopener">GitHub</a></span>
+    <span><a href="about.html#contact">Get in touch →</a> · <a href="../llm_test/index_2.html">Back to home ↑</a></span>
+  </div>
+</footer>
+
+<script>
+const UIUX_BOARDS = [
+  { title:'ANTI-DOOMSCROLL', desc:'Ethical design concept board exploring calm-tech patterns to combat doomscrolling.',         cover:'../content/UIUX/AntiDoomScroll/cover.jpeg', page:'../content/UIUX/AntiDoomScroll/index.html' },
+  { title:'AURA G1',         desc:'Interactive product UI/UX case study for a next-gen spatial audio headphone.',               cover:'../content/UIUX/Aurag1/cover.jpeg',         page:'../content/UIUX/Aurag1/index.html' },
+  { title:'GHOST RETAIL',    desc:'AR/Spatial UI concept board for ambient, ghost-layer retail shopping experiences.',          cover:'../content/UIUX/Ghostretail/cover.jpeg',    page:'../content/UIUX/Ghostretail/index.html' },
+  { title:'KINSHIP',         desc:'Accessible FinTech concept board — voice-first banking designed for inclusive finance.',     cover:'../content/UIUX/Kingship/cover.jpeg',       page:'../content/UIUX/Kingship/index.html' },
+  { title:'AGENTIC HEALTH',  desc:'Agentic health dashboard — AI-driven UI/UX concept for proactive personal health tracking.', cover:'../content/UIUX/PulsePilot/cover.jpeg',     page:'../content/UIUX/PulsePilot/index1.html' }
+];
+
+const grid = document.getElementById('uiux-grid');
+UIUX_BOARDS.forEach((b) => {
+  const card = document.createElement('a');
+  card.className = 'board-card';
+  card.href = b.page;
+  card.innerHTML = `<div class="board-visual"><img src="${b.cover}" alt="${b.title}" loading="lazy"></div>
+    <div class="board-body">
+      <div class="board-title">${b.title}</div>
+      <div class="board-desc">${b.desc}</div>
+      <span class="board-arrow">Open case study →</span>
+    </div>`;
+  grid.appendChild(card);
+});
+</script>
+</body>
+</html>

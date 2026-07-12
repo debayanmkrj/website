@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content — Debayan Mukherjee</title>
+<meta name="description" content="Visual storytelling through photography and video — capturing emotion, form, and narrative across subjects and formats.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f2f0ea; --ink:#141414; --line:rgba(20,20,20,.2);
+    --muted:rgba(20,20,20,.55); --yellow:#f4e400; --blue:#2f5bff; --blue-dk:#1c3fcc;
+    --magenta:#ff2d7a; --panel:#161615;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink);font-family:'Archivo',sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  img,video{max-width:100%;display:block;}
+
+  nav{display:flex;align-items:center;justify-content:space-between;
+    padding:20px clamp(16px,3vw,40px);border-bottom:1px solid var(--line);
+    position:sticky;top:0;background:var(--paper);z-index:50;}
+  .nav-mark{font-size:1rem;font-weight:700;flex-shrink:0;}
+  .nav-mark span{color:var(--blue);}
+  .nav-crumb{color:var(--muted);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;}
+  .nav-crumb a:hover{color:var(--ink);}
+  .nav-links{display:flex;gap:28px;flex-shrink:0;}
+  .nav-links a{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);}
+  .nav-links a:hover{color:var(--ink);}
+  @media (max-width:640px){ .nav-links{display:none;} .nav-crumb{display:none;} }
+
+  .tag-chip{display:inline-block;border:1px solid var(--line);padding:6px 12px;
+    font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);}
+
+  .masthead{padding:56px clamp(16px,3vw,40px) 40px;border-bottom:1px solid var(--line);}
+  .mh-eyebrow{color:var(--blue);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;}
+  .mh-title{font-size:clamp(2.4rem,7vw,4.6rem);font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:20px;}
+  .mh-desc{font-size:1rem;line-height:1.7;color:var(--muted);max-width:62ch;margin-bottom:22px;}
+  .mh-tags{display:flex;flex-wrap:wrap;gap:8px;}
+
+  .proj-block{padding:60px clamp(16px,3vw,40px) 80px;}
+
+  .c-stage{border:1px solid var(--line);aspect-ratio:16/9;max-width:720px;max-height:56vh;
+    margin:0 auto;position:relative;overflow:hidden;cursor:pointer;background:var(--panel);}
+  .c-stage img,.c-stage video{width:100%;height:100%;object-fit:cover;display:block;}
+  .c-stage-hint{position:absolute;bottom:14px;right:16px;font-family:'IBM Plex Mono',monospace;
+    font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(242,240,234,.75);
+    border:1px solid rgba(242,240,234,.35);padding:6px 12px;background:rgba(20,20,20,.35);}
+  .c-car-nav{display:flex;align-items:center;gap:16px;margin:16px auto 0;max-width:720px;}
+  .c-car-btn{font-family:'IBM Plex Mono',monospace;font-size:.8rem;border:1px solid var(--line);
+    background:none;color:var(--ink);width:36px;height:36px;cursor:pointer;transition:background .2s;}
+  .c-car-btn:hover{background:rgba(47,91,255,.08);border-color:var(--blue);}
+  .c-car-counter{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--muted);}
+  .c-car-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin:10px auto 0;max-width:720px;}
+
+  .lightbox{display:none;position:fixed;inset:0;z-index:999;background:rgba(20,20,20,.94);
+    align-items:center;justify-content:center;}
+  .lightbox.open{display:flex;}
+  .lightbox-media{max-width:90vw;max-height:85vh;object-fit:contain;display:block;background:#000;}
+  .lightbox-close{position:absolute;top:20px;right:24px;background:none;color:var(--paper);
+    border:1px solid rgba(242,240,234,.4);width:34px;height:34px;font-size:1rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;}
+  .lightbox-nav{position:absolute;top:0;bottom:0;display:flex;align-items:center;}
+  .lightbox-nav.prev{left:16px;} .lightbox-nav.next{right:16px;}
+  .lightbox-nav button{background:none;color:var(--paper);border:1px solid rgba(242,240,234,.4);
+    width:40px;height:40px;font-size:1rem;cursor:pointer;}
+
+  footer{border-top:1px solid var(--line);padding:30px clamp(16px,3vw,40px) 30px;}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);}
+  .foot-bottom a:hover{color:var(--ink);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../llm_test/index_2.html" class="nav-mark">Debayan<span>.</span></a>
+  <div class="nav-crumb mono"><a href="../llm_test/index_2.html#work">Work</a> / Content</div>
+  <div class="nav-links">
+    <a href="../llm_test/index_2.html#work">Work</a>
+    <a href="about.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="mh-eyebrow mono">Practice — 05</div>
+  <h1 class="mh-title">Content</h1>
+  <p class="mh-desc">Visual storytelling through photography and video — capturing emotion, form, and narrative across subjects and formats.</p>
+  <div class="mh-tags">
+    <span class="tag-chip">Film</span>
+    <span class="tag-chip">Photography</span>
+    <span class="tag-chip">Editorial</span>
+  </div>
+</header>
+
+<section class="proj-block">
+  <div class="c-stage" id="c-stage">
+    <div class="c-stage-hint">Click to view full →</div>
+  </div>
+  <div class="c-car-nav">
+    <button class="c-car-btn" onclick="contentNav(-1)">←</button>
+    <span class="c-car-counter mono" id="c-car-counter">1 / 32</span>
+    <button class="c-car-btn" onclick="contentNav(1)">→</button>
+  </div>
+  <div class="c-car-label mono" id="c-car-label"></div>
+</section>
+
+<footer id="contact">
+  <div class="foot-bottom">
+    <span>© 2026 Debayan Mukherjee</span>
+    <span><a href="https://linkedin.com/in/debmkrj" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/debayanmkrj" target="_blank" rel="noopener">GitHub</a></span>
+    <span><a href="about.html#contact">Get in touch →</a> · <a href="../llm_test/index_2.html">Back to home ↑</a></span>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-nav prev"><button onclick="contentNav(-1)">←</button></div>
+  <div class="lightbox-nav next"><button onclick="contentNav(1)">→</button></div>
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+</div>
+
+<script>
+const CONTENT_ITEMS = [
+  { type:'video', src:'../content/Photography/media1.mp4' },
+  { type:'video', src:'../content/Photography/media2.mp4' },
+  { type:'video', src:'../content/Photography/media3.mp4' },
+  { type:'video', src:'../content/Photography/media4.mp4' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.002.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.003.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.004.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.005.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.006.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.007.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.009.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.010.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.011.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.012.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.014.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.015.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.016.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.018.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.019.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.020.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.021.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.022.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.023.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.024.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.025.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.026.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.027.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.028.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.029.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.030.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.031.jpeg' },
+  { type:'photo', src:'../content/Photography/Portfolio_debayan.032.jpeg' }
+];
+
+let contentIdx = 0;
+
+function renderStage(){
+  const stage = document.getElementById('c-stage');
+  stage.querySelectorAll('img,video').forEach(n => n.remove());
+  const item = CONTENT_ITEMS[contentIdx];
+  let el;
+  if (item.type === 'video') {
+    el = document.createElement('video');
+    el.src = item.src; el.autoplay = true; el.muted = true; el.loop = true;
+    el.setAttribute('playsinline', ''); el.setAttribute('webkit-playsinline', '');
+  } else {
+    el = document.createElement('img');
+    el.src = item.src; el.alt = '';
+  }
+  stage.insertBefore(el, stage.firstChild);
+  document.getElementById('c-car-counter').textContent = (contentIdx + 1) + ' / ' + CONTENT_ITEMS.length;
+  document.getElementById('c-car-label').textContent = item.type === 'video' ? 'VIDEO' : 'PHOTO';
+
+  if (document.getElementById('lightbox').classList.contains('open')) renderLightbox();
+}
+
+function renderLightbox(){
+  const lb = document.getElementById('lightbox');
+  lb.querySelectorAll('.lightbox-media').forEach(n => n.remove());
+  const item = CONTENT_ITEMS[contentIdx];
+  let el;
+  if (item.type === 'video') {
+    el = document.createElement('video');
+    el.className = 'lightbox-media';
+    el.src = item.src; el.autoplay = true; el.controls = true;
+    el.setAttribute('playsinline', ''); el.setAttribute('webkit-playsinline', '');
+  } else {
+    el = document.createElement('img');
+    el.className = 'lightbox-media';
+    el.src = item.src; el.alt = '';
+  }
+  lb.insertBefore(el, lb.firstChild);
+}
+
+function contentNav(dir){
+  contentIdx = (contentIdx + dir + CONTENT_ITEMS.length) % CONTENT_ITEMS.length;
+  renderStage();
+}
+
+function openLightbox(){
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){
+  const lb = document.getElementById('lightbox');
+  lb.classList.remove('open');
+  const v = lb.querySelector('video');
+  if (v) v.pause();
+}
+
+document.getElementById('c-stage').addEventListener('click', openLightbox);
+document.getElementById('lightbox').addEventListener('click', (e) => { if (e.target.id === 'lightbox') closeLightbox(); });
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') contentNav(-1);
+  if (e.key === 'ArrowRight') contentNav(1);
+});
+
+renderStage();
+</script>
+</body>
+</html>
