@@ -477,10 +477,20 @@ const ALL_PROJECTS = Object.values(PROJECT_INDEX).flat();
 function findByTitle(title){ return ALL_PROJECTS.find(p => p.title === title); }
 function pickOne(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
 
-/* Grounding context for the console LLM. Kept as short static digests
-   (mirroring pages/about.html) rather than fetched, since they're small,
-   static, and used on nearly every non-project chat turn. */
-const ABOUT_CONTEXT = "Debayan Mukherjee is a Creative Technologist, Generative AI Producer, and UX Researcher with 12+ years of production experience spanning multimodal content, enterprise creative pipelines, and interactive systems. MS in Media Arts & Sciences, Arizona State University (2024-2026, concentration in multi-modal generative AI). Bachelor of Design, National Institute of Fashion Technology (2009-2013). Former Creative Manager at Amazon across Middle East, India, Australia and Singapore markets. Core skills: Python, JavaScript/React, Swift/SwiftUI, Unity/C#; Gen-AI (ComfyUI, Stable Diffusion, ControlNet, LoRA, AnimateDiff); LLMs & RAG (LangChain, Ollama, FAISS); ML/CV (PyTorch, OpenCV, YOLO, CLIP); post-production (DaVinci Resolve, Adobe Creative Suite, Figma).";
+/* Grounding context for the console LLM.
+   ABOUT_CONTEXT_PATH points at a digest sourced directly from Debayan's
+   actual resume (not a hand-written paraphrase) — fetched only for
+   background/experience-type questions, since it's long. ABOUT_FALLBACK is
+   used only if that fetch fails (offline, path moved, etc).
+   EMPLOYER_ANCHOR is the opposite: tiny, and baked into every single
+   request's base prompt regardless of detected intent. A hand-written
+   summary or a keyword-triggered fetch can both fail to cover a question's
+   exact phrasing (this is literally why the LLM once invented a "Meta"
+   job) — this anchor is the backstop so even an unanticipated phrasing
+   about his employer has one true fact to check itself against. */
+const ABOUT_CONTEXT_PATH = '../content/Resume/resume-context.txt';
+const ABOUT_FALLBACK = "Debayan Mukherjee has only ever worked at Amazon (2013-2024, various creative/photography roles) and is now pursuing an MS at Arizona State University. Bachelor of Design, NIFT (2009-2013).";
+const EMPLOYER_ANCHOR = "Fact you must not contradict: Debayan has only ever worked at Amazon (2013-2024) and is now an MS student at Arizona State University. He has never worked at any other company (not Meta, Google, etc).";
 const SITE_OVERVIEW = "Debayan's portfolio covers 5 practices: Gen·AI (generative pipelines incl. flagship project Cascade, DP Planner, node-based video workflows), ML (applied ML/CV projects), Digital (games, AR, interactive installations), UI/UX (design concept boards), and Content (photography & film).";
 
 /* Per-practice tech/stack digests — used to ground follow-up questions
@@ -882,7 +892,7 @@ const PROXY_ENDPOINT = 'https://silent-haze-e725.debayanmukh.workers.dev';
 const SYSTEM_PROMPT = "You are the assistant embedded on Debayan Mukherjee's portfolio site. " +
   "Answer in at most 2 short sentences (under ~40 words). Be direct, no filler, no lists unless asked. " +
   "Only answer using the context given to you in this conversation — never invent projects, numbers, or facts. " +
-  SITE_OVERVIEW + " " +
+  SITE_OVERVIEW + " " + EMPLOYER_ANCHOR + " " +
   "If asked something unrelated to Debayan or his work, gently redirect to his work.";
 
 /* ── Intent router ──
@@ -901,7 +911,7 @@ const PRACTICE_PATTERNS = {
   content: /\bcontent\b|photography|\bphotos?\b|\bfilm\b|editorial/,
 };
 const CONTACT_PATTERN = /\b(contact|hire|freelance|collaborat|work together|reach (you|out)|get in touch|email)\b/;
-const ABOUT_PATTERN = /\b(resume|cv|experience|background|qualifi|who are you|about (you|debayan)|career|bio)\b/;
+const ABOUT_PATTERN = /\b(resume|cv|experience|background|qualifi|who are you|about (you|debayan)|career|bio|work(ed|s)?\s+(at|for|on|with)|employer|company|companies|previous(ly)?|meta|amazon|google|microsoft)\b/;
 
 function detectIntent(rawText){
   const text = rawText.toLowerCase();
@@ -983,13 +993,13 @@ function typeReply(pEl, text){
   });
 }
 
-async function fetchContext(path, fallback){
+async function fetchContext(path, fallback, maxLen){
   if (!path) return fallback || '';
   try {
     const res = await fetch(path);
     if (!res.ok) return fallback || '';
     const text = await res.text();
-    return text.slice(0, 600);
+    return text.slice(0, maxLen || 600);
   } catch { return fallback || ''; }
 }
 
@@ -1051,7 +1061,8 @@ consoleForm.addEventListener('submit', async (e) => {
       const ctx = await fetchContext(project.summary, project.desc);
       extraContext = `Context about the project "${project.title}" (use only this, do not invent details): ${ctx}`;
     } else if (intent.type === 'about'){
-      extraContext = `Context about Debayan's background (use only this, do not invent details): ${ABOUT_CONTEXT}`;
+      const ctx = await fetchContext(ABOUT_CONTEXT_PATH, ABOUT_FALLBACK, 2000);
+      extraContext = `Context about Debayan's background, sourced from his resume (use only this, do not invent details): ${ctx}`;
     } else if (intent.type === 'general' && lastShownPracticeId && PRACTICE_CONTEXT[lastShownPracticeId]){
       // Follow-up on whichever practice's projects were most recently shown
       // (e.g. "what tech is used for these") — ground it instead of guessing.
