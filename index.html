@@ -119,6 +119,8 @@
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .console-card-arrow{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.06em;
     text-transform:uppercase;color:var(--blue);margin-top:2px;display:block;}
+  .console-card-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  .console-card-row .console-card{margin-top:0;flex:1 1 140px;max-width:200px;}
 
   .chat-bottom{flex:0 0 auto;padding:14px 22px 18px;border-top:1px solid rgba(234,232,226,.12);}
   .console-form{display:flex;gap:8px;}
@@ -492,6 +494,21 @@ const ABOUT_CONTEXT_PATH = '../content/Resume/resume-context.txt';
 const ABOUT_FALLBACK = "Debayan Mukherjee has only ever worked at Amazon (2013-2024, various creative/photography roles) and is now pursuing an MS at Arizona State University. Bachelor of Design, NIFT (2009-2013).";
 const EMPLOYER_ANCHOR = "Fact you must not contradict: Debayan has only ever worked at Amazon (2013-2024) and is now an MS student at Arizona State University. He has never worked at any other company (not Meta, Google, etc).";
 const SITE_OVERVIEW = "Debayan's portfolio covers 5 practices: Gen·AI (generative pipelines incl. flagship project Cascade, DP Planner, node-based video workflows), ML (applied ML/CV projects), Digital (games, AR, interactive installations), UI/UX (design concept boards), and Content (photography & film).";
+
+/* Component composition for open-ended questions ("which projects involve
+   real-time rendering?"). The model sees the real catalog and is asked to
+   name matches by exact title in a parseable tail — but nothing renders on
+   trust: parseProjectsTail() (below) only accepts titles that exact-match
+   ALL_PROJECTS. A hallucinated or paraphrased title simply fails to match
+   and is dropped, so the corpus stays the sole source of truth for what
+   can appear on screen, regardless of what the model claims. */
+const PROJECT_CATALOG = ALL_PROJECTS.map(p => `${p.title} — ${p.desc}`).join('\n');
+const CATALOG_INSTRUCTION = "Project catalog (for identifying relevant projects only — do not invent " +
+  "projects not listed here, and do not use this list for any other purpose):\n" + PROJECT_CATALOG +
+  "\n\nIf the user's question names a technology, medium, capability, or matches specific projects " +
+  "above, after your prose answer add a new line starting with \"PROJECTS:\" followed by the exact " +
+  "titles (comma-separated, copied verbatim from the catalog above) of up to 3 relevant ones. If none " +
+  "are relevant, write \"PROJECTS: none\". Never list a title that isn't in the catalog above.";
 
 /* Per-practice tech/stack digests — used to ground follow-up questions
    ("what tech/models are used") after a practice's projects were shown,
@@ -889,10 +906,23 @@ typeGreeting();
 /* The API key now lives only in the Worker's environment (as a secret),
    never in this file or anywhere the browser can see it. */
 const PROXY_ENDPOINT = 'https://silent-haze-e725.debayanmukh.workers.dev';
+/* General principle, not a phrase detector — the model's own language
+   understanding has to generalize this across paraphrase, since no client-
+   side keyword list can enumerate every way to ask "which is worst." Kept
+   always-on in SYSTEM_PROMPT (like EMPLOYER_ANCHOR) rather than gated
+   behind detecting the question, so it can't be phrase-dependent. */
+const NO_RANKING_RULE = "Never rank, rate, grade, or make comparative-quality " +
+  "judgments about Debayan's projects or work history, under any phrasing " +
+  "(e.g. weakest, worst, least impressive, overrated, which you'd drop or " +
+  "cut, ranking his work). If asked for this, do not comply with the " +
+  "comparison — say briefly that you don't rank his work, then redirect to " +
+  "a concrete fact already given to you, such as the most technically " +
+  "complex system he's built and why, without implying anything else is " +
+  "inferior.";
 const SYSTEM_PROMPT = "You are the assistant embedded on Debayan Mukherjee's portfolio site. " +
   "Answer in at most 2 short sentences (under ~40 words). Be direct, no filler, no lists unless asked. " +
   "Only answer using the context given to you in this conversation — never invent projects, numbers, or facts. " +
-  SITE_OVERVIEW + " " + EMPLOYER_ANCHOR + " " +
+  SITE_OVERVIEW + " " + EMPLOYER_ANCHOR + " " + NO_RANKING_RULE + " " +
   "If asked something unrelated to Debayan or his work, gently redirect to his work.";
 
 /* ── Intent router ──
@@ -947,7 +977,7 @@ function addMsg(role, text, isError){
   return div;
 }
 
-function appendCard(msgDiv, project){
+function buildCardEl(project){
   const card = document.createElement('a');
   card.className = 'console-card';
   card.href = project.link;
@@ -961,7 +991,20 @@ function appendCard(msgDiv, project){
     card.addEventListener('mouseenter', () => vid.play().catch(()=>{}));
     card.addEventListener('mouseleave', () => vid.pause());
   }
-  msgDiv.appendChild(card);
+  return card;
+}
+
+function appendCard(msgDiv, project){
+  msgDiv.appendChild(buildCardEl(project));
+  consoleLog.scrollTop = consoleLog.scrollHeight;
+}
+
+function appendCards(msgDiv, projects){
+  if (!projects.length) return;
+  const row = document.createElement('div');
+  row.className = 'console-card-row';
+  projects.forEach(p => row.appendChild(buildCardEl(p)));
+  msgDiv.appendChild(row);
   consoleLog.scrollTop = consoleLog.scrollHeight;
 }
 
@@ -1001,6 +1044,24 @@ async function fetchContext(path, fallback, maxLen){
     const text = await res.text();
     return text.slice(0, maxLen || 600);
   } catch { return fallback || ''; }
+}
+
+/* Splits a "PROJECTS: Title A, Title B" tail off a reply and resolves each
+   listed title against the real catalog via the existing findByTitle().
+   Anything that isn't an exact match — hallucinated, paraphrased, malformed
+   — silently resolves to undefined and is filtered out. This is the only
+   thing that decides whether a card renders; the model's claim alone never
+   does. A missing/malformed tail, or "PROJECTS: none", both yield [] with
+   no error. */
+function parseProjectsTail(replyText){
+  const match = replyText.match(/\n?PROJECTS:\s*(.+)$/is);
+  if (!match) return { prose: replyText.trim(), projects: [] };
+  const prose = replyText.slice(0, match.index).trim();
+  const listRaw = match[1].trim();
+  if (/^none$/i.test(listRaw)) return { prose, projects: [] };
+  const titles = listRaw.split(/[,|]/).map(s => s.trim()).filter(Boolean);
+  const projects = titles.map(t => findByTitle(t)).filter(Boolean).slice(0, 3);
+  return { prose, projects };
 }
 
 async function askLLM(extraContext){
@@ -1052,7 +1113,9 @@ consoleForm.addEventListener('submit', async (e) => {
     return;
   }
 
-  // Grounded LLM intents: project explainer and background/resume.
+  // Grounded LLM intents: project explainer, background/resume, and general
+  // (which also carries the project catalog so relevant projects can render
+  // as real components alongside the prose — see parseProjectsTail above).
   const thinking = addMsg('bot', '…');
   try {
     let reply, project = null, extraContext = null;
@@ -1063,16 +1126,19 @@ consoleForm.addEventListener('submit', async (e) => {
     } else if (intent.type === 'about'){
       const ctx = await fetchContext(ABOUT_CONTEXT_PATH, ABOUT_FALLBACK, 2000);
       extraContext = `Context about Debayan's background, sourced from his resume (use only this, do not invent details): ${ctx}`;
-    } else if (intent.type === 'general' && lastShownPracticeId && PRACTICE_CONTEXT[lastShownPracticeId]){
+    } else if (intent.type === 'general'){
       // Follow-up on whichever practice's projects were most recently shown
       // (e.g. "what tech is used for these") — ground it instead of guessing.
-      extraContext = PRACTICE_CONTEXT[lastShownPracticeId];
+      const followUp = lastShownPracticeId && PRACTICE_CONTEXT[lastShownPracticeId] ? PRACTICE_CONTEXT[lastShownPracticeId] + '\n\n' : '';
+      extraContext = followUp + CATALOG_INSTRUCTION;
     }
 
     reply = await askLLM(extraContext);
-    await typeReply(thinking.querySelector('p'), reply);
-    consoleHistory.push({ role:'assistant', content:reply });
+    const { prose, projects } = parseProjectsTail(reply);
+    await typeReply(thinking.querySelector('p'), prose);
+    consoleHistory.push({ role:'assistant', content:prose });
     if (project) appendCard(thinking, project);
+    if (projects.length) appendCards(thinking, projects);
     if (intent.type === 'about') appendLink(thinking, '../content/Resume/DEBAYAN_MUKHERJEE_CV.pdf', 'Download resume ↓');
   } catch (err) {
     thinking.classList.add('err');

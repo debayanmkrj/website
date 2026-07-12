@@ -1,0 +1,8 @@
+{
+  "name": "console-verification",
+  "private": true,
+  "description": "Dev-only tooling for verify-console-behavior.js. Not part of the deployed site.",
+  "devDependencies": {
+    "playwright": "^1.40.0"
+  }
+}
